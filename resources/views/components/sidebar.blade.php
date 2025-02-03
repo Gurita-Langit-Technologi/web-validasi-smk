@@ -20,7 +20,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="{{ route('page-kelas') }}" class="nav-link">
+                <a href="{{ route('page-tugas') }}" class="nav-link">
                     <i class="link-icon" data-feather="message-square"></i>
                     <span class="link-title">Input rekap tugas</span>
                 </a>

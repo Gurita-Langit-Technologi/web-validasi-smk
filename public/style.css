@@ -1,0 +1,10 @@
+#tugas-names-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#tugas-names-container input {
+    margin-bottom: 5px;
+    flex-shrink: 0;
+}
