@@ -17,21 +17,14 @@
         <div>
             <h4 class="mb-3 mb-md-0">Halaman Rekap Tugas</h4>
         </div>
-        <div class="d-flex align-items-center flex-wrap text-nowrap">
-            <div class="input-group date datepicker dashboard-date mr-2 mb-2 mb-md-0 d-md-none d-xl-flex"
-                id="dashboardDate">
-                <span class="input-group-addon bg-transparent"><i data-feather="calendar" class=" text-primary"></i></span>
-                <input type="text" class="form-control">
-            </div>
-
-        </div>
     </div>
+
     <div class="row">
-        <div class="col-md-12 grid-margin stretch-card">
+        <!-- Card Input Rekap -->
+        <div class="col-md-8 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Data Table</h6>
-
+                    <h6 class="card-title">Input Rekap</h6>
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -40,9 +33,6 @@
                                     <th>Mapel</th>
                                     <th>Total Tugas</th>
                                     <th>Nama-nama Tugas</th>
-                                    <th>Tugas Selesai</th>
-                                    <th>Tanggungan</th>
-                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,14 +44,12 @@
                                             {{ $rekap->mapel->nama_mapel }}</td>
                                         <td style="display: flex; align-items: center; ">
                                             <button class="btn btn-outline-secondary btn-sm" type="button"
-                                                onclick="decrement('total-tugas-{{ $rekap->id_rekap }}', 'tugas-names-container-{{ $rekap->id }}')">-</button>
+                                                onclick="decrement('total-tugas-{{ $rekap->id_rekap }}', 'tugas-names-container-{{ $rekap->id_rekap }}')">-</button>
                                             <input id="total-tugas-{{ $rekap->id_rekap }}" type="number"
                                                 class="form-control form-control-sm text-center mx-1"
                                                 value="{{ $rekap->mapel->total_tugas }}" readonly>
                                             <button class="btn btn-outline-secondary btn-sm" type="button"
                                                 onclick="increment('total-tugas-{{ $rekap->id_rekap }}', 'tugas-names-container-{{ $rekap->id_rekap }}')">+</button>
-                                            <a href="{{ route('detail-tugas', $rekap->mapel->id_mapel) }}"
-                                                class="btn btn-warning btn-sm ml-2">Detail</a>
                                         </td>
                                         <td style="vertical-align: top; ">
                                             <div id="tugas-names-container-{{ $rekap->id_rekap }}">
@@ -71,31 +59,53 @@
                                                 @endforeach
                                             </div>
                                         </td>
+                                    </tr>
+                                    @endforeach
+                                    <button class="btn btn-primary mt-3" onclick="generateTasks()">add</button>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Report -->
+        <div class="col-md-4 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Report</h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tugas Selesai</th>
+                                    <th>Tanggungan</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($rekapTugas as $rekap)
+                                    <tr>
                                         <td style="display: flex; align-items: center;">
                                             <button class="btn btn-outline-secondary btn-sm" type="button"
                                                 onclick="decrement('tugas-selesai-{{ $rekap->id_rekap }}')">-</button>
                                             <input id="tugas-selesai-{{ $rekap->id_rekap }}" type="number"
                                                 class="form-control form-control-sm text-center mx-1"
-                                                value="{{ $rekap->mapel->Jumlah_selesai }}">
+                                                value="{{ $rekap->mapel->jumlah_selesai }}">
                                             <button class="btn btn-outline-secondary btn-sm" type="button"
                                                 onclick="increment('tugas-selesai-{{ $rekap->id_rekap }}')">+</button>
                                         </td>
                                         <td style="vertical-align: top; padding: 20px 10px; align-items: center;">
-                                            {{ $rekap->mapel->Jumlah_tanggungan }}</td>
+                                            {{ $rekap->mapel->jumlah_tanggungan }}</td>
                                         <td style="vertical-align: top; padding: 10px 0;">
-                                            <a href="{{ route('rekap-tugas.edit', $rekap->id_rekap) }}"
-                                                class="btn btn-primary btn-sm">Edit</a>
-                                        </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>
-
-
                         </table>
                     </div>
-
-                    <button class="btn btn-primary mt-3" onclick="generateTasks()">Generate</button>
-
                 </div>
             </div>
         </div>
@@ -112,7 +122,9 @@
             const newTaskInput = document.createElement('input');
             newTaskInput.type = 'text';
             newTaskInput.className = 'form-control form-control-sm mb-2';
-            newTaskInput.placeholder = `Nama Tugas ${input.value}`;
+            newTaskInput.placeholder = Nama Tugas $ {
+                input.value
+            };
             container.appendChild(newTaskInput);
         }
     }
