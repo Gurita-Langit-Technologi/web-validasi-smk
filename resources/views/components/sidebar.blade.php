@@ -26,6 +26,13 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="{{ route('page-kelas') }}" class="nav-link">
+                    <i class="link-icon" data-feather="message-square"></i>
+                    <span class="link-title">Detail tugas</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="pages/apps/calendar.html" class="nav-link">
                     <i class="link-icon" data-feather="calendar"></i>
                     <span class="link-title">Logout</span>

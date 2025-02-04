@@ -25,24 +25,30 @@
                     <h6 class="card-title">Data Table</h6>
 
                     <div class="table-responsive">
-                        <table id="dataTableExample" class="table">
+                        <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Nomor</th>
+                                    <th>No</th>
                                     <th>Mata Pelajaran</th>
                                     <th>Kelas</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>IPA</td>
-                                    <td>IPA 2</td>
-                                    <td>
-                                        <a href="{{ route('page-tugas') }}" class="btn btn-success btn-sm">Detail</a>
-                                    </td>
-                                </tr>
+                                <?php
+                                    $no = 1;
+                                ?>
+                                @foreach ($rekapKelas as $kelas)
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $kelas->mapel->nama_mapel }}</td>
+                                        <td>{{ $kelas->kelas->nama_kelas }}</td>
+                                        <td>
+                                            <a href="{{ route('detail-tugas', $kelas->mapel->id_mapel) }}"
+                                                class="btn btn-success btn-sm">Detail</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

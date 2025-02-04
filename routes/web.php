@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\RekapTugasController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +24,5 @@ Route::get('/form-tugas/{id_mapel}', [RekapTugasController::class, 'showDetailTu
 Route::get('/page-tugas', [RekapTugasController::class, 'index'])->name('page-tugas');
 Route::get('/rekap-tugas/edit/{id}', [RekapTugasController::class, 'edit'])->name('rekap-tugas.edit');
 Route::post('/rekap-tugas/update/{id}', [RekapTugasController::class, 'update'])->name('rekap-tugas.update');
-
+Route::get('/page-kelas', [KelasController::class, 'index'])->name('page-kelas');
 // Route::get('/form-tugas/{id}', [TugasController::class, 'show'])->name('form-tugas');
