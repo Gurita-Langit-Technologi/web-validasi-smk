@@ -4,7 +4,7 @@ name: Deploy To Server
 on:
   push:
     branches:
-      - main
+      - master
 
 # Authenticate to the the server via ssh
 # and run our deployment script
