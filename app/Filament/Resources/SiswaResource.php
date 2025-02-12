@@ -4,20 +4,20 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Siswa;
 use Filament\Forms\Form;
-use App\Models\GuruMapel;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\ImportAction;
+use App\Filament\Imports\SiswaImporter;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Imports\GuruMapelImporter;
-use App\Filament\Resources\GuruMapelResource\Pages;
+use App\Filament\Resources\SiswaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\GuruMapelResource\RelationManagers;
+use App\Filament\Resources\SiswaResource\RelationManagers;
+use Filament\Tables\Actions\ImportAction;
 
-class GuruMapelResource extends Resource
+class SiswaResource extends Resource
 {
-    protected static ?string $model = GuruMapel::class;
+    protected static ?string $model = Siswa::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -25,17 +25,18 @@ class GuruMapelResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('Nip')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('Nama Guru')
+                Forms\Components\TextInput::make('nisn')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('Mapel')
+                Forms\Components\TextInput::make('nama_siswa')
                     ->required()
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('Kelas')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('kelas')
                     ->required()
-                    ->columnSpanFull(),
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('jurusan')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -43,9 +44,13 @@ class GuruMapelResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('Nip')
+                Tables\Columns\TextColumn::make('nisn')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('Nama Guru')
+                Tables\Columns\TextColumn::make('nama_siswa')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kelas')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('jurusan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -69,7 +74,7 @@ class GuruMapelResource extends Resource
             ])
             ->headerActions([
                 ImportAction::make()
-                    ->importer(GuruMapelImporter::class)
+                    ->importer(SiswaImporter::class)
             ]);
     }
 
@@ -83,9 +88,9 @@ class GuruMapelResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGuruMapels::route('/'),
-            'create' => Pages\CreateGuruMapel::route('/create'),
-            'edit' => Pages\EditGuruMapel::route('/{record}/edit'),
+            'index' => Pages\ListSiswas::route('/'),
+            'create' => Pages\CreateSiswa::route('/create'),
+            'edit' => Pages\EditSiswa::route('/{record}/edit'),
         ];
     }
 }

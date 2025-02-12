@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\GuruMapelResource\Pages;
+namespace App\Filament\Resources\GuruResource\Pages;
 
-use App\Filament\Resources\GuruMapelResource;
+use App\Filament\Resources\GuruResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateGuruMapel extends CreateRecord
+class CreateGuru extends CreateRecord
 {
-    protected static string $resource = GuruMapelResource::class;
+    protected static string $resource = GuruResource::class;
     //customize redirect after create
     public function getRedirectUrl(): string
     {

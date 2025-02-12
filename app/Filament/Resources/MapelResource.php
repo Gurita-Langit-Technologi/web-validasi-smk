@@ -4,20 +4,20 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Mapel;
 use Filament\Forms\Form;
-use App\Models\GuruMapel;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use App\Filament\Imports\MapelImporter;
 use Filament\Tables\Actions\ImportAction;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Imports\GuruMapelImporter;
-use App\Filament\Resources\GuruMapelResource\Pages;
+use App\Filament\Resources\MapelResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\GuruMapelResource\RelationManagers;
+use App\Filament\Resources\MapelResource\RelationManagers;
 
-class GuruMapelResource extends Resource
+class MapelResource extends Resource
 {
-    protected static ?string $model = GuruMapel::class;
+    protected static ?string $model = Mapel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -25,17 +25,24 @@ class GuruMapelResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('Nip')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('Nama Guru')
+                Forms\Components\TextInput::make('nama_mapel')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('Mapel')
+                Forms\Components\TextInput::make('tema_tugas')
                     ->required()
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('Kelas')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('total_tugas')
                     ->required()
-                    ->columnSpanFull(),
+                    ->numeric(),
+                Forms\Components\TextInput::make('jumlah_selesai')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('jumlah_tanggungan')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('deskripsi')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -43,9 +50,20 @@ class GuruMapelResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('Nip')
+                Tables\Columns\TextColumn::make('nama_mapel')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('Nama Guru')
+                Tables\Columns\TextColumn::make('tema_tugas')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('total_tugas')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jumlah_selesai')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jumlah_tanggungan')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('deskripsi')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -69,7 +87,7 @@ class GuruMapelResource extends Resource
             ])
             ->headerActions([
                 ImportAction::make()
-                    ->importer(GuruMapelImporter::class)
+                    ->importer(MapelImporter::class)
             ]);
     }
 
@@ -83,9 +101,9 @@ class GuruMapelResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGuruMapels::route('/'),
-            'create' => Pages\CreateGuruMapel::route('/create'),
-            'edit' => Pages\EditGuruMapel::route('/{record}/edit'),
+            'index' => Pages\ListMapels::route('/'),
+            'create' => Pages\CreateMapel::route('/create'),
+            'edit' => Pages\EditMapel::route('/{record}/edit'),
         ];
     }
 }

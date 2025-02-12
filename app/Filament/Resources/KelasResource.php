@@ -4,20 +4,20 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Kelas;
 use Filament\Forms\Form;
-use App\Models\GuruMapel;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use App\Filament\Imports\KelasImporter;
 use Filament\Tables\Actions\ImportAction;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Imports\GuruMapelImporter;
-use App\Filament\Resources\GuruMapelResource\Pages;
+use App\Filament\Resources\KelasResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\GuruMapelResource\RelationManagers;
+use App\Filament\Resources\KelasResource\RelationManagers;
 
-class GuruMapelResource extends Resource
+class KelasResource extends Resource
 {
-    protected static ?string $model = GuruMapel::class;
+    protected static ?string $model = Kelas::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -25,17 +25,9 @@ class GuruMapelResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('Nip')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('Nama Guru')
+                Forms\Components\TextInput::make('nama_kelas')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('Mapel')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('Kelas')
-                    ->required()
-                    ->columnSpanFull(),
             ]);
     }
 
@@ -43,9 +35,7 @@ class GuruMapelResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('Nip')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('Nama Guru')
+                Tables\Columns\TextColumn::make('nama_kelas')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -69,7 +59,7 @@ class GuruMapelResource extends Resource
             ])
             ->headerActions([
                 ImportAction::make()
-                    ->importer(GuruMapelImporter::class)
+                    ->importer(KelasImporter::class)
             ]);
     }
 
@@ -83,9 +73,9 @@ class GuruMapelResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGuruMapels::route('/'),
-            'create' => Pages\CreateGuruMapel::route('/create'),
-            'edit' => Pages\EditGuruMapel::route('/{record}/edit'),
+            'index' => Pages\ListKelas::route('/'),
+            'create' => Pages\CreateKelas::route('/create'),
+            'edit' => Pages\EditKelas::route('/{record}/edit'),
         ];
     }
 }
