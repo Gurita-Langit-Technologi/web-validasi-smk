@@ -59,20 +59,20 @@ class DatabaseSeeder extends Seeder
         // Seeder untuk tabel tugas
         $mapels = DB::table('mapel')->get();
 
-        foreach ($mapels as $mapel) {
-            for ($i = 1; $i <= $mapel->total_tugas; $i++) {
-                DB::table('tugas')->insert([
-                    'id_siswa' => rand(1, 5),  // Assign a random siswa
-                    'id_mapel' => $mapel->id_mapel,
-                    'nama_tugas' => $mapel->nama_mapel . ' Tugas ' . $i,
-                    'Tanggal_pengumpulan' => now()->addDays(rand(7, 14))->toDateString(),  // Random due date between 7 and 14 days
-                    'keterangan' => 'Tugas nomor ' . $i . ' untuk ' . $mapel->nama_mapel,
-                    'status' => $i % 2 == 0 ? 'Selesai' : 'Belum Selesai',  // Random status
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-        }
+        // foreach ($mapels as $mapel) {
+        //     for ($i = 1; $i <= $mapel->total_tugas; $i++) {
+        //         DB::table('tugas')->insert([
+        //             'id_siswa' => rand(1, 5),  // Assign a random siswa
+        //             'id_mapel' => $mapel->id_mapel,
+        //             'nama_tugas' => $mapel->nama_mapel . ' Tugas ' . $i,
+        //             'Tanggal_pengumpulan' => now()->addDays(rand(7, 14))->toDateString(),  // Random due date between 7 and 14 days
+        //             'keterangan' => 'Tugas nomor ' . $i . ' untuk ' . $mapel->nama_mapel,
+        //             'status' => $i % 2 == 0 ? 'Selesai' : 'Belum Selesai',  // Random status
+        //             'created_at' => now(),
+        //             'updated_at' => now(),
+        //         ]);
+        //     }
+        // }
 
         DB::table('rekap_kelas')->insert([
             ['id_kelas' => 1, 'id_mapel' => 1, 'id_guru' => 1, 'created_at' => now(), 'updated_at' => now()],

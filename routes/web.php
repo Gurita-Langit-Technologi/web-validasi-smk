@@ -26,3 +26,5 @@ Route::get('/rekap-tugas/edit/{id}', [RekapTugasController::class, 'edit'])->nam
 Route::post('/rekap-tugas/update/{id}', [RekapTugasController::class, 'update'])->name('rekap-tugas.update');
 Route::get('/page-kelas', [KelasController::class, 'index'])->name('page-kelas');
 // Route::get('/form-tugas/{id}', [TugasController::class, 'show'])->name('form-tugas');
+Route::post('/generate-tasks-per-class/{id_rekap}', [RekapTugasController::class, 'generateTasksPerClass']);
+Route::post('/generate-all-tasks', [RekapTugasController::class, 'generateAllTasks']);

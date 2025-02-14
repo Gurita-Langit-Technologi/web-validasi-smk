@@ -131,12 +131,45 @@
     function generateTasksPerClass(classId) {
         const taskInputs = document.querySelectorAll(`#tugas-names-container-${classId} input`);
         const tasks = Array.from(taskInputs).map(input => input.value);
-        console.log(`Generated Tasks for Class ${classId}:`, tasks);
-        alert(`Tasks for Class ${classId} Generated Successfully!`);
+
+        fetch(`/generate-tasks-per-class/${classId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                },
+                body: JSON.stringify({
+                    tasks
+                })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error("Error:", error));
     }
 
     function generateAllTasks() {
-        console.log("Generating tasks for all classes...");
-        alert("All tasks generated successfully!");
+        const rekapContainers = document.querySelectorAll('[id^="tugas-names-container-"]');
+        let allTasks = {};
+
+        rekapContainers.forEach(container => {
+            const classId = container.id.split('-').pop();
+            const taskInputs = container.querySelectorAll("input");
+            const tasks = Array.from(taskInputs).map(input => input.value);
+            allTasks[classId] = tasks;
+        });
+
+        fetch("/generate-all-tasks", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                },
+                body: JSON.stringify({
+                    tasks: allTasks
+                })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error("Error:", error));
     }
 </script>

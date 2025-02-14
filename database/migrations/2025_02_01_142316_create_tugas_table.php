@@ -16,9 +16,9 @@ return new class extends Migration
             $table->bigInteger('id_siswa')->reference('id_siswa')->on('siswa');
             $table->bigInteger('id_mapel')->reference('id_mapel')->on('mapel');
             $table->string('nama_tugas');
-            $table->date('tanggal_pengumpulan');
-            $table->string('keterangan');
-            $table->string('status');
+            $table->date('tanggal_pengumpulan')->nullable();
+            $table->string('keterangan')->nullable();
+            $table->string('status')->default('Belum Selesai');
             $table->timestamps();
         });
     }

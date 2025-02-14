@@ -11,6 +11,7 @@ class Tugas extends Model
 
     protected $fillable = ['id_siswa', 'id_mapel', 'nama_tugas', 'tanggal_pengumpulan', 'keterangan'];
 
+
     public function siswa()
     {
         return $this->belongsTo(Siswa::class, 'id_siswa');

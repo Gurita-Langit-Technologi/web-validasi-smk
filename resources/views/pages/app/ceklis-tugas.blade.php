@@ -58,6 +58,19 @@
                                                     <span class="badge bg-danger">Tugas Belum Selesai</span>
                                                 @endif
                                             </td>
+                                            <td>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 42" width="6px"
+                                                    height="42px">
+                                                    <circle cx="3" cy="3" r="3" fill="white"
+                                                        fill-opacity="1.0" />
+                                                    <circle cx="3" cy="15" r="3" fill="white"
+                                                        fill-opacity="0.8333" />
+                                                    <circle cx="3" cy="27" r="3" fill="white"
+                                                        fill-opacity="0.6667" />
+                                                    <circle cx="3" cy="39" r="3" fill="white"
+                                                        fill-opacity="0.5" />
+                                                </svg>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

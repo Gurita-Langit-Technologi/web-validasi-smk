@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\RekapKelas;
 use App\Models\Siswa;
@@ -59,5 +60,57 @@ class RekapTugasController extends Controller
 
         // Kirim data ke view
         return view('pages.app.ceklis-tugas', compact('mapel', 'tugas', 'siswa', 'siswaStatus'));
+    }
+
+    public function generateTasksPerClass(Request $request, $id_rekap)
+    {
+        $rekap = RekapKelas::findOrFail($id_rekap);
+        $mapel = $rekap->mapel;
+        $kelas = $rekap->kelas;
+
+        // Ambil semua siswa dalam kelas yang bersangkutan
+        $siswaList = Siswa::where('kelas', $kelas->nama_kelas)->get();
+
+        // Ambil tugas dari request
+        $tasks = $request->tasks; // Array tugas dari frontend
+
+        foreach ($siswaList as $siswa) {
+            foreach ($tasks as $taskName) {
+                Tugas::create([
+                    'id_siswa' => $siswa->id_siswa,
+                    'id_mapel' => $mapel->id_mapel,
+                    'nama_tugas' => $taskName,
+                    'status' => 'Belum Selesai',
+                ]);
+            }
+        }
+
+        return response()->json(['message' => 'Tugas berhasil dibuat untuk kelas ' . $kelas->nama_kelas], 200);
+    }
+
+    // Generate Tugas Untuk Semua Kelas
+    public function generateAllTasks(Request $request)
+    {
+        $rekapList = RekapKelas::all();
+
+        foreach ($rekapList as $rekap) {
+            $mapel = $rekap->mapel;
+            $kelas = $rekap->kelas;
+            $siswaList = Siswa::where('id_kelas', $kelas->id_kelas)->get();
+            $tasks = $request->tasks[$rekap->id_rekap] ?? []; // Ambil tugas berdasarkan id_rekap
+
+            foreach ($siswaList as $siswa) {
+                foreach ($tasks as $taskName) {
+                    Tugas::create([
+                        'id_siswa' => $siswa->id_siswa,
+                        'id_mapel' => $mapel->id_mapel,
+                        'nama_tugas' => $taskName,
+                        'status' => 'Belum Selesai',
+                    ]);
+                }
+            }
+        }
+
+        return response()->json(['message' => 'Semua tugas berhasil dibuat untuk setiap kelas'], 200);
     }
 }
