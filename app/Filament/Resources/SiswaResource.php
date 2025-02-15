@@ -20,7 +20,7 @@ class SiswaResource extends Resource
 
     protected static ?string $model = Siswa::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $navigationIcon = 'heroicon-c-academic-cap';
 
     public static function form(Form $form): Form
     {

@@ -19,7 +19,7 @@ class MapelResource extends Resource
 {
     protected static ?string $model = Mapel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-check';
+    protected static ?string $navigationIcon = 'heroicon-c-clipboard-document-list';
 
     public static function form(Form $form): Form
     {

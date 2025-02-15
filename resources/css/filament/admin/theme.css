@@ -2,9 +2,9 @@
 
 @config 'tailwind.config.js';
 
-.fi-simple-layout {
-    @apply bg-yellow-100/50;
-}
 .fi-simple-main {
     @apply bg-yellow-100/50;
+}
+.fi-sidebar {
+    @apply bg-gray-50 dark:bg-gray-950 !important;
 }

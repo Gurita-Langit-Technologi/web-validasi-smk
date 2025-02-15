@@ -19,7 +19,7 @@ class GuruMapelResource extends Resource
 {
     protected static ?string $model = GuruMapel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    protected static ?string $navigationIcon = 'heroicon-c-user-circle';
 
     public static function form(Form $form): Form
     {
@@ -46,7 +46,8 @@ class GuruMapelResource extends Resource
                 Tables\Columns\TextColumn::make('Nip')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('Nama Guru')
-                    ->searchable(),
+                    ->searchable()
+                    ->color('primary'),
 
             ])
             ->filters([
