@@ -6,5 +6,5 @@
     @apply bg-yellow-100/50;
 }
 .fi-sidebar {
-    @apply bg-gray-50 dark:bg-gray-950 !important;
+    @apply bg-yellow-200 dark:bg-blue-950 !important;
 }

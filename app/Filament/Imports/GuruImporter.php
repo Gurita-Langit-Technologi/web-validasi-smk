@@ -25,13 +25,13 @@ class GuruImporter extends Importer
 
     public function resolveRecord(): ?Guru
     {
-        // return Guru::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
+        return Guru::query()
+            ->where('nip', $this->data['nip'])
+            ->first();
 
         return new Guru();
     }
+
 
     public static function getCompletedNotificationBody(Import $import): string
     {

@@ -40,10 +40,9 @@ class MapelImporter extends Importer
 
     public function resolveRecord(): ?Mapel
     {
-        // return Mapel::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
+        return Mapel::query()
+            ->where('nama_mapel', $this->data['nama_mapel'])
+            ->first();
 
         return new Mapel();
     }
