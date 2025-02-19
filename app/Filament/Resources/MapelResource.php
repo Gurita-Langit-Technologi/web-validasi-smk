@@ -19,7 +19,7 @@ class MapelResource extends Resource
 {
     protected static ?string $model = Mapel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-c-clipboard-document-list';
 
     public static function form(Form $form): Form
     {
@@ -62,23 +62,14 @@ class MapelResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_tanggungan')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('deskripsi')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

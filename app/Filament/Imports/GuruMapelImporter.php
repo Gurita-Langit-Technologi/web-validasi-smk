@@ -30,11 +30,9 @@ class GuruMapelImporter extends Importer
 
     public function resolveRecord(): ?GuruMapel
     {
-        // return GuruMapel::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
+        return GuruMapel::query()
+            ->where('nip', $this->data['nip'])
+            ->first();
         return new GuruMapel();
     }
 

@@ -22,10 +22,9 @@ class KelasImporter extends Importer
 
     public function resolveRecord(): ?Kelas
     {
-        // return Kelas::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
+        return Kelas::query()
+            ->where('nama_kelas', $this->data['nama_kelas'])
+            ->first();
 
         return new Kelas();
     }

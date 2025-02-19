@@ -31,11 +31,9 @@ class SiswaImporter extends Importer
 
     public function resolveRecord(): ?Siswa
     {
-        // return Siswa::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
+        return Siswa::query()
+            ->where('nisn', $this->data['nisn'])
+            ->first();
         return new Siswa();
     }
 
