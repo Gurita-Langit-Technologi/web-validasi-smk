@@ -1,0 +1,25 @@
+name: Deploy To Server
+
+# Trigger the workflow on push and
+on:
+  push:
+    branches:
+      - master
+
+# Authenticate to the the server via ssh
+# and run our deployment script
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Execute commands via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_DEPLOY_KEY }}
+          script: |
+            echo "Deployment started ..."

@@ -1,0 +1,16 @@
+model :
+RekapTugas:
+    id_rekap_tugas: Integer:11 increment
+    kode_guru: String:4
+    nama_guru: String:80
+    kode_mapel: String:4
+    nama_mapel: String:80
+    nis: String:12
+    nama_siswa: String:10
+    kode_kelas: String:10
+    nama_kelas: String:10
+    total_tugas : int:30
+    kurang_tugas : int:30
+    tugas_selesai : int:30
+
+seeders: Rekap_Tugas

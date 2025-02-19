@@ -9,7 +9,7 @@ class Siswa extends Model
     protected $table = 'siswa';
     protected $primaryKey = 'id_siswa';
 
-    protected $fillable = ['nisn', 'nama_siswa', 'kelas', 'jurusan'];
+    protected $fillable = ['id_kelas', 'nisn', 'nama_siswa', 'kode_kelas', 'nama_kelas', 'jurusan'];
 
     public function tugas()
     {

@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'password' => Hash::make('12345678')
         ]);
 
         DB::table('guru')->insert([
@@ -31,29 +33,126 @@ class DatabaseSeeder extends Seeder
 
         // Seeder untuk tabel kelas
         DB::table('kelas')->insert([
-            ['nama_kelas' => 'X IPA 1', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_kelas' => 'X IPA 2', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_kelas' => 'X IPS 1', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_kelas' => 'X IPS 2', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_kelas' => 'XI IPA 1', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPA1', 'nama_kelas' => 'X IPA 1', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPA2', 'nama_kelas' => 'X IPA 2', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPS1', 'nama_kelas' => 'X IPS 1', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPS2', 'nama_kelas' => 'X IPS 2', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPA1', 'nama_kelas' => 'XI IPA 1', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPA2', 'nama_kelas' => 'XI IPA 2', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPS1', 'nama_kelas' => 'XI IPS 1', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Seeder untuk tabel siswa
         DB::table('siswa')->insert([
-            ['nisn' => '0011223344', 'nama_siswa' => 'Ahmad Ridwan', 'kelas' => 'X IPA 1', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['nisn' => '0055667788', 'nama_siswa' => 'Siti Rahma', 'kelas' => 'X IPA 2', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['nisn' => '0099887766', 'nama_siswa' => 'Joko Prasetyo', 'kelas' => 'X IPS 1', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['nisn' => '0022334455', 'nama_siswa' => 'Nina Febrianti', 'kelas' => 'X IPS 2', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['nisn' => '0044556677', 'nama_siswa' => 'Bambang Sugiarto', 'kelas' => 'XI IPA 1', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            [
+                'id_kelas' => 1,
+                'nisn' => '123456789012',
+                'nama_siswa' => 'Andi Saputra',
+                'kode_kelas' => 'XIPA1',
+                'nama_kelas' => 'X IPA 1',
+                'jurusan' => 'IPA',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_kelas' => 2,
+                'nisn' => '234567890123',
+                'nama_siswa' => 'Budi Santoso',
+                'kode_kelas' => 'XIPA2',
+                'nama_kelas' => 'X IPA 2',
+                'jurusan' => 'IPA',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_kelas' => 3,
+                'nisn' => '345678901234',
+                'nama_siswa' => 'Citra Ayu',
+                'kode_kelas' => 'XIPS1',
+                'nama_kelas' => 'X IPS 1',
+                'jurusan' => 'IPS',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_kelas' => 4,
+                'nisn' => '456789012345',
+                'nama_siswa' => 'Dedi Kusuma',
+                'kode_kelas' => 'XIPS2',
+                'nama_kelas' => 'X IPS 2',
+                'jurusan' => 'IPS',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_kelas' => 5,
+                'nisn' => '567890123456',
+                'nama_siswa' => 'Eka Putri',
+                'kode_kelas' => 'XIIPA1',
+                'nama_kelas' => 'XI IPA 1',
+                'jurusan' => 'IPA',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_kelas' => 6,
+                'nisn' => '678901234567',
+                'nama_siswa' => 'Fajar Hidayat',
+                'kode_kelas' => 'XIIPA2',
+                'nama_kelas' => 'XI IPA 2',
+                'jurusan' => 'IPA',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_kelas' => 7,
+                'nisn' => '789012345678',
+                'nama_siswa' => 'Gina Larasati',
+                'kode_kelas' => 'XIIPS1',
+                'nama_kelas' => 'XI IPS 1',
+                'jurusan' => 'IPS',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_kelas' => 1,
+                'nisn' => '890123456789',
+                'nama_siswa' => 'Hadi Pratama',
+                'kode_kelas' => 'XIPA1',
+                'nama_kelas' => 'X IPA 1',
+                'jurusan' => 'IPA',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_kelas' => 2,
+                'nisn' => '901234567890',
+                'nama_siswa' => 'Indah Safitri',
+                'kode_kelas' => 'XIPA2',
+                'nama_kelas' => 'X IPA 2',
+                'jurusan' => 'IPA',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_kelas' => 3,
+                'nisn' => '012345678901',
+                'nama_siswa' => 'Joko Wahyu',
+                'kode_kelas' => 'XIPS1',
+                'nama_kelas' => 'X IPS 1',
+                'jurusan' => 'IPS',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         // Seeder untuk tabel mapel
         DB::table('mapel')->insert([
-            ['nama_mapel' => 'Matematika', 'tema_tugas' => 'Aljabar', 'total_tugas' => 5, 'jumlah_selesai' => 3, 'jumlah_tanggungan' => 2, 'deskripsi' => 'Belajar dasar aljabar', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_mapel' => 'Fisika', 'tema_tugas' => 'Gerak Lurus', 'total_tugas' => 4, 'jumlah_selesai' => 2, 'jumlah_tanggungan' => 2, 'deskripsi' => 'Hukum Newton', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_mapel' => 'Kimia', 'tema_tugas' => 'Reaksi Kimia', 'total_tugas' => 6, 'jumlah_selesai' => 4, 'jumlah_tanggungan' => 2, 'deskripsi' => 'Analisis senyawa', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_mapel' => 'Biologi', 'tema_tugas' => 'Genetika', 'total_tugas' => 3, 'jumlah_selesai' => 2, 'jumlah_tanggungan' => 1, 'deskripsi' => 'Struktur DNA', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_mapel' => 'Sejarah', 'tema_tugas' => 'Peradaban Dunia', 'total_tugas' => 5, 'jumlah_selesai' => 3, 'jumlah_tanggungan' => 2, 'deskripsi' => 'Perkembangan sejarah dunia', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_mapel' => 'Matematika', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_mapel' => 'Fisika', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_mapel' => 'Kimia',   'created_at' => now(), 'updated_at' => now()],
+            ['nama_mapel' => 'Biologi',   'created_at' => now(), 'updated_at' => now()],
+            ['nama_mapel' => 'Sejarah',    'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Seeder untuk tabel tugas
@@ -75,11 +174,11 @@ class DatabaseSeeder extends Seeder
         // }
 
         DB::table('rekap_kelas')->insert([
-            ['id_kelas' => 1, 'id_mapel' => 1, 'id_guru' => 1, 'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 2, 'id_mapel' => 2, 'id_guru' => 2, 'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 3, 'id_mapel' => 3, 'id_guru' => 3, 'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 4, 'id_mapel' => 4, 'id_guru' => 4, 'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 5, 'id_mapel' => 5, 'id_guru' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['id_kelas' => 1, 'id_mapel' => 1, 'id_guru' => 1, 'total_tugas' => 5, 'jumlah_selesai' => 3, 'jumlah_tanggungan' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['id_kelas' => 2, 'id_mapel' => 2, 'id_guru' => 2, 'total_tugas' => 4, 'jumlah_selesai' => 2, 'jumlah_tanggungan' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['id_kelas' => 3, 'id_mapel' => 3, 'id_guru' => 3, 'total_tugas' => 6, 'jumlah_selesai' => 4, 'jumlah_tanggungan' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['id_kelas' => 4, 'id_mapel' => 4, 'id_guru' => 4, 'total_tugas' => 3, 'jumlah_selesai' => 2, 'jumlah_tanggungan' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['id_kelas' => 5, 'id_mapel' => 5, 'id_guru' => 5, 'total_tugas' => 5, 'jumlah_selesai' => 3, 'jumlah_tanggungan' => 2, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

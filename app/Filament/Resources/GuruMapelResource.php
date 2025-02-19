@@ -2,16 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\GuruMapelResource\Pages;
-use App\Filament\Resources\GuruMapelResource\RelationManagers;
-use App\Models\GuruMapel;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\GuruMapel;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Actions\ImportAction;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Imports\GuruMapelImporter;
+use App\Filament\Resources\GuruMapelResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\GuruMapelResource\RelationManagers;
 
 class GuruMapelResource extends Resource
 {
@@ -23,7 +25,17 @@ class GuruMapelResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('Nip')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('Nama Guru')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('Mapel')
+                    ->required()
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('Kelas')
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -32,17 +44,17 @@ class GuruMapelResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('Nip')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('Nama Guru')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('Mapel')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('Kelas')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -54,6 +66,10 @@ class GuruMapelResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(GuruMapelImporter::class)
             ]);
     }
 

@@ -9,7 +9,7 @@ class RekapKelas extends Model
     protected $table = 'rekap_kelas';
     protected $primaryKey = 'id_rekap';
 
-    protected $fillable = ['id_kelas', 'id_mapel', 'id_guru'];
+    protected $fillable = ['id_kelas', 'id_mapel', 'id_guru', 'total_tugas', 'jumlah_selesai', 'jumlah_tanggungan',];
 
     public function guru()
     {
@@ -22,8 +22,7 @@ class RekapKelas extends Model
     }
 
     public function mapel()
-{
-    return $this->belongsTo(Mapel::class, 'id_mapel');
-}
-
+    {
+        return $this->belongsTo(Mapel::class, 'id_mapel');
+    }
 }

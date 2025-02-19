@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('siswa', function (Blueprint $table) {
             $table->id('id_siswa');
-            $table->string('nisn');
+            $table->unsignedBigInteger('id_kelas');
+            $table->string('nisn', 12);
             $table->string('nama_siswa');
-            $table->string('kelas');
+            $table->string('kode_kelas', 10);
+            $table->string('nama_kelas', 10);
             $table->string('jurusan');
             $table->timestamps();
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
         });
     }
 

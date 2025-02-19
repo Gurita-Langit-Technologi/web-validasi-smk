@@ -13,12 +13,7 @@ return new class extends Migration
     {
         Schema::create('mapel', function (Blueprint $table) {
             $table->id('id_mapel');
-            $table->string('nama_mapel');
-            $table->string('tema_tugas');
-            $table->integer('total_tugas');
-            $table->integer('jumlah_selesai');
-            $table->integer('jumlah_tanggungan');
-            $table->string('deskripsi');
+            $table->string('nama_mapel', 80);
             $table->timestamps();
         });
     }
