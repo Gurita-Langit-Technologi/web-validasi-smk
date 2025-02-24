@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_guru');
             $table->string('nip');
             $table->string('nama_guru', 80);
+            $table->string('password')->nullable();
             $table->timestamps();
         });
     }

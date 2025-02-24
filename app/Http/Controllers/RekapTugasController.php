@@ -25,7 +25,7 @@ class RekapTugasController extends Controller
         ]);
 
         $rekap = RekapKelas::findOrFail($id);
-        $rekap->mapel->update([
+        $rekap->update([
             'total_tugas' => $request->total_tugas,
             'jumlah_selesai' => $request->jumlah_selesai,
             'jumlah_tanggungan' => $request->total_tugas - $request->jumlah_selesai,
