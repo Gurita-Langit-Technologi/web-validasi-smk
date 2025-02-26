@@ -13,7 +13,7 @@ class Siswa extends Model
 
     public function tugas()
     {
-        return $this->hasMany(Tugas::class, 'id_siswa');
+        return $this->hasMany(RekapPengumpulan::class, 'id_siswa');
     }
 
     public function kelas()

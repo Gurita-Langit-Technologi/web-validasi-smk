@@ -6,7 +6,7 @@ use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\RekapKelas;
 use App\Models\Siswa;
-use App\Models\Tugas;
+use App\Models\RekapPengumpulan;
 use Illuminate\Http\Request;
 
 class RekapTugasController extends Controller
@@ -37,14 +37,14 @@ class RekapTugasController extends Controller
     public function showDetailTugas($id_mapel)
     {
         $mapel = Mapel::find($id_mapel);
-        $tugas = Tugas::where('id_mapel', $id_mapel)->get();
+        $tugas = RekapPengumpulan::where('id_mapel', $id_mapel)->get();
         $siswa = Siswa::all();
 
         $siswaStatus = [];
 
         foreach ($siswa as $siswas) {
-            $completedTasks = Tugas::where('id_siswa', $siswas->id_siswa)->where('status', 'Selesai')->count();
-            $totalTasks = Tugas::where('id_siswa', $siswas->id_siswa)->count();
+            $completedTasks = RekapPengumpulan::where('id_siswa', $siswas->id_siswa)->where('status', 'Selesai')->count();
+            $totalTasks = RekapPengumpulan::where('id_siswa', $siswas->id_siswa)->count();
             $remainingTasks = $totalTasks - $completedTasks;
 
             if ($completedTasks == $totalTasks) {
@@ -76,7 +76,7 @@ class RekapTugasController extends Controller
 
         foreach ($siswaList as $siswa) {
             foreach ($tasks as $taskName) {
-                Tugas::create([
+                RekapPengumpulan::create([
                     'id_siswa' => $siswa->id_siswa,
                     'id_mapel' => $mapel->id_mapel,
                     'nama_tugas' => $taskName,
@@ -101,7 +101,7 @@ class RekapTugasController extends Controller
 
             foreach ($siswaList as $siswa) {
                 foreach ($tasks as $taskName) {
-                    Tugas::create([
+                    RekapPengumpulan::create([
                         'id_siswa' => $siswa->id_siswa,
                         'id_mapel' => $mapel->id_mapel,
                         'nama_tugas' => $taskName,

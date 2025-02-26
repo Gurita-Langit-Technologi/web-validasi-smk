@@ -28,6 +28,11 @@ Route::get('/page-kelas', function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgot-password-form');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('forgot-password');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('reset-password-form');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
+
 
 Route::get('/form-tugas/{id_mapel}', [RekapTugasController::class, 'showDetailTugas'])->name('detail-tugas');
 Route::get('/page-tugas', [RekapTugasController::class, 'index'])->name('page-tugas');

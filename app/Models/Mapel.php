@@ -11,13 +11,14 @@ class Mapel extends Model
 
     protected $fillable = ['nama_mapel'];
 
-    public function rekapKelas()
+    public function tugasMengajar()
     {
-        return $this->hasMany(RekapKelas::class, 'id_mapel');
+        return $this->hasMany(TugasMengajar::class, 'id_mapel', 'id_mapel');
     }
 
-    public function tugas()
+    // Relasi dengan rekap_pengumpulan (1 Mapel bisa memiliki banyak rekap tugas)
+    public function rekapPengumpulan()
     {
-        return $this->hasMany(Tugas::class, 'id_mapel');
+        return $this->hasMany(RekapPengumpulan::class, 'id_mapel', 'id_mapel');
     }
 }

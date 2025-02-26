@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('guru', function (Blueprint $table) {
             $table->id('id_guru');
-            $table->string('nip');
+            $table->string('kode_guru')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('nama_guru', 80);
             $table->string('password')->nullable();
             $table->timestamps();

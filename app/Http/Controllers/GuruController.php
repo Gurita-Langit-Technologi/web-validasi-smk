@@ -17,6 +17,7 @@ class GuruController extends Controller
     {
         $request->validate([
             'nip' => 'required|exists:guru,nip',
+            'email' => 'required',
             'password' => 'required|min:6|confirmed',
         ]);
 
@@ -25,6 +26,7 @@ class GuruController extends Controller
             return back()->withErrors(['nip' => 'NIP tidak ditemukan']);
         }
 
+        $guru->email = $request->email;
         $guru->password = Hash::make($request->password);
         $guru->save();
 

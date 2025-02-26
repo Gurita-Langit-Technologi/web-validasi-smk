@@ -13,7 +13,7 @@ class Guru extends Authenticatable
     protected $table = 'guru';
     protected $primaryKey = 'id_guru';
 
-    protected $fillable = ['nip', 'nama_guru', 'password'];
+    protected $fillable = ['kode_guru', 'nama_guru', 'email', 'password'];
 
     protected $hidden = ['password'];
 
@@ -25,5 +25,10 @@ class Guru extends Authenticatable
     public function rekapKelas()
     {
         return $this->hasMany(RekapKelas::class, 'id_guru');
+    }
+
+    public function tugasMengajar()
+    {
+        return $this->hasMany(TugasMengajar::class, 'id_guru', 'id_guru');
     }
 }
