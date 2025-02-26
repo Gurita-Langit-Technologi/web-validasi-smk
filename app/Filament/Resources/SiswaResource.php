@@ -2,39 +2,42 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Siswa;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use App\Filament\Imports\SiswaImporter;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SiswaResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\SiswaResource\RelationManagers;
+use App\Models\Siswa;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Support\Enums\FontFamily;
+use Filament\Support\Enums\FontWeight;
+use App\Filament\Imports\SiswaImporter;
 use Filament\Tables\Actions\ImportAction;
 
 class SiswaResource extends Resource
 {
-
     protected static ?string $model = Siswa::class;
 
-    protected static ?string $navigationIcon = 'heroicon-c-academic-cap';
+    protected static ?string $navigationIcon = 'heroicon-s-user-group';
+    protected static ?string $navigationLabel = 'Siswa'; //label tanpa s
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+
                 Forms\Components\TextInput::make('nisn')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(12),
                 Forms\Components\TextInput::make('nama_siswa')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('kelas')
+                Forms\Components\TextInput::make('nama_kelas')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(10),
                 Forms\Components\TextInput::make('jurusan')
                     ->required()
                     ->maxLength(255),
@@ -45,13 +48,24 @@ class SiswaResource extends Resource
     {
         return $table
             ->columns([
+
                 Tables\Columns\TextColumn::make('nisn')
+                    ->color('text1')
+                    ->icon('heroicon-o-chevron-double-right')
+                    ->fontFamily(FontFamily::Mono)
+                    ->copyable()
+                    ->copyMessage('Nisn copied')
+                    ->copyMessageDuration(1500)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_siswa')
+                    ->color('text2')
+                    ->weight(FontWeight::Medium)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('kelas')
+                Tables\Columns\TextColumn::make('nama_kelas')
+                    ->color('text3')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('jurusan')
+                    ->color('text4')
                     ->searchable(),
 
             ])
@@ -60,6 +74,7 @@ class SiswaResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -69,6 +84,8 @@ class SiswaResource extends Resource
             ->headerActions([
                 ImportAction::make()
                     ->importer(SiswaImporter::class)
+
+
             ]);
     }
 
@@ -78,6 +95,14 @@ class SiswaResource extends Resource
             //
         ];
     }
+
+    //menghilangkan s pada navigasi
+    public static function getPluralLabel(): ?string
+    {
+        return 'Siswa';
+    }
+
+
 
     public static function getPages(): array
     {

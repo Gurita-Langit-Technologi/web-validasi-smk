@@ -4,7 +4,7 @@ return [
 
     'single' => [
 
-        'label' => 'Edit',
+        'label' => 'Ubah',
 
         'modal' => [
 
@@ -13,7 +13,7 @@ return [
             'actions' => [
 
                 'save' => [
-                    'label' => 'Save changes',
+                    'label' => 'Save Changes',
                 ],
 
             ],

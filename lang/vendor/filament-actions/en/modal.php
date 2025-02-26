@@ -7,15 +7,15 @@ return [
     'actions' => [
 
         'cancel' => [
-            'label' => 'Cancel',
+            'label' => 'Batal',
         ],
 
         'confirm' => [
-            'label' => 'Confirm',
+            'label' => 'Setuju',
         ],
 
         'submit' => [
-            'label' => 'Submit',
+            'label' => 'Kirim',
         ],
 
     ],
