@@ -43,17 +43,17 @@
                                         <td style="vertical-align: top; padding: 20px 10px; align-items: center;">
                                             {{ $rekap->mapel->nama_mapel }}</td>
                                         <td style="display: flex; align-items: center; ">
-                                            <input id="total-tugas-{{ $rekap->id_rekap }}" type="number"
+                                            <input id="total-tugas-{{ $rekap->id_rekap_kelas }}" type="number"
                                                 class="form-control form-control-sm text-center"
-                                                value="{{ $rekap->mapel->total_tugas }}" min="1"
-                                                oninput="updateTaskNames('{{ $rekap->id_rekap }}')">
+                                                value="{{ $rekap->total_tugas }}" min="1"
+                                                oninput="updateTaskNames('{{ $rekap->id_rekap_kelas }}')">
                                         </td>
                                         <td>
-                                            <div id="tugas-names-container-{{ $rekap->id_rekap }}">
-                                                @foreach ($rekap->mapel->tugas as $index => $tugas)
+                                            <div id="tugas-names-container-{{ $rekap->id_rekap_kelas }}">
+                                                @foreach ($rekap->tugas as $index => $tugas)
                                                     <input type="text" class="form-control form-control-sm mb-2"
                                                         value="{{ $tugas->nama_tugas }}"
-                                                        id="task-{{ $rekap->id_rekap }}-{{ $index }}">
+                                                        id="task-{{ $rekap->id_rekap_kelas }}-{{ $index }}">
                                                 @endforeach
                                             </div>
                                         </td>
@@ -62,7 +62,7 @@
                             </table>
                         </div>
                         <button class="btn btn-primary mt-2"
-                            onclick="generateTasksPerClass('{{ $rekap->id_rekap }}')">Add</button>
+                            onclick="generateTasksPerClass('{{ $rekap->id_rekap_kelas }}')">Add</button>
                     </div>
                 </div>
             </div>
@@ -84,11 +84,11 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <input id="tugas-selesai-{{ $rekap->id_rekap }}" type="number"
+                                            <input id="tugas-selesai-{{ $rekap->id_rekap_kelas }}" type="number"
                                                 class="form-control form-control-sm text-center"
-                                                value="{{ $rekap->mapel->jumlah_selesai }}" min="0">
+                                                value="{{ $rekap->jumlah_selesai }}" min="0">
                                         </td>
-                                        <td>{{ $rekap->mapel->jumlah_tanggungan }}</td>
+                                        <td>{{ $rekap->jumlah_tanggungan }}</td>
                                     </tr>
                                 </tbody>
                             </table>

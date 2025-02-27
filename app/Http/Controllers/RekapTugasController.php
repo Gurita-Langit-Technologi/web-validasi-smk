@@ -62,6 +62,25 @@ class RekapTugasController extends Controller
         return view('pages.app.ceklis-tugas', compact('mapel', 'tugas', 'siswa', 'siswaStatus'));
     }
 
+    public function updateStatusTugas(Request $request)
+    {
+        $tugas = RekapPengumpulan::where('id_tugas', $request->tugas_id)
+            ->where('id_siswa', $request->siswa_id)
+            ->first();
+
+        if ($tugas) {
+            $tugas->status = $request->status;
+            $tugas->tanggal_pengumpulan = $request->tanggal_pengumpulan;
+            $tugas->keterangan = $request->keterangan;
+            $tugas->save();
+
+            return response()->json(['message' => 'Status berhasil diperbarui']);
+        }
+
+        return response()->json(['message' => 'Tugas tidak ditemukan'], 404);
+    }
+
+
     public function generateTasksPerClass(Request $request, $id_rekap)
     {
         $rekap = RekapKelas::findOrFail($id_rekap);
@@ -69,7 +88,7 @@ class RekapTugasController extends Controller
         $kelas = $rekap->kelas;
 
         // Ambil semua siswa dalam kelas yang bersangkutan
-        $siswaList = Siswa::where('kelas', $kelas->nama_kelas)->get();
+        $siswaList = Siswa::where('nama_kelas', $kelas->nama_kelas)->get();
 
         // Ambil tugas dari request
         $tasks = $request->tasks; // Array tugas dari frontend

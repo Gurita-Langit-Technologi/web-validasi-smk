@@ -7,7 +7,6 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item" aria-current="page">Page Tugas</li>
             <li class="breadcrumb-item active" aria-current="page">Detail Tugas</li>
         </ol>
     </nav>
@@ -19,7 +18,8 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Detail Tugas untuk Mata Pelajaran: {{ $mapel->nama_mapel }}</h6>
-                    <form action="{{ url('/save-detail') }}" method="POST">
+
+                    <form id="update-tugas-form">
                         @csrf
                         <div class="table-responsive">
                             <table class="table text-center">
@@ -30,80 +30,108 @@
                                             <th>{{ $task->nama_tugas }}</th>
                                         @endforeach
                                         <th>Status</th>
+                                        <th>Indikator</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($siswa as $student)
-                                        <tr>
+                                        @php
+                                            $totalTugas = count($tugas);
+                                            $selesai = 0;
+                                        @endphp
+                                        <tr id="row-{{ $student->id_siswa }}">
                                             <td>{{ $student->nama_siswa }}</td>
                                             @foreach ($tugas as $task)
+                                                @php
+                                                    if ($task->status == 'Selesai') {
+                                                        $selesai++;
+                                                    }
+                                                @endphp
                                                 <td>
-                                                    <input type="checkbox" name="tugas_{{ $task->id_tugas }}[]"
-                                                        value="1" {{ $task->status == 'Selesai' ? 'checked' : '' }}>
+                                                    <input type="checkbox" class="tugas-checkbox"
+                                                        data-siswa-id="{{ $student->id_siswa }}"
+                                                        data-tugas-id="{{ $task->id_tugas }}"
+                                                        {{ $task->status == 'Selesai' ? 'checked' : '' }}>
                                                     <div class="mt-2">
-                                                        <input type="date" name="tanggal_{{ $task->id_tugas }}[]"
-                                                            class="form-control datepicker"
+                                                        <input type="date" class="form-control tanggal-pengumpulan"
+                                                            data-siswa-id="{{ $student->id_siswa }}"
+                                                            data-tugas-id="{{ $task->id_tugas }}"
                                                             value="{{ $task->tanggal_pengumpulan }}">
-                                                        <textarea name="keterangan_{{ $task->id_tugas }}[]" class="form-control mt-2" placeholder="Keterangan">{{ $task->keterangan }}</textarea>
+                                                        <textarea class="form-control mt-2 keterangan" data-siswa-id="{{ $student->id_siswa }}"
+                                                            data-tugas-id="{{ $task->id_tugas }}" placeholder="Keterangan">{{ $task->keterangan }}</textarea>
                                                     </div>
                                                 </td>
                                             @endforeach
+                                            <td id="status-{{ $student->id_siswa }}">
+                                                {{ $selesai }}/{{ $totalTugas }} Tugas</td>
                                             <td>
-                                                <!-- Menampilkan Badge Status -->
-                                                @if ($siswaStatus[$student->id_siswa] == 'success')
-                                                    <span class="badge bg-success">Selesai Semua</span>
-                                                @elseif($siswaStatus[$student->id_siswa] == 'warning')
-                                                    <span class="badge bg-warning">Tugas Kurang 1</span>
-                                                @else
-                                                    <span class="badge bg-danger">Tugas Belum Selesai</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 42" width="6px"
-                                                    height="42px">
-                                                    <circle cx="3" cy="3" r="3" fill="white"
-                                                        fill-opacity="1.0" />
-                                                    <circle cx="3" cy="15" r="3" fill="white"
-                                                        fill-opacity="0.8333" />
-                                                    <circle cx="3" cy="27" r="3" fill="white"
-                                                        fill-opacity="0.6667" />
-                                                    <circle cx="3" cy="39" r="3" fill="white"
-                                                        fill-opacity="0.5" />
-                                                </svg>
+                                                <div id="indikator-{{ $student->id_siswa }}"
+                                                    class="rounded-circle
+                                                    {{ $selesai == $totalTugas ? 'bg-success' : ($totalTugas - $selesai == 1 ? 'bg-warning' : 'bg-danger') }}"
+                                                    style="width: 20px; height: 20px;">
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
-                        <div class="mt-3">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('page-tugas') }}" class="btn btn-secondary">Kembali</a>
-                            <button type="submit" class="btn btn-outline-success btn-icon-text ">
-                                <i class="btn-icon-prepend" data-feather="download"></i>
-                                Import
-                            </button>
-                            <button type="submit" class="btn btn-outline-primary btn-icon-text ">
-                                <i class="btn-icon-prepend" data-feather="printer"></i>
-                                Print
-                            </button>
-                        </div>
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
 @endsection
 
-
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $('.datepicker').datepicker({
-                format: 'dd-mm-yyyy',
-                autoclose: true,
-                todayHighlight: true
+            $('.tugas-checkbox, .tanggal-pengumpulan, .keterangan').on('change', function() {
+                let siswaId = $(this).data('siswa-id');
+                let tugasId = $(this).data('tugas-id');
+                let status = $(`.tugas-checkbox[data-tugas-id="${tugasId}"][data-siswa-id="${siswaId}"]`)
+                    .is(':checked') ? 'Selesai' : 'Belum Selesai';
+                let tanggal = $(
+                        `.tanggal-pengumpulan[data-tugas-id="${tugasId}"][data-siswa-id="${siswaId}"]`)
+                    .val();
+                let keterangan = $(`.keterangan[data-tugas-id="${tugasId}"][data-siswa-id="${siswaId}"]`)
+                    .val();
+
+                $.ajax({
+                    url: "{{ url('/update-status-tugas') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        siswa_id: siswaId,
+                        tugas_id: tugasId,
+                        status: status,
+                        tanggal_pengumpulan: tanggal,
+                        keterangan: keterangan
+                    },
+                    success: function(response) {
+                        updateStatusUI(siswaId);
+                    }
+                });
             });
+
+            function updateStatusUI(siswaId) {
+                let totalTugas = $(`#row-${siswaId} .tugas-checkbox`).length;
+                let selesai = $(`#row-${siswaId} .tugas-checkbox:checked`).length;
+
+                $(`#status-${siswaId}`).text(`${selesai}/${totalTugas} Tugas`);
+
+                let indikator = $(`#indikator-${siswaId}`);
+                indikator.removeClass('bg-success bg-warning bg-danger');
+
+                if (selesai == totalTugas) {
+                    indikator.addClass('bg-success');
+                } else if (totalTugas - selesai == 1) {
+                    indikator.addClass('bg-warning');
+                } else {
+                    indikator.addClass('bg-danger');
+                }
+            }
         });
     </script>
 @endsection

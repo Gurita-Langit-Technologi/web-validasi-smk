@@ -16,14 +16,14 @@ class GuruController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nip' => 'required|exists:guru,nip',
+            'kode_guru' => 'required|exists:guru,kode_guru',
             'email' => 'required',
             'password' => 'required|min:6|confirmed',
         ]);
 
-        $guru = Guru::where('nip', $request->nip)->first();
+        $guru = Guru::where('kode_guru', $request->kode_guru)->first();
         if (!$guru) {
-            return back()->withErrors(['nip' => 'NIP tidak ditemukan']);
+            return back()->withErrors(['kode guru' => 'kode guru tidak ditemukan']);
         }
 
         $guru->email = $request->email;

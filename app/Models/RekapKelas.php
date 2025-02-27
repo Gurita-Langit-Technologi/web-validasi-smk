@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class RekapKelas extends Model
 {
     protected $table = 'rekap_kelas';
-    protected $primaryKey = 'id_rekap';
+    protected $primaryKey = 'id_rekap_kelas';
 
     protected $fillable = ['id_kelas', 'id_mapel', 'id_guru', 'total_tugas', 'jumlah_selesai', 'jumlah_tanggungan',];
 
@@ -24,5 +24,10 @@ class RekapKelas extends Model
     public function mapel()
     {
         return $this->belongsTo(Mapel::class, 'id_mapel');
+    }
+
+    public function tugas()
+    {
+        return $this->hasMany(RekapPengumpulan::class, 'id_rekap', 'id_rekap');
     }
 }

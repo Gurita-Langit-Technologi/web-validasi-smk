@@ -42,3 +42,4 @@ Route::get('/page-kelas', [KelasController::class, 'index'])->name('page-kelas')
 // Route::get('/form-tugas/{id}', [TugasController::class, 'show'])->name('form-tugas');
 Route::post('/generate-tasks-per-class/{id_rekap}', [RekapTugasController::class, 'generateTasksPerClass']);
 Route::post('/generate-all-tasks', [RekapTugasController::class, 'generateAllTasks']);
+Route::post('/update-status-tugas', [RekapTugasController::class, 'updateStatusTugas']);

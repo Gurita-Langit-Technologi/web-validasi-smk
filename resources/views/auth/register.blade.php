@@ -21,10 +21,10 @@
                     <div class="col-md-8 col-xl-6 mx-auto">
                         <div class="card">
                             <div class="row">
-                                <div class="col-md-4 pr-md-0">
+                                <div class="col">
                                     <div class="auth-left-wrapper"></div>
                                 </div>
-                                <div class="col-md-8 pl-md-0">
+                                <div class="col-md-12 pl-md-0">
                                     <div class="auth-form-wrapper px-4 py-5">
                                         <a href="#" class="noble-ui-logo d-block mb-2">Noble<span>UI</span></a>
                                         <h5 class="text-muted font-weight-normal mb-4">
@@ -54,10 +54,10 @@
                                             @csrf
 
                                             <div class="form-group">
-                                                <label for="nip">NIP</label>
-                                                <input type="text" class="form-control" id="nip" name="nip"
-                                                    value="{{ old('nip') }}" required
-                                                    placeholder="Masukkan NIP Anda">
+                                                <label for="kode_guru">Kode guru</label>
+                                                <input type="text" class="form-control" id="kode_guru"
+                                                    name="kode_guru" value="{{ old('kode_guru') }}" required
+                                                    placeholder="Masukkan kode guru Anda">
                                             </div>
                                             <div class="form-group">
                                                 <label for="email">Email</label>
