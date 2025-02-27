@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Support\Enums\FontFamily;
 use App\Filament\Imports\GuruImporter;
 use Filament\Tables\Actions\ImportAction;
+use Filament\Forms\Components\TextInput;
+use Closure;
+
 
 class GuruResource extends Resource
 {
@@ -29,13 +32,21 @@ class GuruResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('kode_guru')
+                    ->label('Kode Guru')
                     ->required()
+                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
+                    ->suffixIcon('heroicon-o-bookmark-square')
+                    ->suffixIconColor('success')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nama_guru')
+                    ->label('Nama Guru')
                     ->required()
+                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->maxLength(80),
                 Forms\Components\TextInput::make('email')
                     ->email()
+                    ->suffixIcon('heroicon-o-envelope')
+                    ->suffixIconColor('success')
                     ->maxLength(255),
 
             ]);
@@ -46,20 +57,27 @@ class GuruResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('kode_guru')
+                    ->label('Kode Guru')
+                    ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text1')
+
                     ->icon('heroicon-o-bookmark-square')
                     ->fontFamily(FontFamily::Mono)
                     ->copyable()
                     ->copyMessage('Nisn copied')
                     ->copyMessageDuration(1500)
+
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nama_guru')
+                    ->label('Nama Guru')
+                    ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
+                    ->color('text2')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->icon('heroicon-o-envelope')
                     ->color('text3')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nama_guru')
-                    ->color('text2')
-                    ->searchable(),
+
 
             ])
             ->filters([

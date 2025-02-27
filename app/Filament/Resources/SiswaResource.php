@@ -32,14 +32,39 @@ class SiswaResource extends Resource
             ->schema([
                 Select::make('id_kelas')
                     ->options([
-                        '1' => 'kelas1',
-                        '2' => 'kelas2',
-                        '3' => 'kelas3',
+                        '1' => 'kelas 1',
+                        '2' => 'kelas 2',
+                        '3' => 'kelas 3',
                     ]),
 
                 Forms\Components\TextInput::make('id_kelas')
                     ->required()
+
                     ->maxLength(12),
+
+                Select::make('nama_kelas')
+                    ->options([
+                        'X PPLG 1' => 'X PPLG 1',
+                        'X PPLG 2' => 'X PPLG 2',
+                        'X PPLG 3' => 'X PPLG 3',
+                    ])
+                    ->required(),
+                Forms\Components\TextInput::make('nama_kelas')
+                    ->required()
+
+                    ->maxLength(10),
+
+                Select::make('jurusan')
+                    ->options([
+                        'PPLG' => 'PPLG',
+                        'ELIN' => 'ELIN',
+                        'AK' => 'AKUNTANSI',
+                    ]),
+
+                Forms\Components\TextInput::make('jurusan')
+                    ->required()
+                    ->maxLength(255),
+
 
                 Forms\Components\TextInput::make('nisn')
                     ->required()
@@ -47,12 +72,8 @@ class SiswaResource extends Resource
                 Forms\Components\TextInput::make('nama_siswa')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('nama_kelas')
-                    ->required()
-                    ->maxLength(10),
-                Forms\Components\TextInput::make('jurusan')
-                    ->required()
-                    ->maxLength(255),
+
+
             ]);
     }
 
