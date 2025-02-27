@@ -2,35 +2,53 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use App\Models\Guru;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use App\Filament\Imports\GuruImporter;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\GuruResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\GuruResource\RelationManagers;
+use App\Models\Guru;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Support\Enums\FontFamily;
+use App\Filament\Imports\GuruImporter;
 use Filament\Tables\Actions\ImportAction;
+use Filament\Forms\Components\TextInput;
+use Closure;
+
 
 class GuruResource extends Resource
 {
     protected static ?string $model = Guru::class;
+    protected static ?string $navigationBadgeTooltip = 'Jumlah Guru';
 
-    protected static ?string $navigationIcon = 'heroicon-c-user';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    protected static ?string $navigationLabel = 'Guru';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nip')
+                Forms\Components\TextInput::make('kode_guru')
+                    ->label('Kode Guru')
                     ->required()
+                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
+                    ->suffixIcon('heroicon-o-bookmark-square')
+                    ->suffixIconColor('success')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nama_guru')
+                    ->label('Nama Guru')
                     ->required()
+                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
+                    ->maxLength(80),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->suffixIcon('heroicon-o-envelope')
+                    ->suffixIconColor('success')
                     ->maxLength(255),
+
             ]);
     }
 
@@ -38,15 +56,28 @@ class GuruResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nip')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('kode_guru')
+                    ->label('Kode Guru')
+                    ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text1')
-                    ->icon('heroicon-o-check-circle'),
 
+                    ->icon('heroicon-o-bookmark-square')
+                    ->fontFamily(FontFamily::Mono)
+                    ->copyable()
+                    ->copyMessage('Nisn copied')
+                    ->copyMessageDuration(1500)
+
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('nama_guru')
-                    ->searchable()
+                    ->label('Nama Guru')
+                    ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text2')
-                    ->icon('heroicon-o-arrow-up-circle')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->icon('heroicon-o-envelope')
+                    ->color('text3')
+                    ->searchable(),
+
 
             ])
             ->filters([
@@ -54,8 +85,8 @@ class GuruResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
-
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -64,6 +95,8 @@ class GuruResource extends Resource
             ->headerActions([
                 ImportAction::make()
                     ->importer(GuruImporter::class)
+
+
             ]);
     }
 
@@ -73,6 +106,25 @@ class GuruResource extends Resource
             //
         ];
     }
+    //menghilangkan s pada navigasi
+    public static function getPluralLabel(): ?string
+    {
+        return 'Guru';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::$model::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        $count = static::$model::count();
+
+        return 'info';
+    }
+
+
 
     public static function getPages(): array
     {
