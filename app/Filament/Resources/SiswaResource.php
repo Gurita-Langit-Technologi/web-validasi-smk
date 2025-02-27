@@ -16,6 +16,7 @@ use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
 use App\Filament\Imports\SiswaImporter;
 use Filament\Tables\Actions\ImportAction;
+use Filament\Forms\Components\Select;
 
 class SiswaResource extends Resource
 {
@@ -23,11 +24,22 @@ class SiswaResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-user-group';
     protected static ?string $navigationLabel = 'Siswa'; //label tanpa s
+    protected static ?string $navigationBadgeTooltip = 'Jumlah Siswa';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Select::make('id_kelas')
+                    ->options([
+                        '1' => 'kelas1',
+                        '2' => 'kelas2',
+                        '3' => 'kelas3',
+                    ]),
+
+                Forms\Components\TextInput::make('id_kelas')
+                    ->required()
+                    ->maxLength(12),
 
                 Forms\Components\TextInput::make('nisn')
                     ->required()
@@ -48,6 +60,7 @@ class SiswaResource extends Resource
     {
         return $table
             ->columns([
+
 
                 Tables\Columns\TextColumn::make('nisn')
                     ->color('text1')
@@ -100,6 +113,18 @@ class SiswaResource extends Resource
     public static function getPluralLabel(): ?string
     {
         return 'Siswa';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::$model::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        $count = static::$model::count();
+
+        return 'text2';
     }
 
 

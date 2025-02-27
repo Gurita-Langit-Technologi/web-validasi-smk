@@ -19,6 +19,7 @@ use Filament\Tables\Actions\ImportAction;
 class GuruResource extends Resource
 {
     protected static ?string $model = Guru::class;
+    protected static ?string $navigationBadgeTooltip = 'Jumlah Guru';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
     protected static ?string $navigationLabel = 'Guru';
@@ -30,12 +31,12 @@ class GuruResource extends Resource
                 Forms\Components\TextInput::make('kode_guru')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('nama_guru')
                     ->required()
                     ->maxLength(80),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->maxLength(255),
 
             ]);
     }
@@ -92,6 +93,19 @@ class GuruResource extends Resource
     {
         return 'Guru';
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::$model::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        $count = static::$model::count();
+
+        return 'info';
+    }
+
 
 
     public static function getPages(): array

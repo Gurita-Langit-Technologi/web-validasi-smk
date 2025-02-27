@@ -19,9 +19,10 @@ use Filament\Tables\Actions\ImportAction;
 class TugasMengajarResource extends Resource
 {
     protected static ?string $model = TugasMengajar::class;
+    protected static ?string $navigationBadgeTooltip = 'Jumlah data';
     protected static ?string $navigationLabel = 'Tugas Mengajar'; //label tanpa s
     protected static ?string $navigationIcon = 'heroicon-o-calendar-date-range';
-
+    protected static ?int $navigationSort = 3;
     public static function form(Form $form): Form
     {
         return $form
@@ -102,6 +103,22 @@ class TugasMengajarResource extends Resource
     public static function getPluralLabel(): ?string
     {
         return 'Tugas Mengajar';
+    }
+    /*  public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count() > 0 ? 'warning' : 'primary';
+    }
+        */
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::$model::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        $count = static::$model::count();
+
+        return 'text4';
     }
 
     public static function getPages(): array
