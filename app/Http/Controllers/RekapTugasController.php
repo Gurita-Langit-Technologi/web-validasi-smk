@@ -37,14 +37,25 @@ class RekapTugasController extends Controller
     public function showDetailTugas($id_mapel)
     {
         $mapel = Mapel::find($id_mapel);
-        $tugas = RekapPengumpulan::where('id_mapel', $id_mapel)->get();
-        $siswa = Siswa::all();
 
+        $siswa = Siswa::whereIn('id_siswa', function ($query) use ($id_mapel) {
+            $query->select('id_siswa')->from('rekap_pengumpulan')->where('id_mapel', $id_mapel);
+        })->get();
+
+        $tugas = RekapPengumpulan::where('id_mapel', $id_mapel)
+            ->select('nama_tugas')
+            ->groupBy('nama_tugas')
+            ->get();
+
+        // dd($tugas);
         $siswaStatus = [];
 
         foreach ($siswa as $siswas) {
-            $completedTasks = RekapPengumpulan::where('id_siswa', $siswas->id_siswa)->where('status', 'Selesai')->count();
-            $totalTasks = RekapPengumpulan::where('id_siswa', $siswas->id_siswa)->count();
+            $completedTasks = RekapPengumpulan::where('id_siswa', $siswas->id_siswa)
+                ->where('status', 'Selesai')
+                ->count();
+            $totalTasks = RekapPengumpulan::where('id_siswa', $siswas->id_siswa)
+                ->count();
             $remainingTasks = $totalTasks - $completedTasks;
 
             if ($completedTasks == $totalTasks) {
@@ -61,6 +72,7 @@ class RekapTugasController extends Controller
         // Kirim data ke view
         return view('pages.app.ceklis-tugas', compact('mapel', 'tugas', 'siswa', 'siswaStatus'));
     }
+
 
     public function updateStatusTugas(Request $request)
     {
@@ -91,7 +103,7 @@ class RekapTugasController extends Controller
         $siswaList = Siswa::where('nama_kelas', $kelas->nama_kelas)->get();
 
         // Ambil tugas dari request
-        $tasks = $request->tasks; // Array tugas dari frontend
+        $tasks = $request->tasks;
 
         foreach ($siswaList as $siswa) {
             foreach ($tasks as $taskName) {
