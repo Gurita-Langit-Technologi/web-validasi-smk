@@ -17,13 +17,13 @@ class GuruImporter extends Importer
             ImportColumn::make('kode_guru')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            ImportColumn::make('email')
-                ->rules(['email', 'max:255']),
+            // ImportColumn::make('email')
+            //     ->rules(['email', 'max:255']),
             ImportColumn::make('nama_guru')
                 ->requiredMapping()
                 ->rules(['required', 'max:80']),
-            ImportColumn::make('password')
-                ->rules(['max:255']),
+            // ImportColumn::make('password')
+            //     ->rules(['max:255']),
         ];
     }
 

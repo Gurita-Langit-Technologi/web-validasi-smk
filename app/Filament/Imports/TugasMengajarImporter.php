@@ -14,18 +14,18 @@ class TugasMengajarImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('id_guru')
-                ->requiredMapping()
-                ->numeric()
-                ->rules(['required', 'integer']),
-            ImportColumn::make('id_mapel')
-                ->requiredMapping()
-                ->numeric()
-                ->rules(['required', 'integer']),
-            ImportColumn::make('id_kelas')
-                ->requiredMapping()
-                ->numeric()
-                ->rules(['required', 'integer']),
+            // ImportColumn::make('id_guru')
+            //     ->requiredMapping()
+            //     ->numeric()
+            //     ->rules(['required', 'integer']),
+            // ImportColumn::make('id_mapel')
+            //     ->requiredMapping()
+            //     ->numeric()
+            //     ->rules(['required', 'integer']),
+            // ImportColumn::make('id_kelas')
+            //     ->requiredMapping()
+            //     ->numeric()
+            //     ->rules(['required', 'integer']),
             ImportColumn::make('kode_guru')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
@@ -38,9 +38,9 @@ class TugasMengajarImporter extends Importer
             ImportColumn::make('mapel')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            ImportColumn::make('jurusan')
-                ->requiredMapping()
-                ->rules(['required', 'max:255']),
+            // ImportColumn::make('jurusan')
+            //     ->requiredMapping()
+            //     ->rules(['required', 'max:255']),
         ];
     }
 
