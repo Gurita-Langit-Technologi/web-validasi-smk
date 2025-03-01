@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guru;
 use App\Models\User;
+use App\Models\UserGuru;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -27,8 +28,11 @@ class AuthController extends Controller
         ]);
 
         $guru = Guru::where('kode_guru', $request->kode_guru)->first();
-        // dd($guru && Hash::check($request->password, $guru->password));
-        if ($guru && Hash::check($request->password, $guru->password)) {
+        $user_guru = UserGuru::where('guru_id', $guru->id_guru)->first();
+
+        // dd($guru && Hash::check($request->password, $user_guru->password));
+
+        if ($guru && Hash::check($request->password, $user_guru->password)) {
             Auth::guard('guru')->login($guru);
             return redirect()->route('guru.dashboard');
         }

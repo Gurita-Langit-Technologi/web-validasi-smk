@@ -31,4 +31,9 @@ class Guru extends Authenticatable
     {
         return $this->hasMany(TugasMengajar::class, 'id_guru', 'id_guru');
     }
+
+    public function auth()
+    {
+        return $this->hasOne(UserGuru::class, 'guru_id');
+    }
 }

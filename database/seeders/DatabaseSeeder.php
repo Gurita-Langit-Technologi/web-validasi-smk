@@ -24,11 +24,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('guru')->insert([
-            ['kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'email' => 'budisantoso@gmail.com', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'email' => 'soraxora@gmail.com', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'email' => null, 'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'email' => null, 'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'email' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso',  'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati',  'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari',  'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin',  'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat',  'created_at' => now(), 'updated_at' => now()],
+        ]);
+
+        DB::table('user_guru')->insert([
+            ['guru_id' => 1, 'email' => 'budisantoso@gmail.com', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()]
         ]);
 
 
