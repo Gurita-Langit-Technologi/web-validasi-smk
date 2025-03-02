@@ -73,6 +73,10 @@
                             </table>
                         </div>
                         <button type="submit" class="btn btn-primary mt-3">Simpan</button>
+                        <a href="{{ route('export-tugas', ['id_mapel' => $mapel->id_mapel]) }}"
+                            class="btn btn-success mt-3">
+                            Export ke Excel
+                        </a>
                     </form>
                 </div>
             </div>

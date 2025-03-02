@@ -18,6 +18,7 @@ class RekapTugasController extends Controller
         $rekapTugas = RekapKelas::with(['kelas', 'mapel', 'guru'])
             ->where('id_guru', $guru->id_guru)
             ->get();
+
         return view('pages.app.page-tugas', compact('rekapTugas'));
     }
 
@@ -107,23 +108,16 @@ class RekapTugasController extends Controller
         return redirect()->back()->with('success', 'Status tugas berhasil diperbarui.');
     }
 
-
-
-
-
-
-
     public function generateTasksPerClass(Request $request, $id_rekap)
     {
         $rekap = RekapKelas::findOrFail($id_rekap);
         $mapel = $rekap->mapel;
         $kelas = $rekap->kelas;
 
-        // Ambil semua siswa dalam kelas yang bersangkutan
         $siswaList = Siswa::where('nama_kelas', $kelas->nama_kelas)->get();
-
-        // Ambil tugas dari request
         $tasks = $request->tasks;
+
+        $totalTugas = 0; // Untuk menghitung total tugas yang dibuat
 
         foreach ($siswaList as $siswa) {
             foreach ($tasks as $taskName) {
@@ -133,13 +127,24 @@ class RekapTugasController extends Controller
                     'nama_tugas' => $taskName,
                     'status' => 'Belum Selesai',
                 ]);
+                $totalTugas++;
             }
         }
+
+        // Update total tugas di rekap_kelas
+        $rekap->total_tugas += $totalTugas;
+        $rekap->jumlah_selesai = RekapPengumpulan::where('id_mapel', $mapel->id_mapel)
+            ->whereHas('siswa', function ($query) use ($kelas) {
+                $query->where('nama_kelas', $kelas->nama_kelas);
+            })->where('status', 'Selesai')->count();
+
+        $rekap->jumlah_tanggungan = $rekap->total_tugas - $rekap->jumlah_selesai;
+        $rekap->save();
 
         return response()->json(['message' => 'Tugas berhasil dibuat untuk kelas ' . $kelas->nama_kelas], 200);
     }
 
-    // Generate Tugas Untuk Semua Kelas
+
     public function generateAllTasks(Request $request)
     {
         $rekapList = RekapKelas::all();
@@ -148,7 +153,9 @@ class RekapTugasController extends Controller
             $mapel = $rekap->mapel;
             $kelas = $rekap->kelas;
             $siswaList = Siswa::where('id_kelas', $kelas->id_kelas)->get();
-            $tasks = $request->tasks[$rekap->id_rekap] ?? []; // Ambil tugas berdasarkan id_rekap
+            $tasks = $request->tasks[$rekap->id_rekap] ?? [];
+
+            $totalTugas = 0; // Menghitung total tugas baru
 
             foreach ($siswaList as $siswa) {
                 foreach ($tasks as $taskName) {
@@ -158,10 +165,21 @@ class RekapTugasController extends Controller
                         'nama_tugas' => $taskName,
                         'status' => 'Belum Selesai',
                     ]);
+                    $totalTugas++;
                 }
             }
+
+            // Update total tugas di rekap_kelas
+            $rekap->total_tugas += $totalTugas;
+            $rekap->jumlah_selesai = RekapPengumpulan::where('id_mapel', $mapel->id_mapel)
+                ->whereHas('siswa', function ($query) use ($kelas) {
+                    $query->where('id_kelas', $kelas->id_kelas);
+                })->where('status', 'Selesai')->count();
+
+            $rekap->jumlah_tanggungan = $rekap->total_tugas - $rekap->jumlah_selesai;
+            $rekap->save();
         }
 
-        return response()->json(['message' => 'Semua tugas berhasil dibuat untuk setiap kelas'], 200);
+        return response()->json(['message' => 'Semua tugas berhasil dibuat dan total tugas diperbarui'], 200);
     }
 }

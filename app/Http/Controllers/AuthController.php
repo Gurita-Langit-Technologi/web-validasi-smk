@@ -56,10 +56,10 @@ class AuthController extends Controller
     public function sendResetLink(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|exists:guru,email',
+            'email' => 'required|email|exists:user_guru,email',
         ]);
 
-        $guru = Guru::where('email', $request->email)->first();
+        $guru = UserGuru::where('email', $request->email)->first();
 
         if (!$guru) {
             return back()->withErrors(['email' => 'Email tidak ditemukan']);

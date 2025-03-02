@@ -76,7 +76,6 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-
                                         <th>Tugas Selesai</th>
                                         <th>Tanggungan</th>
                                     </tr>
@@ -111,12 +110,14 @@
 
         if (totalTasks > currentTasks) {
             for (let i = currentTasks; i < totalTasks; i++) {
-                const newTaskInput = document.createElement('input');
-                newTaskInput.type = 'text';
-                newTaskInput.className = 'form-control form-control-sm mb-2';
-                newTaskInput.placeholder = `Nama Tugas ${i + 1}`;
-                newTaskInput.id = `task-${classId}-${i}`;
-                container.appendChild(newTaskInput);
+                if (!document.getElementById(`task-${classId}-${i}`)) {
+                    const newTaskInput = document.createElement('input');
+                    newTaskInput.type = 'text';
+                    newTaskInput.className = 'form-control form-control-sm mb-2';
+                    newTaskInput.placeholder = `Nama Tugas ${i + 1}`;
+                    newTaskInput.id = `task-${classId}-${i}`;
+                    container.appendChild(newTaskInput);
+                }
             }
         } else if (totalTasks < currentTasks) {
             for (let i = currentTasks - 1; i >= totalTasks; i--) {
@@ -127,6 +128,7 @@
             }
         }
     }
+
 
     function generateTasksPerClass(classId) {
         const taskInputs = document.querySelectorAll(`#tugas-names-container-${classId} input`);

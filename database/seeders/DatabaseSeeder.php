@@ -51,7 +51,6 @@ class DatabaseSeeder extends Seeder
         // Seeder untuk tabel siswa
         DB::table('siswa')->insert([
             [
-                'id_kelas' => 1,
                 'nisn' => '123456789012',
                 'nama_siswa' => 'Andi Saputra',
                 'nama_kelas' => 'X IPA 1',
@@ -59,7 +58,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 2,
                 'nisn' => '234567890123',
                 'nama_siswa' => 'Budi Santoso',
                 'nama_kelas' => 'X IPA 2',
@@ -67,7 +65,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 3,
                 'nisn' => '345678901234',
                 'nama_siswa' => 'Citra Ayu',
                 'nama_kelas' => 'X IPS 1',
@@ -75,7 +72,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 4,
                 'nisn' => '456789012345',
                 'nama_siswa' => 'Dedi Kusuma',
                 'nama_kelas' => 'X IPS 2',
@@ -83,7 +79,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 5,
                 'nisn' => '567890123456',
                 'nama_siswa' => 'Eka Putri',
                 'nama_kelas' => 'XI IPA 1',
@@ -91,7 +86,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 6,
                 'nisn' => '678901234567',
                 'nama_siswa' => 'Fajar Hidayat',
                 'nama_kelas' => 'XI IPA 2',
@@ -99,7 +93,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 7,
                 'nisn' => '789012345678',
                 'nama_siswa' => 'Gina Larasati',
                 'nama_kelas' => 'XI IPS 1',
@@ -107,7 +100,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 1,
                 'nisn' => '890123456789',
                 'nama_siswa' => 'Hadi Pratama',
                 'nama_kelas' => 'X IPA 1',
@@ -115,7 +107,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 2,
                 'nisn' => '901234567890',
                 'nama_siswa' => 'Indah Safitri',
                 'nama_kelas' => 'X IPA 2',
@@ -123,7 +114,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 3,
                 'nisn' => '012345678901',
                 'nama_siswa' => 'Joko Wahyu',
                 'nama_kelas' => 'X IPS 1',
@@ -160,19 +150,19 @@ class DatabaseSeeder extends Seeder
         // }
 
         DB::table('rekap_kelas')->insert([
-            ['id_kelas' => 1, 'id_mapel' => 1, 'id_guru' => 1, 'total_tugas' => 5, 'jumlah_selesai' => 3, 'jumlah_tanggungan' => 2, 'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 2, 'id_mapel' => 2, 'id_guru' => 2, 'total_tugas' => 4, 'jumlah_selesai' => 2, 'jumlah_tanggungan' => 2, 'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 3, 'id_mapel' => 3, 'id_guru' => 3, 'total_tugas' => 6, 'jumlah_selesai' => 4, 'jumlah_tanggungan' => 2, 'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 4, 'id_mapel' => 4, 'id_guru' => 4, 'total_tugas' => 3, 'jumlah_selesai' => 2, 'jumlah_tanggungan' => 1, 'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 5, 'id_mapel' => 5, 'id_guru' => 5, 'total_tugas' => 5, 'jumlah_selesai' => 3, 'jumlah_tanggungan' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['id_kelas' => 1, 'id_mapel' => 1, 'id_guru' => 1,  'created_at' => now(), 'updated_at' => now()],
+            ['id_kelas' => 2, 'id_mapel' => 2, 'id_guru' => 2,  'created_at' => now(), 'updated_at' => now()],
+            ['id_kelas' => 3, 'id_mapel' => 3, 'id_guru' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['id_kelas' => 4, 'id_mapel' => 4, 'id_guru' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['id_kelas' => 5, 'id_mapel' => 5, 'id_guru' => 5,  'created_at' => now(), 'updated_at' => now()],
         ]);
 
         DB::table('tugas_mengajar')->insert([
-            ['id_mengajar' => 1, 'id_guru' => 1, 'id_mapel' => 1, 'id_kelas' => 1, 'kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'kelas' => 'X IPA 1', 'mapel' => 'Matematika', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 2, 'id_guru' => 2, 'id_mapel' => 2, 'id_kelas' => 2, 'kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'kelas' => 'X IPA 2', 'mapel' => 'Fisika', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 3, 'id_guru' => 3, 'id_mapel' => 3, 'id_kelas' => 3, 'kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'kelas' => 'X IPS 1', 'mapel' => 'Kimia', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 4, 'id_guru' => 4, 'id_mapel' => 4, 'id_kelas' => 4, 'kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'kelas' => 'X IPS 2', 'mapel' => 'Biologi', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 5, 'id_guru' => 5, 'id_mapel' => 5, 'id_kelas' => 5, 'kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'kelas' => 'XI IPA 1', 'mapel' => 'Sejarah', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 1,  'kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'kelas' => 'X IPA 1', 'mata_diklat' => 'Matematika', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 2,  'kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'kelas' => 'X IPA 2', 'mata_diklat' => 'Fisika', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 3,  'kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'kelas' => 'X IPS 1', 'mata_diklat' => 'Kimia', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 4,  'kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'kelas' => 'X IPS 2', 'mata_diklat' => 'Biologi', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 5,  'kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'kelas' => 'XI IPA 1', 'mata_diklat' => 'Sejarah', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

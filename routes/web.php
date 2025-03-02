@@ -1,11 +1,12 @@
 <?php
 
+use App\Exports\RekapTugasExport;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\RekapTugasController;
 use Illuminate\Support\Facades\Route;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -37,9 +38,9 @@ Route::middleware(['auth:guru'])->group(function () {
     Route::post('/generate-tasks-per-class/{id_rekap}', [RekapTugasController::class, 'generateTasksPerClass']);
     Route::post('/generate-all-tasks', [RekapTugasController::class, 'generateAllTasks']);
     Route::post('/update-status-tugas', [RekapTugasController::class, 'updateStatusTugas'])->name('update-status-tugas');
-    // Route::get('/page-kelas', function () {
-    //     return view('pages.app.page-kelas');
-    // })->name('page-kelas');
+    Route::get('/export-tugas/{id_mapel}', function ($id_mapel) {
+        return Excel::download(new RekapTugasExport($id_mapel), 'rekap_tugas.xlsx');
+    })->name('export-tugas');
 });
 
 Route::get('/guru/create-password', [GuruController::class, 'create'])->name('guru.create');
