@@ -152,7 +152,7 @@ class RekapTugasController extends Controller
         foreach ($rekapList as $rekap) {
             $mapel = $rekap->mapel;
             $kelas = $rekap->kelas;
-            $siswaList = Siswa::where('id_kelas', $kelas->id_kelas)->get();
+            $siswaList = Siswa::where('nama_kelas', $kelas->nama_kelas)->get();
             $tasks = $request->tasks[$rekap->id_rekap] ?? [];
 
             $totalTugas = 0; // Menghitung total tugas baru
