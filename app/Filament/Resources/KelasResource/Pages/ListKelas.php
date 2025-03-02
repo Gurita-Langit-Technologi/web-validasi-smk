@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\GuruResource\Pages;
+namespace App\Filament\Resources\KelasResource\Pages;
 
-use App\Filament\Resources\GuruResource;
+use App\Filament\Resources\KelasResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListGurus extends ListRecords
+class ListKelas extends ListRecords
 {
-    protected static string $resource = GuruResource::class;
+    protected static string $resource = KelasResource::class;
 
     protected function getHeaderActions(): array
     {

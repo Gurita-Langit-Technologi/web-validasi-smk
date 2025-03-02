@@ -14,10 +14,6 @@ class SiswaImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('id_kelas')
-                ->requiredMapping()
-                ->numeric()
-                ->rules(['required', 'integer']),
             ImportColumn::make('nisn')
                 ->requiredMapping()
                 ->rules(['required', 'max:12']),
@@ -27,9 +23,6 @@ class SiswaImporter extends Importer
             ImportColumn::make('nama_kelas')
                 ->requiredMapping()
                 ->rules(['required', 'max:10']),
-            ImportColumn::make('jurusan')
-                ->requiredMapping()
-                ->rules(['required', 'max:255']),
         ];
     }
 
@@ -38,12 +31,13 @@ class SiswaImporter extends Importer
         return Siswa::query()
             ->where('nisn', $this->data['nisn'])
             ->first();
+
         return new Siswa();
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Import Data Siswa Telah Berhasil ' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
+        $body = 'Import Data Siswa Sukses ' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
             $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to import.';

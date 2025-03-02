@@ -9,9 +9,4 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateGuru extends CreateRecord
 {
     protected static string $resource = GuruResource::class;
-    //customize redirect after create
-    public function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
 }

@@ -13,34 +13,39 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Support\Enums\FontFamily;
-use App\Filament\Imports\TugasMengajarImporter;
+use App\Filament\Imports\TugasMEngajarImporter;
 use Filament\Tables\Actions\ImportAction;
 
 class TugasMengajarResource extends Resource
 {
     protected static ?string $model = TugasMengajar::class;
+
     protected static ?string $navigationBadgeTooltip = 'Jumlah data';
     protected static ?string $navigationLabel = 'Tugas Mengajar'; //label tanpa s
     protected static ?string $navigationIcon = 'heroicon-o-calendar-date-range';
-    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-
                 Forms\Components\TextInput::make('kode_guru')
+                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nama_guru')
                     ->required()
+                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('kelas')
+                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('mapel')
+                Forms\Components\TextInput::make('mata_diklat')
+                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('jurusan')
+                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->required()
                     ->maxLength(255),
             ]);
@@ -50,29 +55,31 @@ class TugasMengajarResource extends Resource
     {
         return $table
             ->columns([
-
                 Tables\Columns\TextColumn::make('kode_guru')
+                    ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
+
                     ->color('text1')
                     ->icon('heroicon-o-check-circle')
                     ->fontFamily(FontFamily::Mono)
                     ->copyable()
                     ->copyMessage('Kode Guru copied')
                     ->copyMessageDuration(1500)
-
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_guru')
+                    ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text2')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kelas')
+                    ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text3')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('mapel')
+                Tables\Columns\TextColumn::make('mata_diklat')
+                    ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text4')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('jurusan')
+                    ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text5')
-                    ->searchable(),
-
             ])
             ->filters([
                 //
@@ -89,7 +96,6 @@ class TugasMengajarResource extends Resource
             ->headerActions([
                 ImportAction::make()
                     ->importer(TugasMengajarImporter::class)
-
             ]);
     }
 
@@ -105,10 +111,10 @@ class TugasMengajarResource extends Resource
         return 'Tugas Mengajar';
     }
     /*  public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count() > 0 ? 'warning' : 'primary';
-    }
-        */
+     {
+         return static::getModel()::count() > 0 ? 'warning' : 'primary';
+     }
+         */
     public static function getNavigationBadge(): ?string
     {
         return (string) static::$model::count();
@@ -120,6 +126,7 @@ class TugasMengajarResource extends Resource
 
         return 'text4';
     }
+
 
     public static function getPages(): array
     {
