@@ -32,19 +32,20 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('user_guru')->insert([
-            ['guru_id' => 1, 'email' => 'budisantoso@gmail.com', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()]
+            ['guru_id' => 1, 'email' => 'budisantoso@gmail.com', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()],
+            ['guru_id' => 2, 'email' => 'soraxora@gmail.com', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()]
         ]);
 
 
         // Seeder untuk tabel kelas
         DB::table('kelas')->insert([
-            ['kode_kelas' => 'XIPA1', 'nama_kelas' => 'X IPA 1', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPA2', 'nama_kelas' => 'X IPA 2', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPS1', 'nama_kelas' => 'X IPS 1', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPS2', 'nama_kelas' => 'X IPS 2', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPA1', 'nama_kelas' => 'XI IPA 1', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPA2', 'nama_kelas' => 'XI IPA 2', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPS1', 'nama_kelas' => 'XI IPS 1', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPA1', 'nama_kelas' => 'X IPA 1', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPA2', 'nama_kelas' => 'X IPA 2', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPS1', 'nama_kelas' => 'X IPS 1', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPS2', 'nama_kelas' => 'X IPS 2', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPA1', 'nama_kelas' => 'XI IPA 1', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPA2', 'nama_kelas' => 'XI IPA 2', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPS1', 'nama_kelas' => 'XI IPS 1', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Seeder untuk tabel siswa
@@ -54,7 +55,6 @@ class DatabaseSeeder extends Seeder
                 'nisn' => '123456789012',
                 'nama_siswa' => 'Andi Saputra',
                 'nama_kelas' => 'X IPA 1',
-                'jurusan' => 'IPA',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -63,7 +63,6 @@ class DatabaseSeeder extends Seeder
                 'nisn' => '234567890123',
                 'nama_siswa' => 'Budi Santoso',
                 'nama_kelas' => 'X IPA 2',
-                'jurusan' => 'IPA',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -72,7 +71,6 @@ class DatabaseSeeder extends Seeder
                 'nisn' => '345678901234',
                 'nama_siswa' => 'Citra Ayu',
                 'nama_kelas' => 'X IPS 1',
-                'jurusan' => 'IPS',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -81,7 +79,6 @@ class DatabaseSeeder extends Seeder
                 'nisn' => '456789012345',
                 'nama_siswa' => 'Dedi Kusuma',
                 'nama_kelas' => 'X IPS 2',
-                'jurusan' => 'IPS',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -90,7 +87,6 @@ class DatabaseSeeder extends Seeder
                 'nisn' => '567890123456',
                 'nama_siswa' => 'Eka Putri',
                 'nama_kelas' => 'XI IPA 1',
-                'jurusan' => 'IPA',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -99,7 +95,6 @@ class DatabaseSeeder extends Seeder
                 'nisn' => '678901234567',
                 'nama_siswa' => 'Fajar Hidayat',
                 'nama_kelas' => 'XI IPA 2',
-                'jurusan' => 'IPA',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -108,7 +103,6 @@ class DatabaseSeeder extends Seeder
                 'nisn' => '789012345678',
                 'nama_siswa' => 'Gina Larasati',
                 'nama_kelas' => 'XI IPS 1',
-                'jurusan' => 'IPS',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -117,7 +111,6 @@ class DatabaseSeeder extends Seeder
                 'nisn' => '890123456789',
                 'nama_siswa' => 'Hadi Pratama',
                 'nama_kelas' => 'X IPA 1',
-                'jurusan' => 'IPA',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -126,7 +119,6 @@ class DatabaseSeeder extends Seeder
                 'nisn' => '901234567890',
                 'nama_siswa' => 'Indah Safitri',
                 'nama_kelas' => 'X IPA 2',
-                'jurusan' => 'IPA',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -135,7 +127,6 @@ class DatabaseSeeder extends Seeder
                 'nisn' => '012345678901',
                 'nama_siswa' => 'Joko Wahyu',
                 'nama_kelas' => 'X IPS 1',
-                'jurusan' => 'IPS',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

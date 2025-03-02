@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_kelas');
             $table->string('kode_kelas', 10)->unique();
             $table->string('nama_kelas', 10);
+            $table->string('jurusan');
             $table->timestamps();
         });
     }

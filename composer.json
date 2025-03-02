@@ -10,6 +10,7 @@
         "filament/filament": "^3.2",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
+        "maatwebsite/excel": "^1.1",
         "resend/resend-laravel": "^0.16.0",
         "spatie/laravel-permission": "^6.15"
     },

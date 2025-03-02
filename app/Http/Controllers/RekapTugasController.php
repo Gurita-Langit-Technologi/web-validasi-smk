@@ -8,12 +8,16 @@ use App\Models\RekapKelas;
 use App\Models\Siswa;
 use App\Models\RekapPengumpulan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RekapTugasController extends Controller
 {
     public function index()
     {
-        $rekapTugas = RekapKelas::with(['kelas', 'mapel', 'guru'])->get();
+        $guru = Auth::guard('guru')->user();
+        $rekapTugas = RekapKelas::with(['kelas', 'mapel', 'guru'])
+            ->where('id_guru', $guru->id_guru)
+            ->get();
         return view('pages.app.page-tugas', compact('rekapTugas'));
     }
 
@@ -37,60 +41,76 @@ class RekapTugasController extends Controller
     public function showDetailTugas($id_mapel)
     {
         $mapel = Mapel::find($id_mapel);
-
         $siswa = Siswa::whereIn('id_siswa', function ($query) use ($id_mapel) {
-            $query->select('id_siswa')->from('rekap_pengumpulan')->where('id_mapel', $id_mapel);
+            $query->select('id_siswa')
+                ->from('rekap_pengumpulan')
+                ->where('id_mapel', $id_mapel);
         })->get();
 
         $tugas = RekapPengumpulan::where('id_mapel', $id_mapel)
-            ->select('nama_tugas')
+            ->selectRaw('MIN(id_tugas) as id_tugas, nama_tugas')
             ->groupBy('nama_tugas')
             ->get();
 
-        // dd($tugas);
+
         $siswaStatus = [];
 
         foreach ($siswa as $siswas) {
             $completedTasks = RekapPengumpulan::where('id_siswa', $siswas->id_siswa)
+                ->where('id_mapel', $id_mapel)
                 ->where('status', 'Selesai')
                 ->count();
-            $totalTasks = RekapPengumpulan::where('id_siswa', $siswas->id_siswa)
-                ->count();
-            $remainingTasks = $totalTasks - $completedTasks;
 
-            if ($completedTasks == $totalTasks) {
+            $totalTasks = RekapPengumpulan::where('id_siswa', $siswas->id_siswa)
+                ->where('id_mapel', $id_mapel)
+                ->count();
+
+            if ($totalTasks == 0) {
+                $status = 'danger';
+            } elseif ($completedTasks == $totalTasks) {
                 $status = 'success';
-            } elseif ($remainingTasks == 1) {
+            } elseif ($completedTasks > 0) {
                 $status = 'warning';
             } else {
                 $status = 'danger';
             }
 
-            $siswaStatus[$siswas->id_siswa] = $status;
+            $siswaStatus[$siswas->id_siswa] = [
+                'status' => $status,
+                'completed' => $completedTasks,
+                'total' => $totalTasks,
+            ];
         }
 
-        // Kirim data ke view
         return view('pages.app.ceklis-tugas', compact('mapel', 'tugas', 'siswa', 'siswaStatus'));
     }
 
 
+
     public function updateStatusTugas(Request $request)
     {
-        $tugas = RekapPengumpulan::where('id_tugas', $request->tugas_id)
-            ->where('id_siswa', $request->siswa_id)
-            ->first();
+        foreach ($request->tugas as $siswaId => $tugas) {
+            foreach ($tugas as $tugasId => $status) {
+                $rekap = RekapPengumpulan::where('id_tugas', $tugasId)
+                    ->where('id_siswa', $siswaId)
+                    ->first();
 
-        if ($tugas) {
-            $tugas->status = $request->status;
-            $tugas->tanggal_pengumpulan = $request->tanggal_pengumpulan;
-            $tugas->keterangan = $request->keterangan;
-            $tugas->save();
-
-            return response()->json(['message' => 'Status berhasil diperbarui']);
+                if ($rekap) {
+                    $rekap->status = $status;
+                    $rekap->tanggal_pengumpulan = $request->tanggal_pengumpulan[$siswaId][$tugasId] ?? null;
+                    $rekap->keterangan = $request->keterangan[$siswaId][$tugasId] ?? null;
+                    $rekap->save();
+                }
+            }
         }
 
-        return response()->json(['message' => 'Tugas tidak ditemukan'], 404);
+        return redirect()->back()->with('success', 'Status tugas berhasil diperbarui.');
     }
+
+
+
+
+
 
 
     public function generateTasksPerClass(Request $request, $id_rekap)

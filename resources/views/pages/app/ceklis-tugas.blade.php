@@ -18,8 +18,7 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Detail Tugas untuk Mata Pelajaran: {{ $mapel->nama_mapel }}</h6>
-
-                    <form id="update-tugas-form">
+                    <form action="{{ route('update-status-tugas') }}" method="POST">
                         @csrf
                         <div class="table-responsive">
                             <table class="table text-center">
@@ -35,103 +34,48 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($siswa as $student)
-                                        @php
-                                            $totalTugas = count($tugas);
-                                            $selesai = 0;
-                                        @endphp
-                                        <tr id="row-{{ $student->id_siswa }}">
+                                        <tr>
                                             <td>{{ $student->nama_siswa }}</td>
                                             @foreach ($tugas as $task)
                                                 @php
-                                                    if ($task->status == 'Selesai') {
-                                                        $selesai++;
-                                                    }
+                                                    $rekap = \App\Models\RekapPengumpulan::where(
+                                                        'id_tugas',
+                                                        $task->id_tugas,
+                                                    )
+                                                        ->where('id_siswa', $student->id_siswa)
+                                                        ->first();
                                                 @endphp
                                                 <td>
-                                                    <input type="checkbox" class="tugas-checkbox"
-                                                        data-siswa-id="{{ $student->id_siswa }}"
-                                                        data-tugas-id="{{ $task->id_tugas }}"
-                                                        {{ $task->status == 'Selesai' ? 'checked' : '' }}>
+                                                    <input type="checkbox"
+                                                        name="tugas[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                        value="Selesai"
+                                                        {{ $rekap && $rekap->status == 'Selesai' ? 'checked' : '' }}>
                                                     <div class="mt-2">
-                                                        <input type="date" class="form-control tanggal-pengumpulan"
-                                                            data-siswa-id="{{ $student->id_siswa }}"
-                                                            data-tugas-id="{{ $task->id_tugas }}"
-                                                            value="{{ $task->tanggal_pengumpulan }}">
-                                                        <textarea class="form-control mt-2 keterangan" data-siswa-id="{{ $student->id_siswa }}"
-                                                            data-tugas-id="{{ $task->id_tugas }}" placeholder="Keterangan">{{ $task->keterangan }}</textarea>
+                                                        <input type="date" class="form-control"
+                                                            name="tanggal_pengumpulan[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                            value="{{ $rekap->tanggal_pengumpulan ?? '' }}">
+                                                        <textarea class="form-control mt-2" name="keterangan[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                            placeholder="Keterangan">{{ $rekap->keterangan ?? '' }}</textarea>
                                                     </div>
                                                 </td>
                                             @endforeach
-                                            <td id="status-{{ $student->id_siswa }}">
-                                                {{ $selesai }}/{{ $totalTugas }} Tugas</td>
                                             <td>
-                                                <div id="indikator-{{ $student->id_siswa }}"
-                                                    class="rounded-circle
-                                                    {{ $selesai == $totalTugas ? 'bg-success' : ($totalTugas - $selesai == 1 ? 'bg-warning' : 'bg-danger') }}"
-                                                    style="width: 20px; height: 20px;">
-                                                </div>
+                                                {{ $siswaStatus[$student->id_siswa]['completed'] }}/{{ $siswaStatus[$student->id_siswa]['total'] }}
+                                                Tugas
+                                            </td>
+                                            <td>
+                                                <div class="rounded-circle bg-{{ $siswaStatus[$student->id_siswa]['status'] }}"
+                                                    style="width: 20px; height: 20px;"></div>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
+                        <button type="submit" class="btn btn-primary mt-3">Simpan</button>
                     </form>
-
                 </div>
             </div>
         </div>
     </div>
-@endsection
-
-@section('scripts')
-    <script>
-        $(document).ready(function() {
-            $('.tugas-checkbox, .tanggal-pengumpulan, .keterangan').on('change', function() {
-                let siswaId = $(this).data('siswa-id');
-                let tugasId = $(this).data('tugas-id');
-                let status = $(`.tugas-checkbox[data-tugas-id="${tugasId}"][data-siswa-id="${siswaId}"]`)
-                    .is(':checked') ? 'Selesai' : 'Belum Selesai';
-                let tanggal = $(
-                        `.tanggal-pengumpulan[data-tugas-id="${tugasId}"][data-siswa-id="${siswaId}"]`)
-                    .val();
-                let keterangan = $(`.keterangan[data-tugas-id="${tugasId}"][data-siswa-id="${siswaId}"]`)
-                    .val();
-
-                $.ajax({
-                    url: "{{ url('/update-status-tugas') }}",
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        siswa_id: siswaId,
-                        tugas_id: tugasId,
-                        status: status,
-                        tanggal_pengumpulan: tanggal,
-                        keterangan: keterangan
-                    },
-                    success: function(response) {
-                        updateStatusUI(siswaId);
-                    }
-                });
-            });
-
-            function updateStatusUI(siswaId) {
-                let totalTugas = $(`#row-${siswaId} .tugas-checkbox`).length;
-                let selesai = $(`#row-${siswaId} .tugas-checkbox:checked`).length;
-
-                $(`#status-${siswaId}`).text(`${selesai}/${totalTugas} Tugas`);
-
-                let indikator = $(`#indikator-${siswaId}`);
-                indikator.removeClass('bg-success bg-warning bg-danger');
-
-                if (selesai == totalTugas) {
-                    indikator.addClass('bg-success');
-                } else if (totalTugas - selesai == 1) {
-                    indikator.addClass('bg-warning');
-                } else {
-                    indikator.addClass('bg-danger');
-                }
-            }
-        });
-    </script>
 @endsection
