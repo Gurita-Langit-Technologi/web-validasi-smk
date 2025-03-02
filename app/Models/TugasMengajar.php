@@ -9,13 +9,10 @@ class TugasMengajar extends Model
     protected $table = 'tugas_mengajar';
     protected $primaryKey = 'id_mengajar';
     protected $fillable = [
-        'id_guru',
-        'id_mapel',
-        'id_kelas',
         'kode_guru',
         'nama_guru',
         'kelas',
-        'mapel',
+        'mata_diklat',
         'jurusan'
     ];
 
