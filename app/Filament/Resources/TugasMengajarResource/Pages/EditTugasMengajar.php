@@ -16,9 +16,4 @@ class EditTugasMengajar extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-    //customize redirect after create
-    public function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
 }

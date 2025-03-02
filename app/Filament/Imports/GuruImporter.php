@@ -17,13 +17,9 @@ class GuruImporter extends Importer
             ImportColumn::make('kode_guru')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            // ImportColumn::make('email')
-            //     ->rules(['email', 'max:255']),
             ImportColumn::make('nama_guru')
                 ->requiredMapping()
                 ->rules(['required', 'max:80']),
-            // ImportColumn::make('password')
-            //     ->rules(['max:255']),
         ];
     }
 
@@ -32,12 +28,13 @@ class GuruImporter extends Importer
         return Guru::query()
             ->where('kode_guru', $this->data['kode_guru'])
             ->first();
+
         return new Guru();
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Import Data Guru telah berhasil' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
+        $body = 'Your guru import has completed and ' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
             $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to import.';

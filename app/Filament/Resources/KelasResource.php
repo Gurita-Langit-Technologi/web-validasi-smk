@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SiswaResource\Pages;
-use App\Filament\Resources\SiswaResource\RelationManagers;
-use App\Models\Siswa;
+use App\Filament\Resources\KelasResource\Pages;
+use App\Filament\Resources\KelasResource\RelationManagers;
+use App\Models\Kelas;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,32 +13,26 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Support\Enums\FontFamily;
-use Filament\Support\Enums\FontWeight;
-use App\Filament\Imports\SiswaImporter;
-use Filament\Tables\Actions\ImportAction;
 
-class SiswaResource extends Resource
+class KelasResource extends Resource
 {
-    protected static ?string $model = Siswa::class;
+    protected static ?string $model = Kelas::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-user-group';
-    protected static ?string $navigationLabel = 'Siswa'; //label tanpa s
-    protected static ?string $navigationBadgeTooltip = 'Jumlah Siswa';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nisn')
-
-                    ->maxLength(12),
-                Forms\Components\TextInput::make('nama_siswa')
+                Forms\Components\TextInput::make('kode_kelas')
                     ->required()
-
-                    ->maxLength(255),
+                    ->maxLength(10),
                 Forms\Components\TextInput::make('nama_kelas')
                     ->required()
                     ->maxLength(10),
+                Forms\Components\TextInput::make('jurusan')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -46,40 +40,30 @@ class SiswaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nisn')
-                    ->color('text1')
-                    ->icon('heroicon-o-chevron-double-right')
+                Tables\Columns\TextColumn::make('kode_kelas')
+                    ->icon('heroicon-o-book-open')
                     ->fontFamily(FontFamily::Mono)
-                    ->copyable()
-                    ->copyMessage('Nisn copied')
-                    ->copyMessageDuration(1500)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nama_siswa')
-                    ->color('text2')
-                    ->weight(FontWeight::Medium)
+                    ->color('text1')
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_kelas')
-                    ->color('text3')
+                    ->color('text2')
+
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('jurusan')
+                    ->color('text4')
+
                     ->searchable(),
 
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
+            ->actions([])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->headerActions([
-                ImportAction::make()
-                    ->importer(SiswaImporter::class)
-
-
             ]);
     }
 
@@ -110,9 +94,9 @@ class SiswaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSiswas::route('/'),
-            'create' => Pages\CreateSiswa::route('/create'),
-            'edit' => Pages\EditSiswa::route('/{record}/edit'),
+            'index' => Pages\ListKelas::route('/'),
+            'create' => Pages\CreateKelas::route('/create'),
+            'edit' => Pages\EditKelas::route('/{record}/edit'),
         ];
     }
 }
