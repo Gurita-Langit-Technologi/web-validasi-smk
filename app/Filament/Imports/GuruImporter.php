@@ -6,7 +6,6 @@ use App\Models\Guru;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
-use Filament\Actions\Imports\Exceptions\RowImportFailedException;
 
 class GuruImporter extends Importer
 {
@@ -21,30 +20,17 @@ class GuruImporter extends Importer
             ImportColumn::make('nama_guru')
                 ->requiredMapping()
                 ->rules(['required', 'max:80']),
-
         ];
     }
 
-
     public function resolveRecord(): ?Guru
     {
-        dd($this->data);
-        // return Guru::query()
-        //     ->where('kode_guru', $this->data['kode_guru'])
-        //     ->first();
+        // return Guru::firstOrNew([
+        //     // Update existing records, matching them by `$this->data['column_name']`
+        //     'email' => $this->data['email'],
+        // ]);
 
-        // $guru = Guru::query()
-        //     ->where('kode_guru', $this->data['kode_guru'])
-        //     ->first();
-
-        // if (! $guru) {
-        //     throw new RowImportFailedException("No product found with SKU [{$this->data['kode_guru']}].");
-        // }
-
-        // return $guru;
-        return Guru::firstOrNew([
-            'kode_guru' => $this->data['kode_guru'],
-        ]);
+        return new Guru();
     }
 
     public static function getCompletedNotificationBody(Import $import): string
