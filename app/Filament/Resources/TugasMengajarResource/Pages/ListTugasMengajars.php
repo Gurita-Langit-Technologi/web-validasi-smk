@@ -16,4 +16,9 @@ class ListTugasMengajars extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+    //customize redirect after create
+    public function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
