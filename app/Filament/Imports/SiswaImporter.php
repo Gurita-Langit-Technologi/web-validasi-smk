@@ -28,12 +28,16 @@ class SiswaImporter extends Importer
 
     public function resolveRecord(): ?Siswa
     {
-        return Siswa::query()
-            ->where('nisn', $this->data['nisn'])
-            ->first();
-
-        return new Siswa();
+        return Siswa::firstOrNew([
+            'nisn' => $this->data['nisn'],
+        ]);
     }
+    public function getJobBatchName(): ?string
+    {
+        return 'siswa-import';
+    }
+
+
 
     public static function getCompletedNotificationBody(Import $import): string
     {

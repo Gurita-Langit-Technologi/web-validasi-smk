@@ -25,17 +25,29 @@ class GuruImporter extends Importer
 
     public function resolveRecord(): ?Guru
     {
-        // return Guru::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
+        //memperbarui produk jika sudah ada, dan membuat produk baru jika belum ada.
+        return Guru::firstOrNew([
+            'kode_guru' => $this->data['kode_guru'],
+        ]);
+    }
 
-        return new Guru();
+    //import job batch name
+
+    public function getJobBatchName(): ?string
+    {
+        return 'guru-import';
+    }
+
+    public function getValidationMessages(): array
+    {
+        return [
+            'kode_guru.required' => 'Tidak boleh sama dan tidak boleh kosong.',
+        ];
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Your guru import has completed and ' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
+        $body = 'Data guru Telah Ditambahkan' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
             $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to import.';

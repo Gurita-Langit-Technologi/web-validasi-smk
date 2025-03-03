@@ -35,16 +35,20 @@ class TugasMengajarImporter extends Importer
     public function resolveRecord(): ?TugasMengajar
     {
         // return TugasMengajar::firstOrNew([
-        return TugasMengajar::query()
-            ->where('kode_guru', $this->data['kode_guru'])
-            ->first();
-
-        return new TugasMengajar();
+        return TugasMengajar::firstOrNew([
+            'kode_guru' => $this->data['kode_guru'],
+        ]);
     }
+    public function getJobBatchName(): ?string
+    {
+        return 'tugas-mengajar-import';
+    }
+
+
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Your tugas mengajar import has completed and ' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
+        $body = 'Tugas mengajar berhasil ditambahkan' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
             $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to import.';
