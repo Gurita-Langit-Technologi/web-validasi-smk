@@ -30,6 +30,8 @@ class TugasMengajarImporter extends Importer
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
         ];
+
+        //pada mapping ini semua perlu diisikan dataya pada csv, kalau kosong satu field tidak akan masuk. meskipun log di tabel semua sukses
     }
 
     public function resolveRecord(): ?TugasMengajar
