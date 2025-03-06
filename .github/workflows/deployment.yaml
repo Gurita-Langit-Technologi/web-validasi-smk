@@ -23,3 +23,17 @@ jobs:
           key: ${{ secrets.VPS_DEPLOY_KEY }}
           script: |
             echo "Deployment started ..."
+            cd /var/www/html/web_validasi_smk
+            (php artisan down) || true
+            git reset --hard
+            git pull origin master
+            COMPOSER_ALLOW_SUPERUSER=1
+            composer install --no-interaction --prefer-dist --optimize-autoloader
+            php artisan clear-compiled
+            php artisan config:clear
+            php artisan route:clear
+            php artisan cache:clear
+            php artisan optimize:clear
+            php artisan migrate:fresh --force --seed
+            php artisan up
+            echo "Deployment finished!"
