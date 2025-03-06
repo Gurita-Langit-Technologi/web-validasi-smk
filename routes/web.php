@@ -45,3 +45,8 @@ Route::middleware(['auth:guru'])->group(function () {
 
 Route::get('/guru/create-password', [GuruController::class, 'create'])->name('guru.create');
 Route::post('/guru/create-password', [GuruController::class, 'store'])->name('guru.set-password');
+
+//test cicd
+Route::get('/test', function () {
+    return "Hello World";
+})
