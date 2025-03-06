@@ -133,7 +133,7 @@ class RekapTugasController extends Controller
             $jumlahTanggungan = $totalTugas - $tugasSelesai;
 
             // 🔥 Simpan update ke database
-            RekapKelas::where('id_siswa', $siswaId)->update([
+            RekapKelas::where('id_mapel', $rekap->id_mapel)->update([
                 'jumlah_selesai' => $tugasSelesai,
                 'jumlah_tanggungan' => $jumlahTanggungan,
             ]);

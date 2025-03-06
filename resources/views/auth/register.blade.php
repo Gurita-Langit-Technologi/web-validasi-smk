@@ -26,7 +26,11 @@
                                 </div>
                                 <div class="col-md-12 pl-md-0">
                                     <div class="auth-form-wrapper px-4 py-5">
-                                        <a href="#" class="noble-ui-logo d-block mb-2">Noble<span>UI</span></a>
+                                        <a href="#" class="noble-ui-logo d-block mb-2">
+                                            <img src="{{ asset('images/FIC.png') }}" alt="Logo"
+                                                style="height: 50px; margin-right: 5px;">
+                                            SMK PGRI<span> BANYUWANGI</span>
+                                        </a>
                                         <h5 class="text-muted font-weight-normal mb-4">
                                             Buat Password Baru untuk Login
                                         </h5>
@@ -83,7 +87,7 @@
                                                 </button>
                                             </div>
 
-                                            <a href="{{ route('login-form') }}" class="d-block mt-3 text-muted">
+                                            <a href="{{ route('login') }}" class="d-block mt-3 text-muted">
                                                 Sudah punya akun? Login di sini
                                             </a>
                                         </form>

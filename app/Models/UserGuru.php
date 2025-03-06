@@ -21,6 +21,6 @@ class UserGuru extends Authenticatable
 
     public function guru()
     {
-        return $this->belongsTo(Guru::class, 'guru_id');
+        return $this->belongsTo(Guru::class);
     }
 }
