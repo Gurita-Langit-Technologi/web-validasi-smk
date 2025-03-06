@@ -49,4 +49,4 @@ Route::post('/guru/create-password', [GuruController::class, 'store'])->name('gu
 //test cicd
 Route::get('/test', function () {
     return "Hello World";
-})
+});
