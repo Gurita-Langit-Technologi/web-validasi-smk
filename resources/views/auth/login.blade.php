@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('fonts/feather-font/css/iconfont.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/flag-icon-css/css/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/demo_1/style.css') }}">
-    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('images/FIC.png') }}" />
 </head>
 
 <body>
@@ -66,8 +66,16 @@
 
                                             <div class="form-group">
                                                 <label for="password">Password</label>
-                                                <input type="password" class="form-control" id="password"
-                                                    name="password" required placeholder="Masukkan Password">
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control" id="password"
+                                                        name="password" required placeholder="Masukkan Password">
+                                                    <div class="input-group-append">
+                                                        <button type="button" class="btn btn-light border"
+                                                            id="togglePassword">
+                                                            <i data-feather="eye"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="form-check form-check-flat form-check-primary">
@@ -112,6 +120,27 @@
     <script src="{{ asset('vendors/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('js/template.js') }}"></script>
     <!-- endinject -->
+
+    <!-- JavaScript untuk Toggle Password -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const passwordInput = document.getElementById("password");
+            const togglePassword = document.getElementById("togglePassword");
+            const eyeIcon = togglePassword.querySelector("i");
+
+            togglePassword.addEventListener("click", function() {
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    eyeIcon.setAttribute("data-feather", "eye-off");
+                } else {
+                    passwordInput.type = "password";
+                    eyeIcon.setAttribute("data-feather", "eye");
+                }
+                feather.replace(); // Update ikon setelah diubah
+            });
+        });
+    </script>
+
 </body>
 
 </html>

@@ -9,7 +9,7 @@ class RekapPengumpulan extends Model
     protected $table = 'rekap_pengumpulan';
     protected $primaryKey = 'id_tugas';
 
-    protected $fillable = ['id_siswa', 'id_mapel', 'nama_tugas', 'tanggal_pengumpulan', 'keterangan'];
+    protected $fillable = ['id_rekap_kelas', 'id_siswa', 'id_mapel', 'nama_tugas', 'tanggal_pengumpulan', 'keterangan', 'status'];
 
 
     public function siswa()
@@ -20,5 +20,10 @@ class RekapPengumpulan extends Model
     public function mapel()
     {
         return $this->belongsTo(Mapel::class, 'id_mapel');
+    }
+
+    public function rekapKelas()
+    {
+        return $this->belongsTo(RekapKelas::class, 'id_rekap_kelas');
     }
 }

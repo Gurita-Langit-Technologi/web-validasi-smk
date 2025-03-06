@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('rekap_pengumpulan', function (Blueprint $table) {
             $table->id('id_tugas');
+            $table->unsignedBigInteger('id_rekap_kelas');
             $table->bigInteger('id_siswa')->reference('id_siswa')->on('siswa');
             $table->bigInteger('id_mapel')->reference('id_mapel')->on('mapel');
             $table->string('nama_tugas');
@@ -20,6 +21,8 @@ return new class extends Migration
             $table->string('keterangan')->nullable();
             $table->string('status')->default('Belum Selesai');
             $table->timestamps();
+
+            $table->foreign('id_rekap_kelas')->references('id_rekap_kelas')->on('rekap_kelas')->onDelete('cascade');
         });
     }
 

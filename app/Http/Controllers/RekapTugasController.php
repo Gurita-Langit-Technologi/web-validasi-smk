@@ -14,10 +14,19 @@ class RekapTugasController extends Controller
 {
     public function index()
     {
-        $guru = Auth::guard('guru')->user();
-        $rekapTugas = RekapKelas::with(['kelas', 'mapel', 'guru'])
-            ->where('id_guru', $guru->id_guru)
+        $rekapTugas = RekapKelas::with([
+            'kelas',
+            'mapel',
+            'guru',
+            'tugas' => function ($query) {
+                $query->select('id_rekap_kelas', 'nama_tugas')->groupBy('id_rekap_kelas', 'nama_tugas');
+            }
+        ])->where('id_guru', Auth::guard('guru')->user()->id_guru)
             ->get();
+
+        foreach ($rekapTugas as $rekap) {
+            $rekap->total_tugas = $rekap->tugas->unique('nama_tugas')->count();
+        }
 
         return view('pages.app.page-tugas', compact('rekapTugas'));
     }
@@ -48,10 +57,21 @@ class RekapTugasController extends Controller
                 ->where('id_mapel', $id_mapel);
         })->get();
 
-        $tugas = RekapPengumpulan::where('id_mapel', $id_mapel)
-            ->selectRaw('MIN(id_tugas) as id_tugas, nama_tugas')
-            ->groupBy('nama_tugas')
-            ->get();
+        $tugas = RekapPengumpulan::whereIn('id_tugas', function ($query) use ($id_mapel) {
+            $query->selectRaw('MIN(id_tugas)')
+                ->from('rekap_pengumpulan')
+                ->where('id_mapel', $id_mapel)
+                ->groupBy('nama_tugas');
+        })->get();
+
+        $siswaTugas = [];
+        foreach ($siswa as $student) {
+            $siswaTugas[$student->id_siswa] = RekapPengumpulan::where('id_mapel', $id_mapel)
+                ->where('id_siswa', $student->id_siswa)
+                ->select('id_tugas', 'nama_tugas')
+                ->groupBy('id_tugas', 'nama_tugas')
+                ->get();
+        }
 
 
         $siswaStatus = [];
@@ -83,7 +103,7 @@ class RekapTugasController extends Controller
             ];
         }
 
-        return view('pages.app.ceklis-tugas', compact('mapel', 'tugas', 'siswa', 'siswaStatus'));
+        return view('pages.app.ceklis-tugas', compact('mapel', 'tugas', 'siswa', 'siswaTugas', 'siswaStatus'));
     }
 
 
@@ -97,12 +117,26 @@ class RekapTugasController extends Controller
                     ->first();
 
                 if ($rekap) {
+                    // Update status tugas
                     $rekap->status = $status;
                     $rekap->tanggal_pengumpulan = $request->tanggal_pengumpulan[$siswaId][$tugasId] ?? null;
                     $rekap->keterangan = $request->keterangan[$siswaId][$tugasId] ?? null;
                     $rekap->save();
                 }
             }
+
+            // 🔥 Hitung ulang jumlah tugas selesai dan tanggungan siswa
+            $totalTugas = RekapPengumpulan::where('id_siswa', $siswaId)->count();
+            $tugasSelesai = RekapPengumpulan::where('id_siswa', $siswaId)
+                ->where('status', 'Selesai')
+                ->count();
+            $jumlahTanggungan = $totalTugas - $tugasSelesai;
+
+            // 🔥 Simpan update ke database
+            RekapKelas::where('id_siswa', $siswaId)->update([
+                'jumlah_selesai' => $tugasSelesai,
+                'jumlah_tanggungan' => $jumlahTanggungan,
+            ]);
         }
 
         return redirect()->back()->with('success', 'Status tugas berhasil diperbarui.');
@@ -122,6 +156,7 @@ class RekapTugasController extends Controller
         foreach ($siswaList as $siswa) {
             foreach ($tasks as $taskName) {
                 RekapPengumpulan::create([
+                    'id_rekap_kelas' => $id_rekap,
                     'id_siswa' => $siswa->id_siswa,
                     'id_mapel' => $mapel->id_mapel,
                     'nama_tugas' => $taskName,
@@ -160,6 +195,7 @@ class RekapTugasController extends Controller
             foreach ($siswaList as $siswa) {
                 foreach ($tasks as $taskName) {
                     RekapPengumpulan::create([
+                        'id_rekap_kelas' => $rekap->id_rekap,
                         'id_siswa' => $siswa->id_siswa,
                         'id_mapel' => $mapel->id_mapel,
                         'nama_tugas' => $taskName,

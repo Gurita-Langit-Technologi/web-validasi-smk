@@ -28,6 +28,6 @@ class RekapKelas extends Model
 
     public function tugas()
     {
-        return $this->hasMany(RekapPengumpulan::class, 'id_rekap', 'id_rekap');
+        return $this->hasMany(RekapPengumpulan::class, 'id_rekap_kelas', 'id_rekap_kelas')->distinct();
     }
 }

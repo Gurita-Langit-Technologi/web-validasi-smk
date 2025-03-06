@@ -72,12 +72,10 @@ class AuthController extends Controller
             ['token' => Hash::make($token), 'created_at' => now()]
         );
 
-        Resend::emails()->send([
-            'from' => 'noreply@yourdomain.com',
-            'to' => $guru->email,
-            'subject' => 'Reset Password',
-            'html' => "Klik link berikut untuk mereset password Anda: <a href='" . route('reset-password-form', ['token' => $token]) . "'>Reset Password</a>"
-        ]);
+        Mail::send('emails.reset-password', ['token' => $token], function ($message) use ($guru) {
+            $message->to($guru->email)
+                ->subject('Reset Password');
+        });
 
         return back()->with('status', 'Link reset password telah dikirim ke email Anda.');
     }

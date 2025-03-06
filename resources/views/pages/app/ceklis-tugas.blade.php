@@ -36,7 +36,7 @@
                                     @foreach ($siswa as $student)
                                         <tr>
                                             <td>{{ $student->nama_siswa }}</td>
-                                            @foreach ($tugas as $task)
+                                            @foreach ($siswaTugas[$student->id_siswa] as $task)
                                                 @php
                                                     $rekap = \App\Models\RekapPengumpulan::where(
                                                         'id_tugas',
@@ -71,6 +71,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+
                         </div>
                         <button type="submit" class="btn btn-primary mt-3">Simpan</button>
                         <a href="{{ route('export-tugas', ['id_mapel' => $mapel->id_mapel]) }}"
