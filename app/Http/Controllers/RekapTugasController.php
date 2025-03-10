@@ -107,7 +107,6 @@ class RekapTugasController extends Controller
     }
 
 
-
     public function updateStatusTugas(Request $request)
     {
         foreach ($request->tugas as $siswaId => $tugas) {
@@ -125,14 +124,12 @@ class RekapTugasController extends Controller
                 }
             }
 
-            // 🔥 Hitung ulang jumlah tugas selesai dan tanggungan siswa
             $totalTugas = RekapPengumpulan::where('id_siswa', $siswaId)->count();
             $tugasSelesai = RekapPengumpulan::where('id_siswa', $siswaId)
                 ->where('status', 'Selesai')
                 ->count();
             $jumlahTanggungan = $totalTugas - $tugasSelesai;
 
-            // 🔥 Simpan update ke database
             RekapKelas::where('id_mapel', $rekap->id_mapel)->update([
                 'jumlah_selesai' => $tugasSelesai,
                 'jumlah_tanggungan' => $jumlahTanggungan,
@@ -141,6 +138,43 @@ class RekapTugasController extends Controller
 
         return redirect()->back()->with('success', 'Status tugas berhasil diperbarui.');
     }
+
+    public function addSingleTaskPerClass(Request $request, $id_rekap)
+    {
+        $rekap = RekapKelas::findOrFail($id_rekap);
+        $mapel = $rekap->mapel;
+        $kelas = $rekap->kelas;
+        $taskName = $request->task;
+
+        if (!$taskName) {
+            return response()->json(['message' => 'Nama tugas tidak boleh kosong!'], 400);
+        }
+
+        $siswaList = Siswa::where('nama_kelas', $kelas->nama_kelas)->get();
+
+        foreach ($siswaList as $siswa) {
+            RekapPengumpulan::create([
+                'id_rekap_kelas' => $id_rekap,
+                'id_siswa' => $siswa->id_siswa,
+                'id_mapel' => $mapel->id_mapel,
+                'nama_tugas' => $taskName,
+                'status' => 'Belum Selesai',
+            ]);
+        }
+
+        // Update total tugas
+        $rekap->total_tugas += 1;
+        $rekap->jumlah_selesai = RekapPengumpulan::where('id_mapel', $mapel->id_mapel)
+            ->whereHas('siswa', function ($query) use ($kelas) {
+                $query->where('nama_kelas', $kelas->nama_kelas);
+            })->where('status', 'Selesai')->count();
+
+        $rekap->jumlah_tanggungan = $rekap->total_tugas - $rekap->jumlah_selesai;
+        $rekap->save();
+
+        return response()->json(['message' => 'Tugas baru berhasil ditambahkan!'], 200);
+    }
+
 
     public function generateTasksPerClass(Request $request, $id_rekap)
     {

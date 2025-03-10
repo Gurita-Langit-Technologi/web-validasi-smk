@@ -37,6 +37,7 @@ Route::middleware(['auth:guru'])->group(function () {
     // Route::get('/form-tugas/{id}', [TugasController::class, 'show'])->name('form-tugas');
     Route::post('/generate-tasks-per-class/{id_rekap}', [RekapTugasController::class, 'generateTasksPerClass']);
     Route::post('/generate-all-tasks', [RekapTugasController::class, 'generateAllTasks']);
+    Route::post('/add-single-task/{id_rekap}', [RekapTugasController::class, 'addSingleTaskPerClass']);
     Route::post('/update-status-tugas', [RekapTugasController::class, 'updateStatusTugas'])->name('update-status-tugas');
     Route::get('/export-tugas/{id_mapel}', function ($id_mapel) {
         return Excel::download(new RekapTugasExport($id_mapel), 'rekap_tugas.xlsx');

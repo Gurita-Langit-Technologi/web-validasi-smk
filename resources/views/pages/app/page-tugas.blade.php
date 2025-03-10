@@ -63,6 +63,8 @@
                         </div>
                         <button class="btn btn-primary mt-2"
                             onclick="generateTasksPerClass('{{ $rekap->id_rekap_kelas }}')">Add</button>
+                        <button class="btn btn-secondary mt-2"
+                            onclick="addSingleTask('{{ $rekap->id_rekap_kelas }}')">Tambah 1 Tugas</button>
                     </div>
                 </div>
             </div>
@@ -127,6 +129,33 @@
             }
         }
     }
+
+    function addSingleTask(classId) {
+        const container = document.getElementById(`tugas-names-container-${classId}`);
+        const taskInputs = container.getElementsByTagName("input");
+        const lastTaskInput = taskInputs[taskInputs.length - 1]; // Ambil input terakhir
+
+        if (!lastTaskInput || !lastTaskInput.value.trim()) {
+            alert("Isi nama tugas terlebih dahulu!");
+            return;
+        }
+
+        fetch(`/add-single-task/${classId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                },
+                body: JSON.stringify({
+                    task: lastTaskInput.value.trim()
+                })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error("Error:", error));
+    }
+
+
 
     function generateTasksPerClass(classId) {
         const taskInputs = document.querySelectorAll(`#tugas-names-container-${classId} input`);
