@@ -40,11 +40,12 @@ class RekapTugasExport implements FromCollection, WithHeadings, WithMapping
 
             foreach ($tugas as $index => $tugasData) {
                 $this->data[] = [
-                    'nama_siswa' => $index === 0 ? $namaSiswa : '', 
+                    'nama_siswa' => $index === 0 ? $namaSiswa : '',
                     'nama_tugas' => $tugasData->nama_tugas,
                     'status' => $tugasData->status,
                     'tanggal_pengumpulan' => $tugasData->tanggal_pengumpulan,
-                    'keterangan' => $tugasData->keterangan ?? ''
+                    'keterangan' => $tugasData->keterangan ?? '',
+                    'nilai' => $tugasData->nilai ?? '-'
                 ];
             }
         }
@@ -59,7 +60,8 @@ class RekapTugasExport implements FromCollection, WithHeadings, WithMapping
             'Nama Tugas',
             'Status',
             'Tanggal Pengumpulan',
-            'Keterangan'
+            'Keterangan',
+            'Nilai'
         ];
     }
 
@@ -70,7 +72,8 @@ class RekapTugasExport implements FromCollection, WithHeadings, WithMapping
             $row['nama_tugas'],
             $row['status'],
             $row['tanggal_pengumpulan'],
-            $row['keterangan']
+            $row['keterangan'],
+            $row['nilai']
         ];
     }
 
@@ -89,17 +92,14 @@ class RekapTugasExport implements FromCollection, WithHeadings, WithMapping
 
                     if (!empty($row['nama_siswa'])) {
                         if ($mergeStartRow !== null) {
-                            // Merge cell sebelumnya jika lebih dari satu baris
                             $sheet->mergeCells("A{$mergeStartRow}:A" . ($currentRow - 1));
                         }
 
-                        // Atur baris baru untuk merge selanjutnya
                         $mergeStartRow = $currentRow;
                         $lastNamaSiswa = $row['nama_siswa'];
                     }
                 }
 
-                // Merge sel terakhir
                 if ($mergeStartRow !== null) {
                     $sheet->mergeCells("A{$mergeStartRow}:A" . ($currentRow));
                 }

@@ -109,17 +109,36 @@ class RekapTugasController extends Controller
 
     public function updateStatusTugas(Request $request)
     {
+        $namaTugasBaru = $request->input('nama_tugas_baru');
+        if ($namaTugasBaru) {
+            $siswaList = is_array($request->id_siswa) ? array_unique($request->id_siswa) : [$request->id_siswa];
+
+            // dd($siswaList);
+
+            foreach ($siswaList as $siswaId) {
+                RekapPengumpulan::create([
+                    'nama_tugas' => $namaTugasBaru,
+                    'id_mapel' => $request->id_mapel,
+                    'id_rekap_kelas' => $request->id_rekap_kelas,
+                    'id_siswa' => $siswaId,
+                ]);
+            }
+        }
+
         foreach ($request->tugas as $siswaId => $tugas) {
             foreach ($tugas as $tugasId => $status) {
+
+
                 $rekap = RekapPengumpulan::where('id_tugas', $tugasId)
                     ->where('id_siswa', $siswaId)
                     ->first();
 
                 if ($rekap) {
-                    // Update status tugas
-                    $rekap->status = $status;
+                    // Jika checkbox tidak dicentang, set status ke "Belum Selesai"
+                    $rekap->status = $status ?? 'Belum Selesai';
                     $rekap->tanggal_pengumpulan = $request->tanggal_pengumpulan[$siswaId][$tugasId] ?? null;
                     $rekap->keterangan = $request->keterangan[$siswaId][$tugasId] ?? null;
+                    $rekap->nilai = $request->nilai[$siswaId][$tugasId] ?? null;
                     $rekap->save();
                 }
             }
@@ -130,7 +149,7 @@ class RekapTugasController extends Controller
                 ->count();
             $jumlahTanggungan = $totalTugas - $tugasSelesai;
 
-            RekapKelas::where('id_mapel', $rekap->id_mapel)->update([
+            RekapKelas::where('id_mapel', $request->id_mapel)->update([
                 'jumlah_selesai' => $tugasSelesai,
                 'jumlah_tanggungan' => $jumlahTanggungan,
             ]);

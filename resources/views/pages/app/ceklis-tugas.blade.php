@@ -18,10 +18,10 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Detail Tugas untuk Mata Pelajaran: {{ $mapel->nama_mapel }}</h6>
-                    <form action="{{ route('update-status-tugas') }}" method="POST">
+                    <form action="{{ route('update-status-tugas') }}" method="POST" id="form-tugas">
                         @csrf
                         <div class="table-responsive">
-                            <table class="table text-center">
+                            <table class="table text-center" id="tabel-tugas">
                                 <thead>
                                     <tr>
                                         <th>Nama Siswa</th>
@@ -44,19 +44,38 @@
                                                     )
                                                         ->where('id_siswa', $student->id_siswa)
                                                         ->first();
+
+                                                    // dd($rekap->id_rekap_kelas);
+
                                                 @endphp
                                                 <td>
+                                                    <input type="hidden" name="tugas[{{ $student->id_siswa }}][new]"
+                                                        value="Belum Selesai">
+                                                    <input type="hidden" name="id_siswa[]"
+                                                        value="{{ $student->id_siswa }}">
+                                                    <input type="hidden" name="id_rekap_kelas"
+                                                        value="{{ $rekap->id_rekap_kelas }}">
+                                                    <input type="hidden"
+                                                        name="tugas[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                        value="Belum Selesai">
                                                     <input type="checkbox"
                                                         name="tugas[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
                                                         value="Selesai"
-                                                        {{ $rekap && $rekap->status == 'Selesai' ? 'checked' : '' }}>
+                                                        {{ $rekap && $rekap->status == 'Selesai' ? 'checked' : '' }}
+                                                        onchange="toggleTanggal(this, '{{ $student->id_siswa }}', '{{ $task->id_tugas }}')">
                                                     <div class="mt-2">
                                                         <input type="date" class="form-control"
                                                             name="tanggal_pengumpulan[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
-                                                            value="{{ $rekap->tanggal_pengumpulan ?? '' }}">
+                                                            value="{{ $rekap->tanggal_pengumpulan ?? '' }}"
+                                                            id="tanggal_{{ $student->id_siswa }}_{{ $task->id_tugas }}"
+                                                            {{ $rekap && $rekap->status == 'Selesai' ? '' : 'disabled' }}>
                                                         <textarea class="form-control mt-2" name="keterangan[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
                                                             placeholder="Keterangan">{{ $rekap->keterangan ?? '' }}</textarea>
                                                     </div>
+                                                    <input type="number" class="form-control mt-2"
+                                                        name="nilai[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                        value="{{ $rekap->nilai ?? '' }}" placeholder="Nilai"
+                                                        min="0" max="100">
                                                 </td>
                                             @endforeach
                                             <td>
@@ -71,9 +90,10 @@
                                     @endforeach
                                 </tbody>
                             </table>
-
                         </div>
                         <button type="submit" class="btn btn-primary mt-3">Simpan</button>
+                        <button type="button" class="btn btn-secondary mt-3" onclick="tambahTugas()">Tambah 1
+                            Tugas</button>
                         <a href="{{ route('export-tugas', ['id_mapel' => $mapel->id_mapel]) }}"
                             class="btn btn-success mt-3">
                             Export ke Excel
@@ -83,4 +103,42 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function tambahTugas() {
+            const table = document.getElementById('tabel-tugas');
+            const headerRow = table.querySelector('thead tr');
+            const bodyRows = table.querySelectorAll('tbody tr');
+
+            const newHeaderCell = document.createElement('th');
+            newHeaderCell.innerHTML = `
+                <input type="hidden" name="id_mapel" value="{{ $mapel->id_mapel }}">
+                <input type="text" class="form-control form-control-sm" name="nama_tugas_baru" placeholder="Nama Tugas Baru" id="nama-tugas-baru">
+            `;
+            headerRow.insertBefore(newHeaderCell, headerRow.querySelector('th:nth-last-child(2)'));
+
+            bodyRows.forEach(row => {
+                const newCell = document.createElement('td');
+                newCell.innerHTML = `
+                    <input type="checkbox" name="tugas[${row.querySelector('td').textContent.trim()}][new]" value="Belum Selesai">
+                    <div class="mt-2">
+                        <input type="date" class="form-control" name="tanggal_pengumpulan[${row.querySelector('td').textContent.trim()}][new]">
+                        <textarea class="form-control mt-2" name="keterangan[${row.querySelector('td').textContent.trim()}][new]" placeholder="Keterangan"></textarea>
+                    </div>
+                `;
+                row.insertBefore(newCell, row.querySelector('td:nth-last-child(2)'));
+            });
+        }
+
+        function toggleTanggal(checkbox, siswaId, tugasId) {
+            let tanggalInput = document.getElementById(`tanggal_${siswaId}_${tugasId}`);
+
+            if (checkbox.checked) {
+                tanggalInput.removeAttribute('disabled');
+            } else {
+                tanggalInput.setAttribute('disabled', 'true');
+                tanggalInput.value = "";
+            }
+        }
+    </script>
 @endsection

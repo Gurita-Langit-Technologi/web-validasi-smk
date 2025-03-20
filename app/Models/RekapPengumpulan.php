@@ -9,7 +9,7 @@ class RekapPengumpulan extends Model
     protected $table = 'rekap_pengumpulan';
     protected $primaryKey = 'id_tugas';
 
-    protected $fillable = ['id_rekap_kelas', 'id_siswa', 'id_mapel', 'nama_tugas', 'tanggal_pengumpulan', 'keterangan', 'status'];
+    protected $fillable = ['id_rekap_kelas', 'id_siswa', 'id_mapel', 'nama_tugas', 'tanggal_pengumpulan', 'keterangan', 'nilai', 'status'];
 
 
     public function siswa()

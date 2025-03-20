@@ -1,3 +1,8 @@
+@php
+    use Illuminate\Support\Facades\Auth;
+    $guru = Auth::guard('guru')->user();
+@endphp
+
 <nav class="navbar">
     <a href="#" class="sidebar-toggler">
         <i data-feather="menu"></i>
@@ -15,9 +20,10 @@
         </form>
         <ul class="navbar-nav">
             <li class="nav-item dropdown nav-profile">
-                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="https://via.placeholder.com/30x30" alt="profile">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown"
+                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="{{ asset($guru->foto ?? 'https://via.placeholder.com/30x30') }}" alt="profile">
+                    <span class="ml-2">{{ $guru->nama_guru ?? 'Guru' }}</span> <!-- Nama Guru -->
                 </a>
                 <div class="dropdown-menu" aria-labelledby="profileDropdown">
                     <div class="dropdown-header d-flex flex-column align-items-center">
@@ -25,8 +31,8 @@
                             <img src="https://via.placeholder.com/80x80" alt="">
                         </div>
                         <div class="info text-center">
-                            <p class="name font-weight-bold mb-0">Amiah Burton</p>
-                            <p class="email text-muted mb-3">amiahburton@gmail.com</p>
+                            <p class="name font-weight-bold mb-0">{{ $guru->nama_guru ?? 'Guru' }}</p>
+                            <p class="email text-muted mb-3">{{ $guru->email ?? '-' }}</p>
                         </div>
                     </div>
                     <div class="dropdown-body">

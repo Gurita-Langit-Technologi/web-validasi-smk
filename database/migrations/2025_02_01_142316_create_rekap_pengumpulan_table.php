@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nama_tugas');
             $table->date('tanggal_pengumpulan')->nullable();
             $table->string('keterangan')->nullable();
+            $table->integer('nilai')->default(0);
             $table->string('status')->default('Belum Selesai');
             $table->timestamps();
 

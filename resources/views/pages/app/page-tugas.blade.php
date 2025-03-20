@@ -56,6 +56,11 @@
                                                         id="task-{{ $rekap->id_rekap_kelas }}-{{ $index }}">
                                                 @endforeach
                                             </div>
+                                            <!-- Tombol Plus untuk Menambah 1 Form Input -->
+                                            <button type="button" class="btn btn-sm btn-outline-primary mt-2"
+                                                onclick="addSingleInput('{{ $rekap->id_rekap_kelas }}')">
+                                                <i class="fas fa-plus"></i> Tambah Tugas
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -78,7 +83,6 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-
                                         <th>Tugas Selesai</th>
                                         <th>Tanggungan</th>
                                     </tr>
@@ -130,6 +134,23 @@
         }
     }
 
+    function addSingleInput(classId) {
+        const container = document.getElementById(`tugas-names-container-${classId}`);
+        const taskInputs = container.getElementsByTagName("input");
+        const newIndex = taskInputs.length;
+
+        const newTaskInput = document.createElement('input');
+        newTaskInput.type = 'text';
+        newTaskInput.className = 'form-control form-control-sm mb-2';
+        newTaskInput.placeholder = `Nama Tugas ${newIndex + 1}`;
+        newTaskInput.id = `task-${classId}-${newIndex}`;
+        container.appendChild(newTaskInput);
+
+        // Update total tugas input
+        const totalTasksInput = document.getElementById(`total-tugas-${classId}`);
+        totalTasksInput.value = newIndex + 1;
+    }
+
     function addSingleTask(classId) {
         const container = document.getElementById(`tugas-names-container-${classId}`);
         const taskInputs = container.getElementsByTagName("input");
@@ -154,8 +175,6 @@
             .then(data => alert(data.message))
             .catch(error => console.error("Error:", error));
     }
-
-
 
     function generateTasksPerClass(classId) {
         const taskInputs = document.querySelectorAll(`#tugas-names-container-${classId} input`);
