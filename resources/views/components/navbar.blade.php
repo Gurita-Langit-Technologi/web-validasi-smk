@@ -22,7 +22,7 @@
             <li class="nav-item dropdown nav-profile">
                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown"
                     role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="{{ asset($guru->foto ?? 'https://via.placeholder.com/30x30') }}" alt="profile">
+                    <img src="{{ asset($guru->foto ?? asset('images/user.jpg')) }}" alt="profile">
                     <span class="ml-2">{{ $guru->nama_guru ?? 'Guru' }}</span> <!-- Nama Guru -->
                 </a>
                 <div class="dropdown-menu" aria-labelledby="profileDropdown">
