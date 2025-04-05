@@ -47,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
 
             ])
             ->font('Poppins')
-            ->favicon(url: '/images/FIC.png')
+            ->favicon(url: '/images/fic.png')
             ->brandName('SMK-PGRI 1')
 
             // ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

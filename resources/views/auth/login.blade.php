@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('fonts/feather-font/css/iconfont.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/flag-icon-css/css/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/demo_1/style.css') }}">
-    <link rel="shortcut icon" href="{{ asset('images/FIC.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('images/fic.png') }}" />
 </head>
 
 <body>
@@ -27,7 +27,7 @@
                                 <div class="col-md-10 pl-md-0">
                                     <div class="auth-form-wrapper px-4 py-5">
                                         <a href="#" class="noble-ui-logo d-block mb-2">
-                                            <img src="{{ asset('images/FIC.png') }}" alt="Logo"
+                                            <img src="{{ asset('images/fic.png') }}" alt="Logo"
                                                 style="height: 50px; margin-right: 5px;">
                                             SMK PGRI<span> BANYUWANGI</span>
                                         </a>
