@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class Guru extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasRoles;
 
     protected $table = 'guru';
     protected $primaryKey = 'id_guru';
 
-    protected $fillable = ['kode_guru', 'nama_guru', 'email', 'password'];
+    protected $fillable = ['kode_guru', 'nama_guru', 'password', 'role'];
 
     protected $hidden = ['password'];
 

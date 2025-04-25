@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_guru');
             $table->string('kode_guru')->unique();
             $table->string('nama_guru', 80);
+            $table->string('role')->default('guru');
             $table->timestamps();
         });
     }

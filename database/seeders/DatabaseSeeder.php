@@ -2,11 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Guru;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -164,5 +166,14 @@ class DatabaseSeeder extends Seeder
             ['id_mengajar' => 4,  'kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'kelas' => 'X IPS 2', 'mata_diklat' => 'Biologi', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
             ['id_mengajar' => 5,  'kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'kelas' => 'XI IPA 1', 'mata_diklat' => 'Sejarah', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
         ]);
+
+        Role::create(['name' => 'guru', 'guard_name' => 'guru']);
+        Role::create(['name' => 'wali kelas', 'guard_name' => 'guru']);
+
+        // Assign roles to existing users
+        $gurus = Guru::all();
+        foreach ($gurus as $guru) {
+            $guru->assignRole($guru->role);
+        }
     }
 }
