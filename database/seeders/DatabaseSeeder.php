@@ -26,11 +26,20 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('guru')->insert([
-            ['kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso',  'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati',  'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari',  'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin',  'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat',  'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'role' => 'guru', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'role' => 'wali kelas', 'created_at' => now(), 'updated_at' => now()],
+
+            ['kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'role' => 'guru', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'role' => 'wali kelas', 'created_at' => now(), 'updated_at' => now()],
+
+            ['kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'role' => 'guru', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'role' => 'wali kelas', 'created_at' => now(), 'updated_at' => now()],
+
+            ['kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'role' => 'guru', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'role' => 'wali kelas', 'created_at' => now(), 'updated_at' => now()],
+
+            ['kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'role' => 'guru', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'role' => 'wali kelas', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         DB::table('user_guru')->insert([
@@ -170,10 +179,130 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'guru', 'guard_name' => 'guru']);
         Role::create(['name' => 'wali kelas', 'guard_name' => 'guru']);
 
-        // Assign roles to existing users
-        $gurus = Guru::all();
-        foreach ($gurus as $guru) {
-            $guru->assignRole($guru->role);
-        }
+        DB::table('wali_kelas')->insert([
+            ['id_guru' => 2, 'id_kelas' => 1, 'created_at' => now(), 'updated_at' => now()], // Budi Santoso sebagai wali kelas
+            ['id_guru' => 4, 'id_kelas' => 2, 'created_at' => now(), 'updated_at' => now()], // Ani Setiawati
+            ['id_guru' => 6, 'id_kelas' => 3, 'created_at' => now(), 'updated_at' => now()], // Dewi Lestari
+            ['id_guru' => 8, 'id_kelas' => 4, 'created_at' => now(), 'updated_at' => now()], // Samsul Arifin
+            ['id_guru' => 10, 'id_kelas' => 5, 'created_at' => now(), 'updated_at' => now()], // Rahmat Hidayat
+        ]);
+
+
+        DB::table('rekap_pengumpulan')->insert([
+            [
+                'id_rekap_kelas' => 1,
+                'id_siswa' => 1,
+                'id_mapel' => 1,
+                'nama_tugas' => 'Tugas Matematika 1',
+                'tanggal_pengumpulan' => now()->addDays(3)->toDateString(),
+                'nilai' => 85,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_rekap_kelas' => 1,
+                'id_siswa' => 1,
+                'id_mapel' => 1,
+                'nama_tugas' => 'Tugas Matematika 2',
+                'tanggal_pengumpulan' => now()->addDays(6)->toDateString(),
+                'nilai' => 90,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id_rekap_kelas' => 2,
+                'id_siswa' => 2,
+                'id_mapel' => 2,
+                'nama_tugas' => 'Tugas Fisika 1',
+                'tanggal_pengumpulan' => now()->addDays(5)->toDateString(),
+                'nilai' => 0,
+                'status' => 'Belum Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_rekap_kelas' => 2,
+                'id_siswa' => 2,
+                'id_mapel' => 2,
+                'nama_tugas' => 'Tugas Fisika 2',
+                'tanggal_pengumpulan' => now()->addDays(8)->toDateString(),
+                'nilai' => 70,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id_rekap_kelas' => 3,
+                'id_siswa' => 3,
+                'id_mapel' => 3,
+                'nama_tugas' => 'Tugas Kimia 1',
+                'tanggal_pengumpulan' => now()->addDays(4)->toDateString(),
+                'nilai' => 90,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_rekap_kelas' => 3,
+                'id_siswa' => 3,
+                'id_mapel' => 3,
+                'nama_tugas' => 'Tugas Kimia 2',
+                'tanggal_pengumpulan' => now()->addDays(7)->toDateString(),
+                'nilai' => 85,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id_rekap_kelas' => 4,
+                'id_siswa' => 4,
+                'id_mapel' => 4,
+                'nama_tugas' => 'Tugas Biologi 1',
+                'tanggal_pengumpulan' => now()->addDays(6)->toDateString(),
+                'nilai' => 75,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_rekap_kelas' => 4,
+                'id_siswa' => 4,
+                'id_mapel' => 4,
+                'nama_tugas' => 'Tugas Biologi 2',
+                'tanggal_pengumpulan' => now()->addDays(9)->toDateString(),
+                'nilai' => 88,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id_rekap_kelas' => 5,
+                'id_siswa' => 5,
+                'id_mapel' => 5,
+                'nama_tugas' => 'Tugas Sejarah 1',
+                'tanggal_pengumpulan' => now()->addDays(2)->toDateString(),
+                'nilai' => 0,
+                'status' => 'Belum Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_rekap_kelas' => 5,
+                'id_siswa' => 5,
+                'id_mapel' => 5,
+                'nama_tugas' => 'Tugas Sejarah 2',
+                'tanggal_pengumpulan' => now()->addDays(7)->toDateString(),
+                'nilai' => 78,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 }
