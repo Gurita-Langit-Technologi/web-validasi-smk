@@ -21,4 +21,9 @@ class Mapel extends Model
     {
         return $this->hasMany(RekapPengumpulan::class, 'id_mapel', 'id_mapel');
     }
+
+    public function rekapKelas()
+    {
+        return $this->hasMany(RekapKelas::class, 'id_mapel');
+    }
 }

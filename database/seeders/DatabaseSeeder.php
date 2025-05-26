@@ -44,7 +44,8 @@ class DatabaseSeeder extends Seeder
 
         DB::table('user_guru')->insert([
             ['guru_id' => 1, 'email' => 'budisantoso@gmail.com', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()],
-            ['guru_id' => 2, 'email' => 'soraxora@gmail.com', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()]
+            ['guru_id' => 2, 'email' => 'budisantoso1@gmail.com', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()],
+            ['guru_id' => 3, 'email' => 'soraxora@gmail.com', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()]
         ]);
 
 
@@ -160,14 +161,6 @@ class DatabaseSeeder extends Seeder
         //     }
         // }
 
-        DB::table('rekap_kelas')->insert([
-            ['id_kelas' => 1, 'id_mapel' => 1, 'id_guru' => 1,  'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 2, 'id_mapel' => 2, 'id_guru' => 2,  'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 3, 'id_mapel' => 3, 'id_guru' => 3, 'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 4, 'id_mapel' => 4, 'id_guru' => 4, 'created_at' => now(), 'updated_at' => now()],
-            ['id_kelas' => 5, 'id_mapel' => 5, 'id_guru' => 5,  'created_at' => now(), 'updated_at' => now()],
-        ]);
-
         DB::table('tugas_mengajar')->insert([
             ['id_mengajar' => 1,  'kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'kelas' => 'X IPA 1', 'mata_diklat' => 'Matematika', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
             ['id_mengajar' => 2,  'kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'kelas' => 'X IPA 2', 'mata_diklat' => 'Fisika', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
@@ -176,16 +169,82 @@ class DatabaseSeeder extends Seeder
             ['id_mengajar' => 5,  'kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'kelas' => 'XI IPA 1', 'mata_diklat' => 'Sejarah', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        Role::create(['name' => 'guru', 'guard_name' => 'guru']);
-        Role::create(['name' => 'wali kelas', 'guard_name' => 'guru']);
-
         DB::table('wali_kelas')->insert([
-            ['id_guru' => 2, 'id_kelas' => 1, 'created_at' => now(), 'updated_at' => now()], // Budi Santoso sebagai wali kelas
-            ['id_guru' => 4, 'id_kelas' => 2, 'created_at' => now(), 'updated_at' => now()], // Ani Setiawati
-            ['id_guru' => 6, 'id_kelas' => 3, 'created_at' => now(), 'updated_at' => now()], // Dewi Lestari
-            ['id_guru' => 8, 'id_kelas' => 4, 'created_at' => now(), 'updated_at' => now()], // Samsul Arifin
-            ['id_guru' => 10, 'id_kelas' => 5, 'created_at' => now(), 'updated_at' => now()], // Rahmat Hidayat
+            ['kode_wali' => '1234567890', 'nama_wali' => 'Budi Santoso',  'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()],
+            ['kode_wali' => '0987654321', 'nama_wali' => 'Ani Setiawati', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()],
+            ['kode_wali' => '1122334455', 'nama_wali' => 'Dewi Lestari', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()],
+            ['kode_wali' => '5566778899', 'nama_wali' => 'Samsul Arifin', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()],
+            ['kode_wali' => '6677889900', 'nama_wali' => 'Rahmat Hidayat', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()],
         ]);
+
+        DB::table('perwalian_kelas')->insert([
+            ['id_wali_kelas' => 1, 'id_kelas' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['id_wali_kelas' => 2, 'id_kelas' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['id_wali_kelas' => 3, 'id_kelas' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['id_wali_kelas' => 4, 'id_kelas' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['id_wali_kelas' => 5, 'id_kelas' => 5, 'created_at' => now(), 'updated_at' => now()],
+        ]);
+
+        $waliKelasIds = DB::table('wali_kelas')->pluck('id_wali_kelas')->toArray();
+
+        DB::table('rekap_kelas')->insert([
+            [
+                'id_kelas' => 1,
+                'id_mapel' => 1,
+                'id_guru' => 1,
+                'id_wali_kelas' => $waliKelasIds[0] ?? 1,
+                'total_tugas' => 0,
+                'jumlah_selesai' => 0,
+                'jumlah_tanggungan' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_kelas' => 2,
+                'id_mapel' => 2,
+                'id_guru' => 2,
+                'id_wali_kelas' => $waliKelasIds[1] ?? 2,
+                'total_tugas' => 0,
+                'jumlah_selesai' => 0,
+                'jumlah_tanggungan' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_kelas' => 3,
+                'id_mapel' => 3,
+                'id_guru' => 3,
+                'id_wali_kelas' => $waliKelasIds[2] ?? 3,
+                'total_tugas' => 0,
+                'jumlah_selesai' => 0,
+                'jumlah_tanggungan' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_kelas' => 4,
+                'id_mapel' => 4,
+                'id_guru' => 4,
+                'id_wali_kelas' => $waliKelasIds[3] ?? 4,
+                'total_tugas' => 0,
+                'jumlah_selesai' => 0,
+                'jumlah_tanggungan' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_kelas' => 5,
+                'id_mapel' => 5,
+                'id_guru' => 5,
+                'id_wali_kelas' => $waliKelasIds[4] ?? 5,
+                'total_tugas' => 0,
+                'jumlah_selesai' => 0,
+                'jumlah_tanggungan' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+        ]);
+
 
 
         DB::table('rekap_pengumpulan')->insert([

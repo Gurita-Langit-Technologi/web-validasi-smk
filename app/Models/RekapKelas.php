@@ -30,4 +30,9 @@ class RekapKelas extends Model
     {
         return $this->hasMany(RekapPengumpulan::class, 'id_rekap_kelas', 'id_rekap_kelas')->distinct();
     }
+
+    public function waliKelas()
+    {
+        return $this->belongsTo(WaliKelas::class, 'id_wali_kelas', 'id_wali_kelas');
+    }
 }

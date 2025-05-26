@@ -9,15 +9,21 @@ use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect('/login/guru');
 });
 
 Route::get('/login', function () {
-    return view('auth.login');
-});
+    return redirect()->route('login.guru.form');
+})->name('login');
 
+// Login untuk Guru
+Route::get('/login/guru', [AuthController::class, 'showGuruLoginForm'])->name('login.guru.form');
+Route::post('/login/guru', [AuthController::class, 'loginGuru'])->name('login.guru');
 
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+// Login untuk Wali Kelas
+Route::get('/login/wali', [AuthController::class, 'showWaliLoginForm'])->name('login.wali.form');
+Route::post('/login/wali', [AuthController::class, 'loginWali'])->name('login.wali');
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgot-password-form');
@@ -26,9 +32,7 @@ Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])-
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
 
 Route::middleware(['auth:guru'])->group(function () {
-    Route::get('/guru', function () {
-        return view('pages.app.dashboard');
-    })->name('guru.dashboard');
+    Route::get('/dashboard', [GuruController::class, 'dashboard'])->name('dashboard');
     Route::get('/form-tugas/{id_mapel}', [RekapTugasController::class, 'showDetailTugas'])->name('detail-tugas');
     Route::get('/page-tugas', [RekapTugasController::class, 'index'])->name('page-tugas');
     Route::get('/rekap-tugas/edit/{id}', [RekapTugasController::class, 'edit'])->name('rekap-tugas.edit');
@@ -42,6 +46,10 @@ Route::middleware(['auth:guru'])->group(function () {
     Route::get('/export-tugas/{id_mapel}', function ($id_mapel) {
         return Excel::download(new RekapTugasExport($id_mapel), 'rekap_tugas.xlsx');
     })->name('export-tugas');
+});
+
+Route::middleware(['auth:wali'])->group(function () {
+    Route::get('/dashboard', [GuruController::class, 'dashboard'])->name('dashboard');
 });
 
 Route::get('/guru/create-password', [GuruController::class, 'create'])->name('guru.create');

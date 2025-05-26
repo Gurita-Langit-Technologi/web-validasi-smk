@@ -12,20 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('wali_kelas', function (Blueprint $table) {
-            $table->id();
-
-            $table->unsignedBigInteger('id_guru');
-            $table->foreign('id_guru')
-                ->references('id_guru')
-                ->on('guru')
-                ->onDelete('cascade');
-
-            $table->unsignedBigInteger('id_kelas');
-            $table->foreign('id_kelas')
-                ->references('id_kelas')
-                ->on('kelas')
-                ->onDelete('cascade');
-
+            $table->id('id_wali_kelas');
+            $table->string('kode_wali')->unique();
+            $table->string('nama_wali');
+            $table->string('password')->nullable();
             $table->timestamps();
         });
     }

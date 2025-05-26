@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login | guru</title>
+    <title>Login | wali kelas</title>
     <link rel="stylesheet" href="{{ asset('vendors/core/core.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/feather-font/css/iconfont.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/flag-icon-css/css/flag-icon.min.css') }}">
@@ -54,14 +54,14 @@
                                             </div>
                                         @endif
 
-                                        <form class="forms-sample" method="POST" action="{{ route('login.guru') }}">
+                                        <form class="forms-sample" method="POST" action="{{ route('login.wali') }}">
                                             @csrf
 
                                             <div class="form-group">
-                                                <label for="kode_guru">Kode Guru</label>
-                                                <input type="text" class="form-control" id="kode_guru"
-                                                    name="kode_guru" value="{{ old('kode_guru') }}" required autofocus
-                                                    placeholder="Masukkan Kode Guru">
+                                                <label for="kode_wali">Kode Wali</label>
+                                                <input type="text" class="form-control" id="kode_wali"
+                                                    name="kode_wali" value="{{ old('kode_wali') }}" required autofocus
+                                                    placeholder="Masukkan Kode Wali">
                                             </div>
 
                                             <div class="form-group">
@@ -90,10 +90,10 @@
                                                     Login
                                                 </button>
                                             </div>
-                                            <a href="{{ route('login.wali.form') }}"
-                                                class="d-block mt-3 text-muted">Login Sebagai Wali Kelas</a>
-
-                                            </p>
+                                            <a href="{{ route('login.guru.form') }}"
+                                                class="d-block mt-3
+                                                text-muted">Login
+                                                sebagai guru</a>
                                             <a href="{{ route('guru.create') }}" class="d-block mt-2 text-muted">
                                                 Belum punya password? Buat di sini
                                             </a>

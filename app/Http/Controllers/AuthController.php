@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Guru;
 use App\Models\User;
 use App\Models\UserGuru;
+use App\Models\WaliKelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -15,37 +16,57 @@ use Resend\Laravel\Facades\Resend;
 
 class AuthController extends Controller
 {
-    public function showLoginForm()
+    public function showGuruLoginForm()
     {
-        return view('auth.login');
+        return view('auth.login'); // view untuk guru
     }
 
-    public function login(Request $request)
+    public function showWaliLoginForm()
+    {
+        return view('auth.login_wali'); // view untuk wali kelas
+    }
+
+    public function loginGuru(Request $request)
     {
         $request->validate([
-            'kode_guru' => 'required|string',
+            'kode_guru' => 'required',
             'password' => 'required',
         ]);
 
         $guru = Guru::where('kode_guru', $request->kode_guru)->first();
-        $user_guru = UserGuru::where('guru_id', $guru->id_guru)->first();
+        $user = UserGuru::where('guru_id', optional($guru)->id_guru)->first();
 
-        // dd($guru && Hash::check($request->password, $user_guru->password));
-
-        if ($guru && Hash::check($request->password, $user_guru->password)) {
+        if ($guru && $user && Hash::check($request->password, $user->password)) {
             Auth::guard('guru')->login($guru);
-            return redirect()->route('guru.dashboard');
+            return redirect()->route('dashboard');
         }
 
-
-        return back()->withErrors(['login' => 'Login gagal, periksa kembali kredensial Anda.']);
+        return back()->withErrors(['login.guru.form' => 'Kode atau password salah']);
     }
+
+    public function loginWali(Request $request)
+    {
+        $request->validate([
+            'kode_wali' => 'required',
+            'password' => 'required',
+        ]);
+
+        $wali = WaliKelas::where('kode_wali', $request->kode_wali)->first();
+
+        if ($wali && Hash::check($request->password, $wali->password)) {
+            Auth::guard('wali')->login($wali);
+            return redirect()->route('dashboard');
+        }
+
+        return back()->withErrors(['login.wali.form' => 'Kode atau password salah']);
+    }
+
 
 
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('login.guru.form');
     }
 
     public function showForgotPasswordForm()

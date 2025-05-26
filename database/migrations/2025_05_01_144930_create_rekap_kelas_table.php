@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigInteger('id_kelas')->reference('id_kelas')->on('kelas');
             $table->bigInteger('id_mapel')->reference('id_mapel')->on('mapel');
             $table->bigInteger('id_guru')->reference('id_guru')->on('guru');
+            $table->bigInteger('id_wali_kelas')->reference('id_wali_kelas')->on('wali_kelas');
             $table->integer('total_tugas')->length(30)->default(0);
             $table->integer('jumlah_selesai')->length(30)->default(0);
             $table->integer('jumlah_tanggungan')->length(30)->default(0);

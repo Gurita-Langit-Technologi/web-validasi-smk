@@ -3,29 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class WaliKelas extends Model
+class WaliKelas extends Authenticatable
 {
     protected $table = 'wali_kelas';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_wali_kelas';
     protected $fillable = [
-        'id_guru',
-        'id_kelas',
+        'kode_wali',
+        'password',
     ];
 
-    /**
-     * Relasi ke model Guru
-     */
-    public function guru()
+
+    public function perwalian_kelas()
     {
-        return $this->belongsTo(Guru::class, 'id_guru', 'id_guru');
+        return $this->belongsTo(PerwalianKelas::class, 'id_wali_kelas', 'id_wali_kelas');
     }
 
-    /**
-     * Relasi ke model Kelas
-     */
-    public function kelas()
+    public function rekapKelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
+        return $this->hasMany(RekapKelas::class, 'id_wali_kelas', 'id_wali_kelas');
     }
 }
