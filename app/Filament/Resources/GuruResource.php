@@ -85,6 +85,7 @@ class GuruResource extends Resource
             //
         ];
     }
+
     //menghilangkan s pada navigasi
     public static function getPluralLabel(): ?string
     {
