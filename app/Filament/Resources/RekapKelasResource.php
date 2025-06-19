@@ -23,19 +23,25 @@ class RekapKelasResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+
             ->schema([
-                Forms\Components\TextInput::make('id_kelas')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('id_mapel')
-                    ->required()
-                    ->numeric(),
+
+                // Forms\Components\TextInput::make('kelas.nama_kelas')
+                //     ->label('Tingkat Kelas')
+                //     ->required()
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('id_mapel')
+                //     ->label('Mata Pelajaran')
+                //     ->required()
+                //     ->numeric(),
                 Forms\Components\TextInput::make('id_guru')
+                    ->label('Nama Guru pengampu')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('id_wali_kelas')
-                    ->required()
-                    ->numeric(),
+                // Forms\Components\TextInput::make('id_wali_kelas')
+                //     ->label('Nama Wali kelas')
+                //     ->required()
+                //     ->numeric(),
                 Forms\Components\TextInput::make('total_tugas')
                     ->required()
                     ->numeric()
@@ -98,7 +104,7 @@ class RekapKelasResource extends Resource
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(), // on off untuk view page
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -118,9 +124,9 @@ class RekapKelasResource extends Resource
     {
         return [
             'index' => Pages\ListRekapKelas::route('/'),
-            'create' => Pages\CreateRekapKelas::route('/create'),
-            'view' => Pages\ViewRekapKelas::route('/{record}'),
-            'edit' => Pages\EditRekapKelas::route('/{record}/edit'),
+            // 'create' => Pages\CreateRekapKelas::route('/create'),
+            //  'view' => Pages\ViewRekapKelas::route('/{record}'),
+            //'edit' => Pages\EditRekapKelas::route('/{record}/edit'),
 
         ];
     }
