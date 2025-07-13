@@ -35,4 +35,9 @@ class RekapKelas extends Model
     {
         return $this->belongsTo(WaliKelas::class, 'id_wali_kelas', 'id_wali_kelas');
     }
+    public function tugasPertama()
+    {
+        return $this->hasOne(RekapPengumpulan::class, 'id_rekap_kelas', 'id_rekap_kelas')
+            ->orderBy('created_at'); // atau pakai 'id' jika tidak ada timestamp
+    }
 }
