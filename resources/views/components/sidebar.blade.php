@@ -12,36 +12,45 @@
     <div class="sidebar-body">
         <ul class="nav">
             <li class="nav-item nav-category">Main</li>
-            <li class="nav-item">
-                <a href="{{ url('/guru') }}" class="nav-link">
-                    <i class="link-icon" data-feather="box"></i>
-                    <span class="link-title">Dashboard</span>
-                </a>
-            </li>
+            @if (\Illuminate\Support\Facades\Auth::guard('wali')->check())
+                <li class="nav-item">
+                    <a href="{{ url('/guru') }}" class="nav-link">
+                        <i class="link-icon" data-feather="box"></i>
+                        <span class="link-title">Dashboard</span>
+                    </a>
+                </li>
+            @else
+                <li class="nav-item">
+                    <a href="{{ url('/guru') }}" class="nav-link">
+                        <i class="link-icon" data-feather="box"></i>
+                        <span class="link-title">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('page-tugas') }}" class="nav-link">
+                        <i class="link-icon" data-feather="message-square"></i>
+                        <span class="link-title">Input rekap tugas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('page-kelas') }}" class="nav-link">
+                        <i class="link-icon" data-feather="message-square"></i>
+                        <span class="link-title">Detail tugas</span>
+                    </a>
+                </li>
 
-            <li class="nav-item">
-                <a href="{{ route('page-tugas') }}" class="nav-link">
-                    <i class="link-icon" data-feather="message-square"></i>
-                    <span class="link-title">Input rekap tugas</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('page-kelas') }}" class="nav-link">
-                    <i class="link-icon" data-feather="message-square"></i>
-                    <span class="link-title">Detail tugas</span>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        class="nav-link">
+                        <i class="link-icon" data-feather="log-out"></i>
+                        <span class="link-title">Logout</span>
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
+            @endif
 
-            <li class="nav-item">
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                    class="nav-link">
-                    <i class="link-icon" data-feather="log-out"></i>
-                    <span class="link-title">Logout</span>
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-            </li>
         </ul>
     </div>
 </nav>

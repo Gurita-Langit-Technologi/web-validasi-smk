@@ -362,6 +362,29 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+
+            [
+                'id_rekap_kelas' => 1,
+                'id_siswa' => 8,
+                'id_mapel' => 1,
+                'nama_tugas' => 'Tugas Matematika 1',
+                'tanggal_pengumpulan' => now()->addDays(3)->toDateString(),
+                'nilai' => 0,
+                'status' => 'Belum Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_rekap_kelas' => 1,
+                'id_siswa' => 8,
+                'id_mapel' => 1,
+                'nama_tugas' => 'Tugas Matematika 2',
+                'tanggal_pengumpulan' => now()->addDays(6)->toDateString(),
+                'nilai' => 95,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

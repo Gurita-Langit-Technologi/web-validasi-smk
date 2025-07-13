@@ -50,7 +50,6 @@ class GuruController extends Controller
         if (Auth::guard('wali')->check()) {
             $waliKelas = Auth::guard('wali')->user();
 
-            // Dapatkan kelas yang diampu wali kelas ini
             $perwalian = PerwalianKelas::with('kelas')->where('id_wali_kelas', $waliKelas->id_wali_kelas)->first();
 
             if (!$perwalian) {
@@ -60,15 +59,10 @@ class GuruController extends Controller
                 ]);
             }
 
-            // Dapatkan semua mapel di kelas ini dengan tugas-tugasnya
+            // Dapatkan semua mapel di kelas ini
             $mapelList = Mapel::whereHas('rekapKelas', function ($query) use ($perwalian) {
                 $query->where('id_kelas', $perwalian->id_kelas);
-            })->with(['rekapKelas' => function ($query) use ($perwalian) {
-                $query->where('id_kelas', $perwalian->id_kelas)
-                    ->with(['tugas' => function ($q) {
-                        $q->orderBy('tanggal_pengumpulan', 'asc');
-                    }]);
-            }])->get();
+            })->get();
 
             // Dapatkan semua siswa di kelas ini
             $siswaList = Siswa::whereHas('rekapPengumpulan', function ($query) use ($perwalian) {
@@ -77,23 +71,16 @@ class GuruController extends Controller
                 });
             })->get();
 
-            // Siapkan data untuk tabel detail tugas
+            // Siapkan data untuk tabel pertama (detail tugas)
             $tugasData = [];
-            $tugasColumns = [];
-
-            foreach ($mapelList as $mapel) {
-                foreach ($mapel->rekapKelas as $rekapKelas) {
-                    foreach ($rekapKelas->tugas as $tugas) {
-                        // Simpan nama tugas unik untuk kolom tabel
-                        if (!in_array($tugas->nama_tugas, $tugasColumns)) {
-                            $tugasColumns[] = $tugas->nama_tugas;
-                        }
-                    }
-                }
-            }
-
-            // Batasi hanya 5 tugas teratas
-            $tugasColumns = array_slice($tugasColumns, 0, 5);
+            $tugasList = RekapPengumpulan::whereHas('rekapKelas', function ($q) use ($perwalian) {
+                $q->where('id_kelas', $perwalian->id_kelas);
+            })
+                ->select('nama_tugas')
+                ->distinct()
+                ->orderBy('nama_tugas')
+                ->take(5)
+                ->pluck('nama_tugas');
 
             foreach ($siswaList as $siswa) {
                 $tugasData[$siswa->id_siswa] = [
@@ -101,20 +88,17 @@ class GuruController extends Controller
                     'tugas' => []
                 ];
 
-                foreach ($tugasColumns as $namaTugas) {
-                    $tugas = RekapPengumpulan::where('id_siswa', $siswa->id_siswa)
-                        ->where('nama_tugas', $namaTugas)
-                        ->orderBy('tanggal_pengumpulan', 'asc')
-                        ->first();
+                foreach ($tugasList as $tugas) {
+                    $status = RekapPengumpulan::where('id_siswa', $siswa->id_siswa)
+                        ->where('nama_tugas', $tugas)
+                        ->value('status') ?? 'Belum Selesai';
 
-                    $tugasData[$siswa->id_siswa]['tugas'][$namaTugas] = [
-                        'status' => $tugas ? $tugas->status : 'Belum Selesai',
-                        'nilai' => $tugas ? $tugas->nilai : null
+                    $tugasData[$siswa->id_siswa]['tugas'][$tugas] = [
+                        'status' => $status
                     ];
                 }
             }
 
-            // Siapkan data untuk tabel rekap mapel (sama seperti sebelumnya)
             $mapelProgress = [];
             foreach ($mapelList as $mapel) {
                 $mapelProgress[$mapel->id_mapel] = [
@@ -123,6 +107,7 @@ class GuruController extends Controller
                 ];
 
                 foreach ($siswaList as $siswa) {
+                    // Hitung tugas yang selesai untuk mapel ini
                     $completed = RekapPengumpulan::whereHas('rekapKelas', function ($q) use ($mapel, $perwalian) {
                         $q->where('id_mapel', $mapel->id_mapel)
                             ->where('id_kelas', $perwalian->id_kelas);
@@ -131,24 +116,25 @@ class GuruController extends Controller
                         ->where('status', 'Selesai')
                         ->count();
 
+                    // Hitung total tugas untuk mapel ini
                     $total = RekapKelas::where('id_mapel', $mapel->id_mapel)
                         ->where('id_kelas', $perwalian->id_kelas)
                         ->value('total_tugas');
 
-                    $mapelProgress[$mapel->id_mapel]['siswa'][$siswa->id_siswa] = [
-                        'completed' => $completed,
-                        'total' => $total,
-                        'completed_all' => $completed == $total
-                    ];
+                    // Debugging - tambahkan ini untuk memeriksa data
+                    // Log::info("Mapel: {$mapel->nama_mapel}, Siswa: {$siswa->nama_siswa}, Completed: {$completed}, Total: {$total}");
+
+                    $mapelProgress[$mapel->id_mapel]['siswa'][$siswa->id_siswa] = ($total > 0) && ($completed == $total);
                 }
             }
+
 
             return view('pages.app.dashboard', [
                 'isWaliKelas' => true,
                 'waliKelas' => $waliKelas,
                 'kelas' => $perwalian->kelas,
                 'tugasData' => $tugasData,
-                'tugasColumns' => $tugasColumns,
+                'tugasList' => $tugasList,
                 'mapelProgress' => $mapelProgress,
                 'siswaList' => $siswaList,
                 'mapelList' => $mapelList

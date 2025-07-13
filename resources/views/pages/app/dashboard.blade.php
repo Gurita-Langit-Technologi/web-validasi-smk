@@ -28,114 +28,102 @@
         @isset($error)
             <div class="alert alert-danger">{{ $error }}</div>
         @else
-            <div class="row">
-                <div class="col-12">
-                    <h4 class="mb-4">Progress Kelas {{ $kelas->nama_kelas }}</h4>
-
-                    <!-- Tabel 1: Detail Tugas per Siswa -->
-                    <div class="card mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h5>Detail Tugas Siswa</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Nama Siswa</th>
-                                            @foreach ($tugasColumns as $namaTugas)
-                                                <th class="text-center">{{ $namaTugas }}</th>
-                                            @endforeach
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($tugasData as $siswaId => $data)
-                                            <tr>
-                                                <td>{{ $data['nama'] }}</td>
-                                                @foreach ($tugasColumns as $namaTugas)
-                                                    <td class="text-center">
-                                                        @if (isset($data['tugas'][$namaTugas]))
-                                                            {{ $data['tugas'][$namaTugas]['status'] == 'Selesai' ? 'Sudah' : 'Belum' }}
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
-                                                @endforeach
-                                                <td class="text-center">
-                                                    @php
-                                                        $completed = count(
-                                                            array_filter($data['tugas'], function ($t) {
-                                                                return $t['status'] == 'Selesai';
-                                                            }),
-                                                        );
-                                                        $total = count($data['tugas']);
-                                                    @endphp
-                                                    @if ($total > 0 && $completed == $total)
-                                                        <i class="fas fa-check-circle text-success"></i>
-                                                    @else
-                                                        <i class="fas fa-times-circle text-danger"></i>
-                                                    @endif
-                                                </td>
-                                            </tr>
+            <!-- Tabel 1: Detail Tugas -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Detail Penyelesaian Tugas</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 20%">Nama Siswa</th>
+                                    @foreach ($tugasList as $tugas)
+                                        <th class="text-center">{{ $tugas }}</th>
+                                    @endforeach
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($tugasData as $siswaId => $data)
+                                    <tr>
+                                        <td>{{ $data['nama'] }}</td>
+                                        @foreach ($tugasList as $tugas)
+                                            <td class="text-center">
+                                                {{ $data['tugas'][$tugas]['status'] == 'Selesai' ? 'Sudah Selesai' : 'Belum Selesai' }}
+                                            </td>
                                         @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                        <td class="text-center">
+                                            @php
+                                                $completed = count(
+                                                    array_filter($data['tugas'], function ($t) {
+                                                        return $t['status'] == 'Selesai';
+                                                    }),
+                                                );
+                                                $total = count($data['tugas']);
+                                                $remaining = $total - $completed;
+                                            @endphp
+                                            @if ($remaining == 0)
+                                                <i class="fas fa-check-circle text-success"></i>
+                                            @elseif ($remaining == 1)
+                                                <i class="fas fa-exclamation-circle text-warning"></i>
+                                            @else
+                                                <i class="fas fa-times-circle text-danger"></i>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Tabel 2: Rekap Semua Mapel -->
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            <h5>Rekap Kelas per Mapel</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Nama Siswa</th>
-                                            @foreach ($mapelList as $mapel)
-                                                <th class="text-center">{{ $mapel->nama_mapel }}</th>
-                                            @endforeach
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($siswaList as $siswa)
-                                            <tr>
-                                                <td>{{ $siswa->nama }}</td>
-                                                @foreach ($mapelList as $mapel)
-                                                    <td class="text-center">
-                                                        @if (isset($mapelProgress[$mapel->id_mapel]['siswa'][$siswa->id_siswa]))
-                                                            @php
-                                                                $progress =
-                                                                    $mapelProgress[$mapel->id_mapel]['siswa'][
-                                                                        $siswa->id_siswa
-                                                                    ];
-                                                            @endphp
-                                                            @if ($progress['completed_all'])
-                                                                <i class="fas fa-check text-success"></i>
-                                                            @else
-                                                                <i class="fas fa-times text-danger"></i>
-                                                            @endif
-                                                        @else
-                                                            <i class="fas fa-times text-danger"></i>
-                                                        @endif
-                                                    </td>
-                                                @endforeach
-                                            </tr>
+            <!-- Spasi antara tabel -->
+            <div style="height: 30px;"></div>
+
+            <!-- Tabel 2: Rekap Mapel -->
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Wali Kelas : {{ $waliKelas->nama_wali }}</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 20%">Nama Siswa</th>
+                                    @foreach ($mapelList as $mapel)
+                                        <th class="text-center">{{ $mapel->nama_mapel }}</th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($siswaList as $siswa)
+                                    <tr>
+                                        <td>{{ $siswa->nama_siswa }}</td>
+                                        @foreach ($mapelList as $mapel)
+                                            <td class="text-center">
+                                                @if ($mapelProgress[$mapel->id_mapel]['siswa'][$siswa->id_siswa] ?? false)
+                                                    <input type="checkbox" checked class="form-check-input"
+                                                        style="width: 20px; height: 20px; margin-top:-10px; accent-color: green; pointer-events: none;">
+                                                @else
+                                                    <input type="checkbox" disabled class="form-check-input"
+                                                        style="width: 20px; height: 20px; margin-top:-10px;">
+                                                @endif
+                                            </td>
                                         @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         @endisset
     @elseif(\Illuminate\Support\Facades\Auth::guard('guru')->check())
-        <!-- Existing guru dashboard content -->
+        <!-- Tampilan untuk guru biasa -->
         <div class="row">
             <div class="col-md-12 grid-margin">
                 <div class="card">
@@ -148,3 +136,39 @@
         </div>
     @endif
 @endsection
+
+<style>
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: middle;
+    }
+
+    .card-header {
+        padding: 1rem 1.25rem;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .fa-check,
+    .fa-times {
+        font-size: 1.2em;
+    }
+
+    .fa-check-circle,
+    .fa-times-circle {
+        font-size: 1.5em;
+    }
+
+    .form-check-input {
+        cursor: default;
+        opacity: 1;
+    }
+
+    .form-check-input:checked {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+</style>
