@@ -7,6 +7,7 @@ use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 
+
 class SiswaImporter extends Importer
 {
     protected static ?string $model = Siswa::class;
@@ -22,7 +23,7 @@ class SiswaImporter extends Importer
                 ->rules(['required', 'max:255']),
             ImportColumn::make('nama_kelas')
                 ->requiredMapping()
-                ->rules(['required', 'max:10']),
+                ->rules(['required', 'max:50']),
         ];
     }
 
@@ -36,6 +37,7 @@ class SiswaImporter extends Importer
     {
         return 'siswa-import';
     }
+
 
 
 

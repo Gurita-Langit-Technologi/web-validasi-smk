@@ -16,7 +16,7 @@ return new class extends Migration
             // $table->unsignedBigInteger('id_kelas');
             $table->string('nisn', 12)->unique();
             $table->string('nama_siswa');
-            $table->string('nama_kelas', 10);
+            $table->string('nama_kelas', 50);
             $table->timestamps();
             // $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
         });
