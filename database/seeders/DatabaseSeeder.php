@@ -51,13 +51,13 @@ class DatabaseSeeder extends Seeder
 
         // Seeder untuk tabel kelas
         DB::table('kelas')->insert([
-            ['kode_kelas' => 'XIPA1', 'nama_kelas' => 'X IPA 1', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPA2', 'nama_kelas' => 'X IPA 2', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPS1', 'nama_kelas' => 'X IPS 1', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPS2', 'nama_kelas' => 'X IPS 2', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPA1', 'nama_kelas' => 'XI IPA 1', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPA2', 'nama_kelas' => 'XI IPA 2', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPS1', 'nama_kelas' => 'XI IPS 1', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPA1', 'nama_kelas' => 'X IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPA2', 'nama_kelas' => 'X IPA 2', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPS1', 'nama_kelas' => 'X IPS 1', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPS2', 'nama_kelas' => 'X IPS 2', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPA1', 'nama_kelas' => 'XI IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPA2', 'nama_kelas' => 'XI IPA 2', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPS1', 'nama_kelas' => 'XI IPS 1', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Seeder untuk tabel siswa
@@ -161,12 +161,27 @@ class DatabaseSeeder extends Seeder
         //     }
         // }
 
+        $gurumapel = DB::table('guru')->get();
+
+        foreach ($mapels as $mapel) {
+            foreach ($gurumapel as $gm) {
+
+                DB::table('guru_mapel')->insert([
+                    'id_guru' => $gm->id_guru,
+                    'kode_guru' => $gm->kode_guru,
+                    'kode_mapel' => $mapel->id_mapel,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
         DB::table('tugas_mengajar')->insert([
-            ['id_mengajar' => 1,  'kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'kelas' => 'X IPA 1', 'mata_diklat' => 'Matematika', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 2,  'kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'kelas' => 'X IPA 2', 'mata_diklat' => 'Fisika', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 3,  'kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'kelas' => 'X IPS 1', 'mata_diklat' => 'Kimia', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 4,  'kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'kelas' => 'X IPS 2', 'mata_diklat' => 'Biologi', 'jurusan' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 5,  'kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'kelas' => 'XI IPA 1', 'mata_diklat' => 'Sejarah', 'jurusan' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 1,  'kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'kelas' => 'X IPA 1', 'mata_diklat' => 'Matematika', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 2,  'kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'kelas' => 'X IPA 2', 'mata_diklat' => 'Fisika', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 3,  'kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'kelas' => 'X IPS 1', 'mata_diklat' => 'Kimia', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 4,  'kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'kelas' => 'X IPS 2', 'mata_diklat' => 'Biologi', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 5,  'kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'kelas' => 'XI IPA 1', 'mata_diklat' => 'Sejarah', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         DB::table('wali_kelas')->insert([

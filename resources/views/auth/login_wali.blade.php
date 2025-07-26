@@ -90,10 +90,10 @@
                                                     Login
                                                 </button>
                                             </div>
-                                            <a href="{{ route('login.guru.form') }}"
-                                                class="d-block mt-3
-                                                text-muted">Login
-                                                sebagai guru</a>
+                                            <a href="{{ route('login.wali.form') }}"
+                                                class="d-block mt-3 text-muted text-success">
+                                                Login sebagai <span class="text-success">Guru</span>
+                                            </a>
                                             <a href="{{ route('guru.create') }}" class="d-block mt-2 text-muted">
                                                 Belum punya password? Buat di sini
                                             </a>

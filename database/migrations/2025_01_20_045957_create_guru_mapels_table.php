@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('guru_mapels', function (Blueprint $table) {
+        Schema::create('guru_mapel', function (Blueprint $table) {
             $table->id();
-            $table->string('Nip')->nullable();;
-            $table->string('Nama Guru');
-            $table->text('Mapel');
-            $table->text('Kelas');
+            $table->unsignedBigInteger('id_guru');
+            $table->string('kode_guru');
+            $table->unsignedbigInteger('kode_mapel');
             $table->timestamps();
+
+            $table->foreign('id_guru')->references('id_guru')->on('guru')->onDelete('cascade');
+            $table->foreign('kode_mapel')->references('id_mapel')->on('mapel')->onDelete('cascade');
         });
     }
 

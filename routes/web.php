@@ -5,24 +5,28 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\RekapTugasController;
+use App\Http\Controllers\WaliController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', function () {
-    return redirect('/login/guru');
+    return redirect()->route('login');
 });
 
 Route::get('/login', function () {
-    return redirect()->route('login.guru.form');
+    return view('auth.login');
 })->name('login');
 
-// Login untuk Guru
-Route::get('/login/guru', [AuthController::class, 'showGuruLoginForm'])->name('login.guru.form');
-Route::post('/login/guru', [AuthController::class, 'loginGuru'])->name('login.guru');
+Route::prefix('guru')->group(function () {
+    Route::get('/login', [AuthController::class, 'showGuruLoginForm'])->name('login.guru.form');
+    Route::post('/login', [AuthController::class, 'loginGuru'])->name('login.guru');
+});
 
 // Login untuk Wali Kelas
-Route::get('/login/wali', [AuthController::class, 'showWaliLoginForm'])->name('login.wali.form');
-Route::post('/login/wali', [AuthController::class, 'loginWali'])->name('login.wali');
+Route::prefix('wali')->group(function () {
+    Route::get('/login', [AuthController::class, 'showWaliLoginForm'])->name('login.wali.form');
+    Route::post('/login', [AuthController::class, 'loginWali'])->name('login.wali');
+});
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -31,8 +35,8 @@ Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name(
 Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('reset-password-form');
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
 
-Route::middleware(['auth:guru'])->group(function () {
-    Route::get('/dashboard', [GuruController::class, 'dashboard'])->name('dashboard');
+Route::middleware(['auth:guru'])->prefix('guru')->group(function () {
+    Route::get('/dashboard', [GuruController::class, 'dashboard'])->name('guru.dashboard');
     Route::get('/form-tugas/{id_mapel}', [RekapTugasController::class, 'showDetailTugas'])->name('detail-tugas');
     Route::get('/page-tugas', [RekapTugasController::class, 'index'])->name('page-tugas');
     Route::get('/rekap-tugas/edit/{id}', [RekapTugasController::class, 'edit'])->name('rekap-tugas.edit');
@@ -48,14 +52,9 @@ Route::middleware(['auth:guru'])->group(function () {
     })->name('export-tugas');
 });
 
-Route::middleware(['auth:wali'])->group(function () {
-    Route::get('/dashboard', [GuruController::class, 'dashboard'])->name('dashboard');
+Route::middleware(['auth:wali'])->prefix('wali')->group(function () {
+    Route::get('/dashboard', [WaliController::class, 'dashboard'])->name('wali.dashboard');
 });
 
 Route::get('/guru/create-password', [GuruController::class, 'create'])->name('guru.create');
 Route::post('/guru/create-password', [GuruController::class, 'store'])->name('guru.set-password');
-
-//test cicd
-Route::get('/test', function () {
-    return "Hello World";
-});

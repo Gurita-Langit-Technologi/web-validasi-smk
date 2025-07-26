@@ -13,7 +13,7 @@ class TugasMengajar extends Model
         'nama_guru',
         'kelas',
         'mata_diklat',
-        'jurusan'
+        'kompetensi_keahlian'
     ];
 
     // Relasi ke Guru

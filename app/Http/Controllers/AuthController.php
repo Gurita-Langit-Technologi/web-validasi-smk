@@ -38,7 +38,7 @@ class AuthController extends Controller
 
         if ($guru && $user && Hash::check($request->password, $user->password)) {
             Auth::guard('guru')->login($guru);
-            return redirect()->route('dashboard');
+            return redirect()->route('guru.dashboard');
         }
 
         return back()->withErrors(['login.guru.form' => 'Kode atau password salah']);
@@ -55,7 +55,7 @@ class AuthController extends Controller
 
         if ($wali && Hash::check($request->password, $wali->password)) {
             Auth::guard('wali')->login($wali);
-            return redirect()->route('dashboard');
+            return redirect()->route('wali.dashboard');
         }
 
         return back()->withErrors(['login.wali.form' => 'Kode atau password salah']);
@@ -63,10 +63,18 @@ class AuthController extends Controller
 
 
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
-        return redirect()->route('login.guru.form');
+        if (Auth::guard('guru')->check()) {
+            Auth::guard('guru')->logout();
+        } elseif (Auth::guard('wali')->check()) {
+            Auth::guard('wali')->logout();
+        }
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 
     public function showForgotPasswordForm()
