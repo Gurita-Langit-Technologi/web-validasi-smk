@@ -26,20 +26,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('guru')->insert([
-            ['kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'role' => 'guru', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'role' => 'wali kelas', 'created_at' => now(), 'updated_at' => now()],
-
-            ['kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'role' => 'guru', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'role' => 'wali kelas', 'created_at' => now(), 'updated_at' => now()],
-
-            ['kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'role' => 'guru', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'role' => 'wali kelas', 'created_at' => now(), 'updated_at' => now()],
-
-            ['kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'role' => 'guru', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'role' => 'wali kelas', 'created_at' => now(), 'updated_at' => now()],
-
-            ['kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'role' => 'guru', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'role' => 'wali kelas', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         DB::table('user_guru')->insert([
@@ -136,11 +127,11 @@ class DatabaseSeeder extends Seeder
 
         // Seeder untuk tabel mapel
         DB::table('mapel')->insert([
-            ['nama_mapel' => 'Matematika', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_mapel' => 'Fisika', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_mapel' => 'Kimia',   'created_at' => now(), 'updated_at' => now()],
-            ['nama_mapel' => 'Biologi',   'created_at' => now(), 'updated_at' => now()],
-            ['nama_mapel' => 'Sejarah',    'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '101', 'nama_diklat' => 'Matematika', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '102', 'nama_diklat' => 'Fisika', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '103', 'nama_diklat' => 'Kimia',   'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '104', 'nama_diklat' => 'Biologi',   'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '105', 'nama_diklat' => 'Sejarah',    'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Seeder untuk tabel tugas
@@ -151,9 +142,9 @@ class DatabaseSeeder extends Seeder
         //         DB::table('tugas')->insert([
         //             'id_siswa' => rand(1, 5),  // Assign a random siswa
         //             'id_mapel' => $mapel->id_mapel,
-        //             'nama_tugas' => $mapel->nama_mapel . ' Tugas ' . $i,
+        //             'nama_tugas' => $mapel->nama_diklat . ' Tugas ' . $i,
         //             'Tanggal_pengumpulan' => now()->addDays(rand(7, 14))->toDateString(),  // Random due date between 7 and 14 days
-        //             'keterangan' => 'Tugas nomor ' . $i . ' untuk ' . $mapel->nama_mapel,
+        //             'keterangan' => 'Tugas nomor ' . $i . ' untuk ' . $mapel->nama_diklat,
         //             'status' => $i % 2 == 0 ? 'Selesai' : 'Belum Selesai',  // Random status
         //             'created_at' => now(),
         //             'updated_at' => now(),
