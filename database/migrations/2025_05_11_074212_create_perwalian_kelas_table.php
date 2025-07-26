@@ -23,7 +23,8 @@ return new class extends Migration
                 ->references('id_kelas')
                 ->on('kelas')
                 ->onDelete('cascade');
-
+            $table->string('kelas');
+            $table->string('kompetensi_keahlian');
             $table->timestamps();
         });
     }
