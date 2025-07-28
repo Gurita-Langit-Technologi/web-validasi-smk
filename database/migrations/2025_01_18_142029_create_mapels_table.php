@@ -13,9 +13,16 @@ return new class extends Migration
     {
         Schema::create('mapel', function (Blueprint $table) {
             $table->id('id_mapel');
-            $table->string('kode_mapel');
+            $table->string('kode_mapel')->unique();
             $table->string('nama_diklat', 80);
+            $table->unsignedBigInteger('id_guru');
             $table->timestamps();
+
+            $table->foreign('id_guru')
+                ->references('id_guru')
+                ->on('guru')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
         });
     }
 
@@ -24,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mapels');
+        Schema::dropIfExists('mapel'); // perbaiki dari 'mapels'
     }
 };

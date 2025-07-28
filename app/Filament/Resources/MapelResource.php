@@ -37,7 +37,16 @@ class MapelResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->query(
+                Mapel::query()->with(['guru'])
+            )
             ->columns([
+                Tables\Columns\TextColumn::make('guru.kode_guru')
+                    ->label('Kode Guru')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('guru.nama_guru')
+                    ->label('Nama Guru')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('kode_mapel')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_diklat')

@@ -42,13 +42,13 @@ class DatabaseSeeder extends Seeder
 
         // Seeder untuk tabel kelas
         DB::table('kelas')->insert([
-            ['kode_kelas' => 'XIPA1', 'nama_kelas' => 'X IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPA2', 'nama_kelas' => 'X IPA 2', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPS1', 'nama_kelas' => 'X IPS 1', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPS2', 'nama_kelas' => 'X IPS 2', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPA1', 'nama_kelas' => 'XI IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPA2', 'nama_kelas' => 'XI IPA 2', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPS1', 'nama_kelas' => 'XI IPS 1', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPA1', 'nama_kelas' => 'X IPA 1', 'tingkat_kelas' => 'X', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPA2', 'nama_kelas' => 'X IPA 2', 'tingkat_kelas' => 'X', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPS1', 'nama_kelas' => 'X IPS 1', 'tingkat_kelas' => 'X', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPS2', 'nama_kelas' => 'X IPS 2', 'tingkat_kelas' => 'X', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPA1', 'nama_kelas' => 'XI IPA 1', 'tingkat_kelas' => 'XI', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPA2', 'nama_kelas' => 'XI IPA 2', 'tingkat_kelas' => 'XI', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPS1', 'nama_kelas' => 'XI IPS 1', 'tingkat_kelas' => 'XI', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Seeder untuk tabel siswa
@@ -127,12 +127,13 @@ class DatabaseSeeder extends Seeder
 
         // Seeder untuk tabel mapel
         DB::table('mapel')->insert([
-            ['kode_mapel' => '101', 'nama_diklat' => 'Matematika', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '102', 'nama_diklat' => 'Fisika', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '103', 'nama_diklat' => 'Kimia',   'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '104', 'nama_diklat' => 'Biologi',   'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '105', 'nama_diklat' => 'Sejarah',    'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '101', 'nama_diklat' => 'Matematika', 'id_guru' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '102', 'nama_diklat' => 'Fisika',     'id_guru' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '103', 'nama_diklat' => 'Kimia',      'id_guru' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '104', 'nama_diklat' => 'Biologi',    'id_guru' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '105', 'nama_diklat' => 'Sejarah',    'id_guru' => 3, 'created_at' => now(), 'updated_at' => now()],
         ]);
+
 
         // Seeder untuk tabel tugas
         $mapels = DB::table('mapel')->get();

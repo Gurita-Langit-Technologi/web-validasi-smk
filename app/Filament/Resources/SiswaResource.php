@@ -45,6 +45,9 @@ class SiswaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->query(
+                Siswa::query()->with(['kelas'])
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('nisn')
                     ->color('text1')
@@ -59,8 +62,11 @@ class SiswaResource extends Resource
                     ->weight(FontWeight::Medium)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_kelas')
+                    ->label('Kelas')
                     ->color('text3')
                     ->searchable(),
+
+
 
             ])
             ->filters([
