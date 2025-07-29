@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Imports\KelasImporter;
+use Filament\Tables\Actions\ImportAction;
 
 class KelasResource extends Resource
 {
@@ -59,6 +61,10 @@ class KelasResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(KelasImporter::class)
             ]);
     }
 
@@ -67,6 +73,10 @@ class KelasResource extends Resource
         return [
             //
         ];
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::$model::count();
     }
 
     public static function getPages(): array

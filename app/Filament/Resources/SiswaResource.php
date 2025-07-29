@@ -49,7 +49,7 @@ class SiswaResource extends Resource
                 Siswa::query()->with(['kelas'])
             )
             ->columns([
-                Tables\Columns\TextColumn::make('nisn')
+                Tables\Columns\TextColumn::make('no_induk')
                     ->color('text1')
                     ->icon('heroicon-o-chevron-double-right')
                     ->fontFamily(FontFamily::Mono)
@@ -61,7 +61,7 @@ class SiswaResource extends Resource
                     ->color('text2')
                     ->weight(FontWeight::Medium)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nama_kelas')
+                Tables\Columns\TextColumn::make('kelas.nama_kelas')
                     ->label('Kelas')
                     ->color('text3')
                     ->searchable(),

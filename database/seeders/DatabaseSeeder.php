@@ -55,86 +55,22 @@ class DatabaseSeeder extends Seeder
         DB::table('siswa')->insert([
             [
                 'id_kelas' => 1,
-                'no_induk' => '123456789012',
                 'nama_siswa' => 'Andi Saputra',
-                'nama_kelas' => 'X IPA 1',
+                'no_induk' => '123456789012',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 1,
-                'no_induk' => '234567890123',
                 'id_kelas' => 2,
                 'nama_siswa' => 'Budi Santoso',
-                'nama_kelas' => 'X IPA 2',
+                'no_induk' => '234567890123',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'id_kelas' => 3,
-                'no_induk' => '345678901234',
-                'nama_siswa' => 'Citra Ayu',
-                'nama_kelas' => 'X IPS 1',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_kelas' => 4,
-                'no_induk' => '456789012345',
-                'nama_siswa' => 'Dedi Kusuma',
-                'nama_kelas' => 'X IPS 2',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_kelas' => 5,
-                'no_induk' => '567890123456',
-                'nama_siswa' => 'Eka Putri',
-                'nama_kelas' => 'XI IPA 1',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_kelas' => 6,
-                'no_induk' => '678901234567',
-                'nama_siswa' => 'Fajar Hidayat',
-                'nama_kelas' => 'XI IPA 2',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_kelas' => 7,
-                'no_induk' => '789012345678',
-                'nama_siswa' => 'Gina Larasati',
-                'nama_kelas' => 'XI IPS 1',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_kelas' => 1,
-                'no_induk' => '890123456789',
-                'nama_siswa' => 'Hadi Pratama',
-                'nama_kelas' => 'X IPA 1',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_kelas' => 2,
-                'no_induk' => '901234567890',
-                'nama_siswa' => 'Indah Safitri',
-                'nama_kelas' => 'X IPA 2',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_kelas' => 3,
-                'no_induk' => '012345678901',
-                'nama_siswa' => 'Joko Wahyu',
-                'nama_kelas' => 'X IPS 1',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            // ... lanjutkan lainnya
         ]);
+
+
 
         // Seeder untuk tabel mapel
         DB::table('mapel')->insert([

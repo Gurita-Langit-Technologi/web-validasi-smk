@@ -36,4 +36,8 @@ class Guru extends Authenticatable
     {
         return $this->belongsTo(UserGuru::class);
     }
+    public function perwalianKelas()
+    {
+        return $this->hasMany(PerwalianKelas::class, 'id_guru');
+    }
 }

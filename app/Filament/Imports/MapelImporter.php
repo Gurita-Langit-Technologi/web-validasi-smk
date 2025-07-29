@@ -19,6 +19,7 @@ class MapelImporter extends Importer
                 ->rules(['required', 'max:255']),
             ImportColumn::make('nama_diklat')
                 ->requiredMapping()
+                ->label('Mapel')
                 ->rules(['required', 'max:80']),
         ];
     }

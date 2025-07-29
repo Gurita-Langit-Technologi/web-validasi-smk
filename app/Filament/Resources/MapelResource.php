@@ -25,11 +25,10 @@ class MapelResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('kode_mapel')
-                    ->required()
-                    ->maxLength(255),
+
                 Forms\Components\TextInput::make('nama_diklat')
                     ->required()
+                    ->label('Mapel')
                     ->maxLength(80),
             ]);
     }
@@ -41,15 +40,12 @@ class MapelResource extends Resource
                 Mapel::query()->with(['guru'])
             )
             ->columns([
-                Tables\Columns\TextColumn::make('guru.kode_guru')
-                    ->label('Kode Guru')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('guru.nama_guru')
-                    ->label('Nama Guru')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('kode_mapel')
+                    ->label('Kode Mapel')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('nama_diklat')
+                    ->label('Mapel')
                     ->searchable(),
 
             ])
@@ -80,6 +76,10 @@ class MapelResource extends Resource
     public static function getPluralLabel(): ?string
     {
         return 'Mapel';
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::$model::count();
     }
 
     public static function getPages(): array
