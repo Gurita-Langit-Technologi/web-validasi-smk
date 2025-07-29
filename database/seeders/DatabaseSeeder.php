@@ -127,12 +127,13 @@ class DatabaseSeeder extends Seeder
 
         // Seeder untuk tabel mapel
         DB::table('mapel')->insert([
-            ['kode_mapel' => '101', 'nama_diklat' => 'Matematika', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '102', 'nama_diklat' => 'Fisika', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '103', 'nama_diklat' => 'Kimia',   'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '104', 'nama_diklat' => 'Biologi',   'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '105', 'nama_diklat' => 'Sejarah',    'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '101', 'nama_diklat' => 'Matematika', 'id_guru' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '102', 'nama_diklat' => 'Fisika',     'id_guru' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '103', 'nama_diklat' => 'Kimia',      'id_guru' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '104', 'nama_diklat' => 'Biologi',    'id_guru' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '105', 'nama_diklat' => 'Sejarah',    'id_guru' => 3, 'created_at' => now(), 'updated_at' => now()],
         ]);
+
 
         // Seeder untuk tabel tugas
         $mapels = DB::table('mapel')->get();

@@ -68,8 +68,8 @@ class RekapKelasResource extends Resource
                     ->label('Tingkat Kelas')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('kelas.jurusan')
-                    ->label('Jurusan')
+                Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
+                    ->label('Kompt Keahlian')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('tugas.nama_tugas')

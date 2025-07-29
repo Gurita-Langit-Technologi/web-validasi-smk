@@ -40,20 +40,26 @@ class TugasMengajarResource extends Resource
                     ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('mata_diklat')
+                Forms\Components\TextInput::make('nama_diklat')
+                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
+                    ->required()
+                    ->label('Mapel')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('kompetensi_keahlian')
                     ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('jurusan')
-                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
-                    ->required()
-                    ->maxLength(255),
+
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+
+            ->query(
+                TugasMengajar::query()->with(['kelas'])
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('kode_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
@@ -75,11 +81,14 @@ class TugasMengajarResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('mata_diklat')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
-                    ->color('text4')
+                    ->color('text3')
+                    ->label('Mapel')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('jurusan')
+
+                Tables\Columns\TextColumn::make('kompetensi_keahlian')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text5')
+                    ->label('jurusan')
             ])
             ->filters([
                 //
