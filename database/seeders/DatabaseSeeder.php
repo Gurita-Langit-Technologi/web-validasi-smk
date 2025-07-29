@@ -42,13 +42,13 @@ class DatabaseSeeder extends Seeder
 
         // Seeder untuk tabel kelas
         DB::table('kelas')->insert([
-            ['kode_kelas' => 'XIPA1', 'nama_kelas' => 'X IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPA2', 'nama_kelas' => 'X IPA 2', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPS1', 'nama_kelas' => 'X IPS 1', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPS2', 'nama_kelas' => 'X IPS 2', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPA1', 'nama_kelas' => 'XI IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPA2', 'nama_kelas' => 'XI IPA 2', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPS1', 'nama_kelas' => 'XI IPS 1', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPA1', 'tingkat_kelas' => 'X', 'nama_kelas' => 'X IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPA2', 'tingkat_kelas' => 'X', 'nama_kelas' => 'X IPA 2', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPS1', 'tingkat_kelas' => 'X', 'nama_kelas' => 'X IPS 1', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIPS2', 'tingkat_kelas' => 'X', 'nama_kelas' => 'X IPS 2', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPA1', 'tingkat_kelas' => 'XI', 'nama_kelas' => 'XI IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPA2', 'tingkat_kelas' => 'XI', 'nama_kelas' => 'XI IPA 2', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_kelas' => 'XIIPS1', 'tingkat_kelas' => 'XI', 'nama_kelas' => 'XI IPS 1', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Seeder untuk tabel siswa
