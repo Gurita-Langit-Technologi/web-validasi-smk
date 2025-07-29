@@ -24,6 +24,7 @@ jobs:
           script: |
             echo "Deployment started ..."
             cd /var/www/html/web_validasi_smk
+            sudo chown -R root:root /var/www/html/web_validasi_smk
             (php artisan down) || true
             git reset --hard
             git pull origin master
@@ -37,4 +38,5 @@ jobs:
             php artisan migrate:fresh --force --seed
             php artisan up
             php artisan queue:work --once
+            sudo chown -R www-data:www-data /var/www/html/web_validasi_smk
             echo "Deployment finished!"
