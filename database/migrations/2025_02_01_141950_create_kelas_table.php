@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('kode_kelas', 30)->unique();
             $table->string('tingkat_kelas');
             $table->string('nama_kelas', 10);
-            $table->string('tingkat_kelas', 3);
             $table->string('kompetensi_keahlian');
             $table->timestamps();
         });
