@@ -12,11 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('wali_kelas', function (Blueprint $table) {
-            $table->id('id_wali_kelas');
-            $table->string('kode_wali')->unique();
+
+            $table->bigIncrements('id_wali_kelas'); // ⬅️ Penting: membuat kolom PK dan index
+            $table->unsignedBigInteger('id_guru');
+            $table->string('kode_wali');
             $table->string('nama_wali');
-            $table->string('password')->nullable();
+            $table->string('password');
             $table->timestamps();
+
+            $table->foreign('id_guru')->references('id_guru')->on('guru')->onDelete('cascade');
         });
     }
 

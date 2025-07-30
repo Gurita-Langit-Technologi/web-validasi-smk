@@ -11,6 +11,8 @@ class WaliKelas extends Authenticatable
     protected $primaryKey = 'id_wali_kelas';
     protected $fillable = [
         'kode_wali',
+        'nama_wali',
+        'id_guru', // penting
         'password',
     ];
 
@@ -23,5 +25,14 @@ class WaliKelas extends Authenticatable
     public function rekapKelas()
     {
         return $this->hasMany(RekapKelas::class, 'id_wali_kelas', 'id_wali_kelas');
+    }
+
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class, 'id_guru');
+    }
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'id_wali_kelas', 'id_wali_kelas');
     }
 }

@@ -9,15 +9,21 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Carbon\Carbon;
+use App\Models\WaliKelas;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
      */
+
+
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Ambil mapping kode_guru => id
+
+
 
         User::factory()->create([
             'name' => 'Test User',
@@ -40,16 +46,113 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        // Seeder untuk tabel kelas
+        //seeder wali kelas
+        $waliData = [
+            ['kode' => '1234567890', 'nama' => 'Budi Santoso',     'password' => 'password1'],
+            ['kode' => '0987654321', 'nama' => 'Ani Setiawati',    'password' => 'password2'],
+            ['kode' => '1122334455', 'nama' => 'Dewi Lestari',     'password' => 'password3'],
+            ['kode' => '5566778899', 'nama' => 'Samsul Arifin',    'password' => 'password4'],
+            ['kode' => '6677889900', 'nama' => 'Rahmat Hidayat',   'password' => 'password5'],
+        ];
+
+        foreach ($waliData as $data) {
+            $guru = Guru::where('kode_guru', $data['kode'])->first();
+
+            if ($guru) {
+                WaliKelas::updateOrCreate(
+                    ['id_guru' => $guru->id_guru],
+                    [
+                        'kode_wali'  => $data['kode'],
+                        'nama_wali'  => $data['nama'],
+                        'password'   => Hash::make($data['password']),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+
+                $this->command->info(" Wali Kelas untuk {$data['nama']} berhasil dibuat.");
+            } else {
+                $this->command->warn("Guru dengan kode {$data['kode']} tidak ditemukan. Wali tidak dibuat.");
+            }
+        }
+
+        $this->command->info(" Seeder wali_kelas selesai dijalankan.");
+
+
+        //seeder kelas
+        $now = Carbon::now();
+
         DB::table('kelas')->insert([
-            ['kode_kelas' => 'XIPA1', 'tingkat_kelas' => 'X', 'nama_kelas' => 'X IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPA2', 'tingkat_kelas' => 'X', 'nama_kelas' => 'X IPA 2', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPS1', 'tingkat_kelas' => 'X', 'nama_kelas' => 'X IPS 1', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIPS2', 'tingkat_kelas' => 'X', 'nama_kelas' => 'X IPS 2', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPA1', 'tingkat_kelas' => 'XI', 'nama_kelas' => 'XI IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPA2', 'tingkat_kelas' => 'XI', 'nama_kelas' => 'XI IPA 2', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_kelas' => 'XIIPS1', 'tingkat_kelas' => 'XI', 'nama_kelas' => 'XI IPS 1', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            [
+                'id_wali_kelas' => 1,
+                'kode_kelas' => 'XIPA1',
+                'kompetensi_keahlian' => 'IPA',
+                'nama_kelas' => 'X IPA 1',
+                'tingkat_kelas' => 'X',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'id_wali_kelas' => 1,
+                'kode_kelas' => 'XIPA2',
+                'kompetensi_keahlian' => 'IPA',
+                'nama_kelas' => 'X IPA 2',
+                'tingkat_kelas' => 'X',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'id_wali_kelas' => 2,
+                'kode_kelas' => 'XIPS1',
+                'kompetensi_keahlian' => 'IPS',
+                'nama_kelas' => 'X IPS 1',
+                'tingkat_kelas' => 'X',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'id_wali_kelas' => 2,
+                'kode_kelas' => 'XIPS2',
+                'kompetensi_keahlian' => 'IPS',
+                'nama_kelas' => 'X IPS 2',
+                'tingkat_kelas' => 'X',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'id_wali_kelas' => 3,
+                'kode_kelas' => 'XIIPA1',
+                'kompetensi_keahlian' => 'IPA',
+                'nama_kelas' => 'XI IPA 1',
+                'tingkat_kelas' => 'XI',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'id_wali_kelas' => 3,
+                'kode_kelas' => 'XIIPA2',
+                'kompetensi_keahlian' => 'IPA',
+                'nama_kelas' => 'XI IPA 2',
+                'tingkat_kelas' => 'XI',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'id_wali_kelas' => 4,
+                'kode_kelas' => 'XIIPS1',
+                'kompetensi_keahlian' => 'IPS',
+                'nama_kelas' => 'XI IPS 1',
+                'tingkat_kelas' => 'XI',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
         ]);
+
+
+
+
+
+
 
         // Seeder untuk tabel siswa
         DB::table('siswa')->insert([
@@ -123,13 +226,6 @@ class DatabaseSeeder extends Seeder
             ['id_mengajar' => 5,  'kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'kelas' => 'XI IPA 1', 'mata_diklat' => 'Sejarah', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        DB::table('wali_kelas')->insert([
-            ['kode_wali' => '1234567890', 'nama_wali' => 'Budi Santoso',  'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()],
-            ['kode_wali' => '0987654321', 'nama_wali' => 'Ani Setiawati', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()],
-            ['kode_wali' => '1122334455', 'nama_wali' => 'Dewi Lestari', 'password' => Hash::make('12345678'), 'created_at' => now(), 'updated_at' => now()],
-            ['kode_wali' => '5566778899', 'nama_wali' => 'Samsul Arifin', 'password' => Hash::make('12345678'),  'created_at' => now(), 'updated_at' => now()],
-            ['kode_wali' => '6677889900', 'nama_wali' => 'Rahmat Hidayat', 'password' => Hash::make('12345678'),  'created_at' => now(), 'updated_at' => now()],
-        ]);
 
         DB::table('perwalian_kelas')->insert([
             ['id_wali_kelas' => 1, 'id_kelas' => 1,  'kelas' => 'X IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],

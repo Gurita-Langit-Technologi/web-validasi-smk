@@ -17,16 +17,29 @@ class WaliKelasResource extends Resource
 {
     protected static ?string $model = WaliKelas::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
 
+
                 Forms\Components\TextInput::make('nama_wali')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('id_kelas')
+                    ->label('Kelas')
+                    ->relationship('kelas', 'kode_kelas') // pastikan field 'kode_kelas' ada di tabel kelas
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\Select::make('nama_kelas')
+                    ->label('Nama Kelas')
+                    ->relationship('kelas', 'nama_kelas') // pastikan field 'kode_kelas' ada di tabel kelas
+                    ->searchable()
+                    ->preload()
+                    ->required(),
 
             ]);
     }
@@ -34,11 +47,23 @@ class WaliKelasResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->query(
+                WaliKelas::query()->with(['kelas'])
+            )
             ->columns([
-                Tables\Columns\TextColumn::make('kode_wali')
-                    ->label('Nama Kelas')
+                Tables\Columns\TextColumn::make('guru.kode_guru')
+                    ->label('Kode Guru')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_wali')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kelas.nama_kelas')
+                    ->label('Nama Kelas')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kelas.tingkat_kelas')
+                    ->label('Tingkat Kelas')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
+                    ->label('Kompetensi Keahlian')
                     ->searchable(),
 
             ])

@@ -42,6 +42,8 @@ class KelasResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('kode_kelas')
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('nama_kelas')
                     ->searchable(),
