@@ -29,12 +29,18 @@ class KelasResource extends Resource
                 Forms\Components\TextInput::make('nama_kelas')
                     ->required()
                     ->maxLength(10),
-                Forms\Components\TextInput::make('tingkat kelas_kelas')
-                    ->required()
-                    ->maxLength(30),
-                Forms\Components\TextInput::make('kompetensi_keahlian')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('tingkat_kelas')
+                    ->searchable()
+                    ->options(Kelas::all()->pluck('tingkat_kelas'))
+                    ->preload()
+                    ->required(),
+
+                Forms\Components\Select::make('kompetensi_keahlian')
+                    ->options(Kelas::all()->pluck('kompetensi_keahlian'))
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+
             ]);
     }
 
@@ -43,13 +49,17 @@ class KelasResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('kode_kelas')
+                    ->color('text1')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('nama_kelas')
+                    ->color('text2')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tingkat_kelas')
+                    ->color('text3')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kompetensi_keahlian')
+                    ->color('text4')
                     ->searchable(),
 
             ])

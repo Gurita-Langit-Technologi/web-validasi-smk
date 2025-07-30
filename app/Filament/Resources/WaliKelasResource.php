@@ -53,17 +53,23 @@ class WaliKelasResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('guru.kode_guru')
                     ->label('Kode Guru')
+                    ->color('text1')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_wali')
+                    ->label('Wali Kelas')
+                    ->color('text2')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kelas.nama_kelas')
+                    ->color('text3')
                     ->label('Nama Kelas')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kelas.tingkat_kelas')
+                    ->color('text4')
                     ->label('Tingkat Kelas')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
                     ->label('Kompetensi Keahlian')
+                    ->color('text5')
                     ->searchable(),
 
             ])

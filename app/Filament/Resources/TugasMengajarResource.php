@@ -88,7 +88,7 @@ class TugasMengajarResource extends Resource
                 Tables\Columns\TextColumn::make('kompetensi_keahlian')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text5')
-                    ->label('jurusan')
+                    ->label('Kompetensi Keahlian')
             ])
             ->filters([
                 //

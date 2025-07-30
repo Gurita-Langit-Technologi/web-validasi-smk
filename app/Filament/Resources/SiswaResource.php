@@ -31,11 +31,9 @@ class SiswaResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('no_induk')
                     ->label('No Induk')
-
                     ->maxLength(12),
                 Forms\Components\TextInput::make('nama_siswa')
                     ->required()
-
                     ->maxLength(255),
                 Forms\Components\Select::make('nama_kelas')
                     ->label('Nama Kelas')
