@@ -29,16 +29,26 @@ class SiswaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nisn')
+                Forms\Components\TextInput::make('no_induk')
+                    ->label('No Induk')
 
                     ->maxLength(12),
                 Forms\Components\TextInput::make('nama_siswa')
                     ->required()
 
                     ->maxLength(255),
-                Forms\Components\TextInput::make('nama_kelas')
-                    ->required()
-                    ->maxLength(10),
+                Forms\Components\Select::make('nama_kelas')
+                    ->label('Nama Kelas')
+                    ->relationship('kelas', 'nama_kelas') // pastikan field 'kode_kelas' ada di tabel kelas
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\Select::make('kelas_id')
+                    ->label('Kelas')
+                    ->relationship('kelas', 'kode_kelas') // pastikan field 'kode_kelas' ada di tabel kelas
+                    ->searchable()
+                    ->preload()
+                    ->required(),
             ]);
     }
 
@@ -61,10 +71,20 @@ class SiswaResource extends Resource
                     ->color('text2')
                     ->weight(FontWeight::Medium)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('kelas.nama_kelas')
-                    ->label('Kelas')
+
+                Tables\Columns\TextColumn::make('kelas.tingkat_kelas')
+                    ->label('Tingkat Kelas')
                     ->color('text3')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('kelas.nama_kelas')
+                    ->label('Nama Kelas')
+                    ->color('text3')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
+                    ->label('Kompt Keahlian')
+                    ->color('text3')
+                    ->searchable(),
+
 
 
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Kelas extends Model
 {
     protected $table = 'kelas';
@@ -19,5 +20,15 @@ class Kelas extends Model
     public function tugasMengajar()
     {
         return $this->hasMany(TugasMengajar::class, 'id_kelas', 'id_kelas');
+    }
+
+    public function siswa()
+    {
+        return $this->hasMany(Siswa::class, 'id_kelas');
+    }
+
+    public function kompetensiKeahlian()
+    {
+        return $this->belongsTo(Kelas::class);
     }
 }

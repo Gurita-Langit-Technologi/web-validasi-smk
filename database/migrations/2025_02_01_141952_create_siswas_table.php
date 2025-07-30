@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('siswa', function (Blueprint $table) {
             $table->id('id_siswa');
-            $table->unsignedBigInteger('id_kelas')->nullable();
+            $table->unsignedBigInteger('id_kelas');
 
             $table->string('no_induk', 20)->unique();
             $table->string('nama_siswa');
