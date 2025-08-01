@@ -158,10 +158,6 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-
-
-
-
         // Seeder untuk tabel siswa
         DB::table('siswa')->insert([
             [
