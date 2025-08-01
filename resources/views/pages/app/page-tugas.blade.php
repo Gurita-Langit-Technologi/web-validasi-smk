@@ -46,14 +46,15 @@
                                             <input id="total-tugas-{{ $rekap->id_rekap_kelas }}" type="number"
                                                 class="form-control form-control-sm text-center"
                                                 value="{{ $rekap->total_tugas }}" min="1"
-                                                oninput="updateTaskNames('{{ $rekap->id_rekap_kelas }}')">
+                                                oninput="generateTaskNames('{{ $rekap->id_rekap_kelas }}')">
                                         </td>
                                         <td>
                                             <div id="tugas-names-container-{{ $rekap->id_rekap_kelas }}">
-                                                @foreach ($rekap->tugas as $index => $tugas)
+                                                @foreach ($rekap->tugas->unique('nama_tugas') as $index => $tugas)
                                                     <input type="text" class="form-control form-control-sm mb-2"
                                                         value="{{ $tugas->nama_tugas }}"
-                                                        id="task-{{ $rekap->id_rekap_kelas }}-{{ $index }}">
+                                                        id="task-{{ $rekap->id_rekap_kelas }}-{{ $index }}"
+                                                        data-old-name="{{ $tugas->nama_tugas }}">
                                                 @endforeach
                                             </div>
                                             <!-- Tombol Plus untuk Menambah 1 Form Input -->
@@ -105,11 +106,11 @@
         </div>
     @endforeach
 
-    <button class="btn btn-success mt-3" onclick="generateAllTasks()">Generate All Kelas</button>
+    <button class="btn btn-success mt-3" onclick="generateAllTasks()">generate All Kelas</button>
 @endsection
 
 <script>
-    function updateTaskNames(classId) {
+    function generateTaskNames(classId) {
         const totalTasksInput = document.getElementById(`total-tugas-${classId}`);
         const container = document.getElementById(`tugas-names-container-${classId}`);
         const totalTasks = parseInt(totalTasksInput.value) || 1;
@@ -127,7 +128,7 @@
         } else if (totalTasks < currentTasks) {
             for (let i = currentTasks - 1; i >= totalTasks; i--) {
                 const taskInput = document.getElementById(`task-${classId}-${i}`);
-                if (taskInput) {
+                if (taskInput && !taskInput.dataset.oldName) {
                     container.removeChild(taskInput);
                 }
             }
@@ -146,7 +147,7 @@
         newTaskInput.id = `task-${classId}-${newIndex}`;
         container.appendChild(newTaskInput);
 
-        // Update total tugas input
+        // generate total tugas input
         const totalTasksInput = document.getElementById(`total-tugas-${classId}`);
         totalTasksInput.value = newIndex + 1;
     }
@@ -172,13 +173,24 @@
                 })
             })
             .then(response => response.json())
-            .then(data => alert(data.message))
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    // Tambahkan data-old-name ke input yang baru dibuat
+                    lastTaskInput.dataset.oldName = lastTaskInput.value.trim();
+                }
+            })
             .catch(error => console.error("Error:", error));
     }
 
     function generateTasksPerClass(classId) {
-        const taskInputs = document.querySelectorAll(`#tugas-names-container-${classId} input`);
-        const tasks = Array.from(taskInputs).map(input => input.value);
+        const container = document.getElementById(`tugas-names-container-${classId}`);
+        const taskInputs = container.querySelectorAll("input");
+
+        const tasks = Array.from(taskInputs).map(input => ({
+            new_name: input.value.trim(),
+            old_name: input.dataset.oldName || null
+        }));
 
         fetch(`/guru/generate-tasks-per-class/${classId}`, {
                 method: "POST",
@@ -191,7 +203,17 @@
                 })
             })
             .then(response => response.json())
-            .then(data => alert(data.message))
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    // generate data-old-name untuk semua input yang berhasil digenerate
+                    taskInputs.forEach((input, index) => {
+                        if (tasks[index].new_name) {
+                            input.dataset.oldName = tasks[index].new_name;
+                        }
+                    });
+                }
+            })
             .catch(error => console.error("Error:", error));
     }
 
@@ -202,8 +224,11 @@
         rekapContainers.forEach(container => {
             const classId = container.id.split('-').pop();
             const taskInputs = container.querySelectorAll("input");
-            const tasks = Array.from(taskInputs).map(input => input.value);
-            allTasks[classId] = tasks;
+
+            allTasks[classId] = Array.from(taskInputs).map(input => ({
+                new_name: input.value.trim(),
+                old_name: input.dataset.oldName || null
+            }));
         });
 
         fetch("/guru/generate-all-tasks", {
@@ -217,7 +242,23 @@
                 })
             })
             .then(response => response.json())
-            .then(data => alert(data.message))
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    // generate data-old-name untuk semua input yang berhasil digenerate
+                    rekapContainers.forEach(container => {
+                        const classId = container.id.split('-').pop();
+                        const taskInputs = container.querySelectorAll("input");
+                        const tasks = allTasks[classId];
+
+                        taskInputs.forEach((input, index) => {
+                            if (tasks[index] && tasks[index].new_name) {
+                                input.dataset.oldName = tasks[index].new_name;
+                            }
+                        });
+                    });
+                }
+            })
             .catch(error => console.error("Error:", error));
     }
 </script>

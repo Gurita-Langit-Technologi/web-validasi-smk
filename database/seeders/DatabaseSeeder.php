@@ -158,6 +158,10 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
         // Seeder untuk tabel siswa
         DB::table('siswa')->insert([
             [
@@ -173,7 +177,10 @@ class DatabaseSeeder extends Seeder
                 'no_induk' => '234567890123',
                 'id_kelas' => 2,
                 'nama_siswa' => 'Alex Santoso',
+<<<<<<< HEAD
                 // 'nama_kelas' => 'X IPA 2',
+=======
+>>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -181,7 +188,10 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 3,
                 'no_induk' => '345678901234',
                 'nama_siswa' => 'Citra Ayu',
+<<<<<<< HEAD
                 //'nama_kelas' => 'X IPS 1',
+=======
+>>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -189,7 +199,10 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 4,
                 'no_induk' => '456789012345',
                 'nama_siswa' => 'Dedi Kusuma',
+<<<<<<< HEAD
                 // 'nama_kelas' => 'X IPS 2',
+=======
+>>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -197,7 +210,10 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 5,
                 'no_induk' => '567890123456',
                 'nama_siswa' => 'Eka Putri',
+<<<<<<< HEAD
                 // 'nama_kelas' => 'XI IPA 1',
+=======
+>>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -205,7 +221,10 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 6,
                 'no_induk' => '678901234567',
                 'nama_siswa' => 'Fajar Hidayat',
+<<<<<<< HEAD
                 // 'nama_kelas' => 'XI IPA 2',
+=======
+>>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -213,7 +232,10 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 7,
                 'no_induk' => '789012345678',
                 'nama_siswa' => 'Gina Larasati',
+<<<<<<< HEAD
                 //  'nama_kelas' => 'XI IPS 1',
+=======
+>>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -221,7 +243,10 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 1,
                 'no_induk' => '890123456789',
                 'nama_siswa' => 'Hadi Pratama',
+<<<<<<< HEAD
                 //  'nama_kelas' => 'X IPA 1',
+=======
+>>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -229,7 +254,10 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 2,
                 'no_induk' => '901234567890',
                 'nama_siswa' => 'Indah Safitri',
+<<<<<<< HEAD
                 // 'nama_kelas' => 'X IPA 2',
+=======
+>>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -237,7 +265,10 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 3,
                 'no_induk' => '012345678901',
                 'nama_siswa' => 'Joko Wahyu',
+<<<<<<< HEAD
                 // 'nama_kelas' => 'X IPS 1',
+=======
+>>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
