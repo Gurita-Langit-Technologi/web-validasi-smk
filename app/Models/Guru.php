@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Guru extends Authenticatable
 {
     use Notifiable;
+    public $incrementing = true;
+    protected $keyType = 'int';
+
 
     protected $table = 'guru';
     protected $primaryKey = 'id_guru';
@@ -35,5 +38,13 @@ class Guru extends Authenticatable
     public function auth()
     {
         return $this->belongsTo(UserGuru::class);
+    }
+    public function perwalianKelas()
+    {
+        return $this->hasMany(PerwalianKelas::class, 'id_guru');
+    }
+    public function waliKelas()
+    {
+        return $this->hasOne(WaliKelas::class, 'id_guru');
     }
 }

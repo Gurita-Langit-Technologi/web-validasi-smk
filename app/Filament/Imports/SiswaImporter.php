@@ -15,22 +15,24 @@ class SiswaImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('nisn')
+            ImportColumn::make('id_kelas')
+                ->requiredMapping()
+                ->rules(['required', 'max:50']),
+            ImportColumn::make('no_induk')
+                ->label('No Induk')
                 ->requiredMapping()
                 ->rules(['required', 'max:12']),
             ImportColumn::make('nama_siswa')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            ImportColumn::make('nama_kelas')
-                ->requiredMapping()
-                ->rules(['required', 'max:50']),
+
         ];
     }
 
     public function resolveRecord(): ?Siswa
     {
         return Siswa::firstOrNew([
-            'nisn' => $this->data['nisn'],
+            'id_siswa' => $this->data['id_siswa'],
         ]);
     }
     public function getJobBatchName(): ?string

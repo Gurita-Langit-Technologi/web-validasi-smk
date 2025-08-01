@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\RekapKelasResource\Pages;
+namespace App\Filament\Resources\WaliKelasResource\Pages;
 
-use App\Filament\Resources\RekapKelasResource;
+use App\Filament\Resources\WaliKelasResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListRekapKelas extends ListRecords
+class ListWaliKelas extends ListRecords
 {
-    protected static string $resource = RekapKelasResource::class;
+    protected static string $resource = WaliKelasResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            // Actions\CreateAction::make(),
+            Actions\CreateAction::make(),
         ];
     }
     public function getRedirectUrl(): string

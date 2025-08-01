@@ -29,16 +29,24 @@ class SiswaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nisn')
-
+                Forms\Components\TextInput::make('no_induk')
+                    ->label('No Induk')
                     ->maxLength(12),
                 Forms\Components\TextInput::make('nama_siswa')
                     ->required()
-
                     ->maxLength(255),
-                Forms\Components\TextInput::make('nama_kelas')
-                    ->required()
-                    ->maxLength(10),
+                Forms\Components\Select::make('nama_kelas')
+                    ->label('Nama Kelas')
+                    ->relationship('kelas', 'nama_kelas') // pastikan field 'kode_kelas' ada di tabel kelas
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\Select::make('kelas_id')
+                    ->label('Kelas')
+                    ->relationship('kelas', 'kode_kelas') // pastikan field 'kode_kelas' ada di tabel kelas
+                    ->searchable()
+                    ->preload()
+                    ->required(),
             ]);
     }
 
@@ -49,7 +57,7 @@ class SiswaResource extends Resource
                 Siswa::query()->with(['kelas'])
             )
             ->columns([
-                Tables\Columns\TextColumn::make('nisn')
+                Tables\Columns\TextColumn::make('no_induk')
                     ->color('text1')
                     ->icon('heroicon-o-chevron-double-right')
                     ->fontFamily(FontFamily::Mono)
@@ -61,10 +69,20 @@ class SiswaResource extends Resource
                     ->color('text2')
                     ->weight(FontWeight::Medium)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nama_kelas')
-                    ->label('Kelas')
+
+                Tables\Columns\TextColumn::make('kelas.tingkat_kelas')
+                    ->label('Tingkat Kelas')
                     ->color('text3')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('kelas.nama_kelas')
+                    ->label('Nama Kelas')
+                    ->color('text3')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
+                    ->label('Kompt Keahlian')
+                    ->color('text3')
+                    ->searchable(),
+
 
 
 
@@ -73,8 +91,8 @@ class SiswaResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                //  Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -118,7 +136,7 @@ class SiswaResource extends Resource
         return [
             'index' => Pages\ListSiswas::route('/'),
             'create' => Pages\CreateSiswa::route('/create'),
-            'edit' => Pages\EditSiswa::route('/{record}/edit'),
+            //  'edit' => Pages\EditSiswa::route('/{record}/edit'),
         ];
     }
 }

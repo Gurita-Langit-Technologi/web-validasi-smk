@@ -40,4 +40,10 @@ class RekapKelas extends Model
         return $this->hasOne(RekapPengumpulan::class, 'id_rekap_kelas', 'id_rekap_kelas')
             ->orderBy('created_at'); // atau pakai 'id' jika tidak ada timestamp
     }
+    // app/Models/Kelas.php
+
+    public function siswa()
+    {
+        return $this->hasMany(Siswa::class, 'id_kelas');
+    }
 }

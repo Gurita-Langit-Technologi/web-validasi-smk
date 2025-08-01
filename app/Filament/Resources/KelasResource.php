@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Imports\KelasImporter;
+use Filament\Tables\Actions\ImportAction;
 
 class KelasResource extends Resource
 {
@@ -27,12 +29,28 @@ class KelasResource extends Resource
                 Forms\Components\TextInput::make('nama_kelas')
                     ->required()
                     ->maxLength(10),
-                Forms\Components\TextInput::make('tingkat kelas_kelas')
-                    ->required()
-                    ->maxLength(30),
-                Forms\Components\TextInput::make('kompetensi_keahlian')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('tingkat_kelas')
+                    // ->searchable()
+                    ->options([
+                        'X' => 'X',
+                        'XI' => 'XI',
+                        'XII' => 'XII',
+                    ])
+                    ->preload()
+                    ->required(),
+
+                Forms\Components\Select::make('kompetensi_keahlian')
+                    ->options([
+                        'TM' => 'Teknik Pemesinan',
+                        'TO' => 'Teknik Otomotif',
+                        'TE' => 'Teknik Elektro',
+                        'AKL' => 'Akutansi Lembaga dan Keuangan'
+                    ])
+                    ->preload()
+                    ->required(),
+
+
+
             ]);
     }
 
@@ -41,11 +59,15 @@ class KelasResource extends Resource
         return $table
             ->columns([
 
+
                 Tables\Columns\TextColumn::make('nama_kelas')
+                    ->color('text2')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tingkat_kelas')
+                    ->color('text3')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kompetensi_keahlian')
+                    ->color('text4')
                     ->searchable(),
 
             ])
@@ -59,6 +81,10 @@ class KelasResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(KelasImporter::class)
             ]);
     }
 
@@ -67,6 +93,10 @@ class KelasResource extends Resource
         return [
             //
         ];
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::$model::count();
     }
 
     public static function getPages(): array

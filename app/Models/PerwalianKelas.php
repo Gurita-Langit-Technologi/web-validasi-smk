@@ -23,4 +23,9 @@ class PerwalianKelas extends Model
     {
         return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
     }
+
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class, 'id_wali_kelas', 'id_guru');
+    }
 }

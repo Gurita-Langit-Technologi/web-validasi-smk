@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\GuruResource\Pages;
+namespace App\Filament\Resources\WaliKelasResource\Pages;
 
-use App\Filament\Resources\GuruResource;
+use App\Filament\Resources\WaliKelasResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditGuru extends EditRecord
+class EditWaliKelas extends EditRecord
 {
-    protected static string $resource = GuruResource::class;
+    protected static string $resource = WaliKelasResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            //  Actions\DeleteAction::make(),
+            Actions\DeleteAction::make(),
         ];
     }
     public function getRedirectUrl(): string

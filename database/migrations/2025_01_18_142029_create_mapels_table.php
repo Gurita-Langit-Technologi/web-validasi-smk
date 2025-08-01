@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id('id_mapel');
             $table->string('kode_mapel')->unique();
             $table->string('nama_diklat', 80);
-            $table->unsignedBigInteger('id_guru');
+            $table->unsignedBigInteger('id_guru')->nullable(); // dibuat nullable
             $table->timestamps();
 
             $table->foreign('id_guru')
                 ->references('id_guru')
                 ->on('guru')
                 ->onUpdate('cascade')
-                ->onDelete('restrict');
+                ->onDelete('restrict'); // jika masih ingin menolak penghapusan guru yang sedang dipakai
         });
     }
 

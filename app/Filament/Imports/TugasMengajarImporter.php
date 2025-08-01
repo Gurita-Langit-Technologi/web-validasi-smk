@@ -26,7 +26,7 @@ class TugasMengajarImporter extends Importer
             ImportColumn::make('mata_diklat')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            ImportColumn::make('jurusan')
+            ImportColumn::make('kompetensi_keahlian')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
         ];

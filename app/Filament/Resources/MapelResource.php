@@ -25,11 +25,26 @@ class MapelResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\TextInput::make('kode_mapel')
                     ->required()
-                    ->maxLength(255),
+                    ->label('Mapel')
+                    ->maxLength(80),
+                Forms\Components\Select::make('kode_guru')
+                    ->required()
+                    ->relationship('guru', 'kode_guru')
+                    ->disabled(fn(string $operation) => $operation === 'edit')
+                    ->label('Kode Guru'),
+
+                Forms\Components\Select::make('nama_guru')
+                    ->required()
+                    ->relationship('guru', 'nama_guru')
+                    ->disabled(fn(string $operation) => $operation === 'edit')
+                    ->label('Nama Guru'),
+
                 Forms\Components\TextInput::make('nama_diklat')
                     ->required()
+                    ->label('Mapel')
                     ->maxLength(80),
             ]);
     }
@@ -41,15 +56,24 @@ class MapelResource extends Resource
                 Mapel::query()->with(['guru'])
             )
             ->columns([
+                Tables\Columns\TextColumn::make('kode_mapel')
+                    ->label('Kode Mapel')
+                    ->color('text1')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('nama_diklat')
+                    ->label('Mapel')
+                    ->color('text2')
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('guru.kode_guru')
                     ->label('Kode Guru')
+                    ->color('text4')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('guru.nama_guru')
                     ->label('Nama Guru')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kode_mapel')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nama_diklat')
+                    ->color('text4')
                     ->searchable(),
 
             ])
@@ -80,6 +104,10 @@ class MapelResource extends Resource
     public static function getPluralLabel(): ?string
     {
         return 'Mapel';
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::$model::count();
     }
 
     public static function getPages(): array
