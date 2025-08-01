@@ -52,6 +52,8 @@ class RekapTugasController extends Controller
     public function showDetailTugas($id_mapel)
     {
         $mapel = Mapel::find($id_mapel);
+        $rekapKelas = RekapKelas::with('kelas')->where('id_mapel', $id_mapel)->first();
+
         $siswa = Siswa::whereIn('id_siswa', function ($query) use ($id_mapel) {
             $query->select('id_siswa')
                 ->from('rekap_pengumpulan')
@@ -104,7 +106,7 @@ class RekapTugasController extends Controller
             ];
         }
 
-        return view('pages.app.ceklis-tugas', compact('mapel', 'tugas', 'siswa', 'siswaTugas', 'siswaStatus'));
+        return view('pages.app.ceklis-tugas', compact('mapel', 'tugas', 'siswa', 'siswaTugas', 'siswaStatus', 'rekapKelas'));
     }
 
 

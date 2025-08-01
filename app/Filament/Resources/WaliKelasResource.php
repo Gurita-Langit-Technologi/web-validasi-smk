@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Section;
+
 
 class WaliKelasResource extends Resource
 {
@@ -22,8 +24,8 @@ class WaliKelasResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
 
+            ->schema([
 
                 Forms\Components\TextInput::make('nama_wali')
                     ->required()

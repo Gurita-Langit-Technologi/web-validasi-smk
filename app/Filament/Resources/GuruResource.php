@@ -16,6 +16,9 @@ use App\Filament\Imports\GuruImporter;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Support\Enums\FontFamily;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\ImageColumn;
+
 
 class GuruResource extends Resource
 {
@@ -29,6 +32,7 @@ class GuruResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\TextInput::make('kode_guru')
                     ->required()
 
@@ -39,17 +43,24 @@ class GuruResource extends Resource
                     ->required()
                     ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->maxLength(80),
+
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+
             ->columns([
+
+
+                ImageColumn::make('avatar')
+                    ->defaultImageUrl('https://picsum.photos/64')
+                    ->circular(),
+
                 Tables\Columns\TextColumn::make('kode_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text1')
-
                     ->icon('heroicon-o-bookmark-square')
                     ->fontFamily(FontFamily::Mono)
                     ->copyable()
@@ -60,7 +71,9 @@ class GuruResource extends Resource
                     ->color('text2')
                     ->searchable(),
 
+
             ])
+
             ->filters([
                 //
             ])
