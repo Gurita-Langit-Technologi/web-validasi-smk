@@ -16,6 +16,12 @@ use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
 use App\Filament\Imports\SiswaImporter;
 use Filament\Tables\Actions\ImportAction;
+use Filament\Tables\Filters\SelectFilter;
+
+
+
+
+
 
 class SiswaResource extends Resource
 {
@@ -87,13 +93,12 @@ class SiswaResource extends Resource
 
 
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 //  Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -130,6 +135,7 @@ class SiswaResource extends Resource
 
         return 'text2';
     }
+
 
     public static function getPages(): array
     {
