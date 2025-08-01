@@ -91,8 +91,8 @@ class SiswaResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                //  Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -136,7 +136,7 @@ class SiswaResource extends Resource
         return [
             'index' => Pages\ListSiswas::route('/'),
             'create' => Pages\CreateSiswa::route('/create'),
-            'edit' => Pages\EditSiswa::route('/{record}/edit'),
+            //  'edit' => Pages\EditSiswa::route('/{record}/edit'),
         ];
     }
 }

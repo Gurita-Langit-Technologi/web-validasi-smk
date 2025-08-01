@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateRekapKelas extends CreateRecord
 {
     protected static string $resource = RekapKelasResource::class;
+    public function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

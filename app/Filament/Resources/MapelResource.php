@@ -26,6 +26,22 @@ class MapelResource extends Resource
         return $form
             ->schema([
 
+                Forms\Components\TextInput::make('kode_mapel')
+                    ->required()
+                    ->label('Mapel')
+                    ->maxLength(80),
+                Forms\Components\Select::make('kode_guru')
+                    ->required()
+                    ->relationship('guru', 'kode_guru')
+                    ->disabled(fn(string $operation) => $operation === 'edit')
+                    ->label('Kode Guru'),
+
+                Forms\Components\Select::make('nama_guru')
+                    ->required()
+                    ->relationship('guru', 'nama_guru')
+                    ->disabled(fn(string $operation) => $operation === 'edit')
+                    ->label('Nama Guru'),
+
                 Forms\Components\TextInput::make('nama_diklat')
                     ->required()
                     ->label('Mapel')

@@ -45,10 +45,15 @@ class TugasMengajarResource extends Resource
                     ->required()
                     ->label('Mapel')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('kompetensi_keahlian')
-                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('kompetensi_keahlian')
+                    ->options([
+                        'TM' => 'Teknik Pemesinan',
+                        'TO' => 'Teknik Otomotif',
+                        'TE' => 'Teknik Elektro',
+                        'AKL' => 'Akutansi Lembaga dan Keuangan'
+                    ])
+                    ->preload()
+                    ->required(),
 
             ]);
     }

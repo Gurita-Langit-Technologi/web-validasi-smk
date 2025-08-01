@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateWaliKelas extends CreateRecord
 {
     protected static string $resource = WaliKelasResource::class;
+    public function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

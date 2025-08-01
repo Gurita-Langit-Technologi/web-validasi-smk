@@ -30,16 +30,26 @@ class KelasResource extends Resource
                     ->required()
                     ->maxLength(10),
                 Forms\Components\Select::make('tingkat_kelas')
-                    ->searchable()
-                    ->options(Kelas::all()->pluck('tingkat_kelas'))
+                    // ->searchable()
+                    ->options([
+                        'X' => 'X',
+                        'XI' => 'XI',
+                        'XII' => 'XII',
+                    ])
                     ->preload()
                     ->required(),
 
                 Forms\Components\Select::make('kompetensi_keahlian')
-                    ->options(Kelas::all()->pluck('kompetensi_keahlian'))
-                    ->searchable()
+                    ->options([
+                        'TM' => 'Teknik Pemesinan',
+                        'TO' => 'Teknik Otomotif',
+                        'TE' => 'Teknik Elektro',
+                        'AKL' => 'Akutansi Lembaga dan Keuangan'
+                    ])
                     ->preload()
                     ->required(),
+
+
 
             ]);
     }
@@ -48,9 +58,7 @@ class KelasResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('kode_kelas')
-                    ->color('text1')
-                    ->searchable(),
+
 
                 Tables\Columns\TextColumn::make('nama_kelas')
                     ->color('text2')

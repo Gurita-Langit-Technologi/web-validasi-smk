@@ -146,6 +146,15 @@ class DatabaseSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
+            [
+                'id_wali_kelas' => 5,
+                'kode_kelas' => 'XIITM1',
+                'kompetensi_keahlian' => 'TM',
+                'nama_kelas' => 'XIX TM 1',
+                'tingkat_kelas' => 'XII',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
         ]);
 
 
@@ -165,7 +174,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'id_kelas' => 2,
-                'nama_siswa' => 'Budi Santoso',
+                'nama_siswa' => 'Superman Santoso',
                 'no_induk' => '234567890123',
                 'created_at' => now(),
                 'updated_at' => now(),
