@@ -94,7 +94,7 @@
                             <tr>
                                 <th style="width: 20%">Nama Siswa</th>
                                 @foreach ($mapelList as $mapel)
-                                    <th class="text-center">{{ $mapel->nama_mapel }}</th>
+                                    <th class="text-center">{{ $mapel->nama_diklat }}</th>
                                 @endforeach
                             </tr>
                         </thead>
@@ -124,44 +124,44 @@
 @endsection
 
 @section('styles')
-<style>
-    .table th,
-    .table td {
-        padding: 0.75rem;
-        vertical-align: middle;
-    }
+    <style>
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: middle;
+        }
 
-    .card-header {
-        padding: 1rem 1.25rem;
-    }
+        .card-header {
+            padding: 1rem 1.25rem;
+        }
 
-    .table {
-        margin-bottom: 0;
-    }
+        .table {
+            margin-bottom: 0;
+        }
 
-    .fa-check,
-    .fa-times {
-        font-size: 1.2em;
-    }
+        .fa-check,
+        .fa-times {
+            font-size: 1.2em;
+        }
 
-    .fa-check-circle,
-    .fa-times-circle {
-        font-size: 1.5em;
-    }
+        .fa-check-circle,
+        .fa-times-circle {
+            font-size: 1.5em;
+        }
 
-    .form-check-input {
-        cursor: default;
-        opacity: 1;
-    }
+        .form-check-input {
+            cursor: default;
+            opacity: 1;
+        }
 
-    .form-check-input:checked {
-        background-color: #28a745;
-        border-color: #28a745;
-    }
+        .form-check-input:checked {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
 
-    .card {
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-</style>
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 @endsection

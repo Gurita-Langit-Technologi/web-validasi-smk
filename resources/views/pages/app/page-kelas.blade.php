@@ -36,12 +36,12 @@
                             </thead>
                             <tbody>
                                 <?php
-                                    $no = 1;
+                                $no = 1;
                                 ?>
                                 @foreach ($rekapKelas as $kelas)
                                     <tr>
                                         <td>{{ $no++ }}</td>
-                                        <td>{{ $kelas->mapel->nama_mapel }}</td>
+                                        <td>{{ $kelas->mapel->nama_diklat }}</td>
                                         <td>{{ $kelas->kelas->nama_kelas }}</td>
                                         <td>
                                             <a href="{{ route('detail-tugas', $kelas->mapel->id_mapel) }}"

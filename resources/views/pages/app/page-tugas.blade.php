@@ -41,7 +41,7 @@
                                         <td style="vertical-align: top; padding: 20px 10px; align-items: center;">
                                             {{ $rekap->kelas->nama_kelas }}</td>
                                         <td style="vertical-align: top; padding: 20px 10px; align-items: center;">
-                                            {{ $rekap->mapel->nama_mapel }}</td>
+                                            {{ $rekap->mapel->nama_diklat }}</td>
                                         <td style="display: flex; align-items: center; ">
                                             <input id="total-tugas-{{ $rekap->id_rekap_kelas }}" type="number"
                                                 class="form-control form-control-sm text-center"
@@ -67,9 +67,9 @@
                             </table>
                         </div>
                         <button class="btn btn-primary mt-2"
-                            onclick="generateTasksPerClass('{{ $rekap->id_rekap_kelas }}')">Add</button>
+                            onclick="generateTasksPerClass('{{ $rekap->id_rekap_kelas }}')">Simpan</button>
                         <button class="btn btn-secondary mt-2"
-                            onclick="addSingleTask('{{ $rekap->id_rekap_kelas }}')">Tambah 1 Tugas</button>
+                            onclick="addSingleTask('{{ $rekap->id_rekap_kelas }}')">Simpan 1 Tugas</button>
                     </div>
                 </div>
             </div>
@@ -78,7 +78,7 @@
             <div class="col-md-4 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title">Report Progress {{ $rekap->mapel->nama_mapel }}</h6>
+                        <h6 class="card-title">Report Progress {{ $rekap->mapel->nama_diklat }}</h6>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -161,7 +161,7 @@
             return;
         }
 
-        fetch(`/add-single-task/${classId}`, {
+        fetch(`/guru/add-single-task/${classId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -180,7 +180,7 @@
         const taskInputs = document.querySelectorAll(`#tugas-names-container-${classId} input`);
         const tasks = Array.from(taskInputs).map(input => input.value);
 
-        fetch(`/generate-tasks-per-class/${classId}`, {
+        fetch(`/guru/generate-tasks-per-class/${classId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -206,7 +206,7 @@
             allTasks[classId] = tasks;
         });
 
-        fetch("/generate-all-tasks", {
+        fetch("/guru/generate-all-tasks", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

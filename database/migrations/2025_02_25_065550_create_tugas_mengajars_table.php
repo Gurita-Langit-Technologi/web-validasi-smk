@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('tugas_mengajar', function (Blueprint $table) {
             $table->id('id_mengajar');
-            // $table->unsignedBigInteger('id_guru');
-            // $table->unsignedBigInteger('id_mapel');
-            // $table->unsignedBigInteger('id_kelas');
+            $table->unsignedBigInteger('id_guru');
+            $table->unsignedBigInteger('id_mapel');
+            $table->unsignedBigInteger('id_kelas');
             $table->string('kode_guru');
             $table->string('nama_guru');
             $table->string('kelas');
             $table->string('mata_diklat');
             $table->string('kompetensi_keahlian');
-            // $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
-            // $table->foreign('id_guru')->references('id_guru')->on('guru');
-            // $table->foreign('id_mapel')->references('id_mapel')->on('mapel');
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
+            $table->foreign('id_guru')->references('id_guru')->on('guru');
+            $table->foreign('id_mapel')->references('id_mapel')->on('mapel');
             $table->timestamps();
         });
     }

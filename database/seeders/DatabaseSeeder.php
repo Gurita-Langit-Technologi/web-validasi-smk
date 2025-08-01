@@ -28,9 +28,10 @@ class DatabaseSeeder extends Seeder
         DB::table('guru')->insert([
             ['kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'created_at' => now(), 'updated_at' => now()],
             ['kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'created_at' => now(), 'updated_at' => now()],
-            ['kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '0011223344', 'nama_guru' => 'Dewi Lestari', 'created_at' => now(), 'updated_at' => now()],
             ['kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'created_at' => now(), 'updated_at' => now()],
             ['kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'created_at' => now(), 'updated_at' => now()],
+            ['kode_guru' => '1122334455', 'nama_guru' => 'Rafi Suyoso', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         DB::table('user_guru')->insert([
@@ -65,7 +66,7 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 1,
                 'no_induk' => '234567890123',
                 'id_kelas' => 2,
-                'nama_siswa' => 'Budi Santoso',
+                'nama_siswa' => 'Alex Santoso',
                 'nama_kelas' => 'X IPA 2',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -143,6 +144,7 @@ class DatabaseSeeder extends Seeder
             ['kode_mapel' => '103', 'nama_diklat' => 'Kimia',      'id_guru' => 2, 'created_at' => now(), 'updated_at' => now()],
             ['kode_mapel' => '104', 'nama_diklat' => 'Biologi',    'id_guru' => 2, 'created_at' => now(), 'updated_at' => now()],
             ['kode_mapel' => '105', 'nama_diklat' => 'Sejarah',    'id_guru' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '106', 'nama_diklat' => 'B.Inggris',    'id_guru' => 3, 'created_at' => now(), 'updated_at' => now()],
         ]);
 
 
@@ -180,11 +182,11 @@ class DatabaseSeeder extends Seeder
         }
 
         DB::table('tugas_mengajar')->insert([
-            ['id_mengajar' => 1,  'kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'kelas' => 'X IPA 1', 'mata_diklat' => 'Matematika', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 2,  'kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'kelas' => 'X IPA 2', 'mata_diklat' => 'Fisika', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 3,  'kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'kelas' => 'X IPS 1', 'mata_diklat' => 'Kimia', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 4,  'kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'kelas' => 'X IPS 2', 'mata_diklat' => 'Biologi', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 5,  'kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'kelas' => 'XI IPA 1', 'mata_diklat' => 'Sejarah', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 1, 'id_kelas' => 1, 'id_mapel' => 1, 'id_guru' => 1, 'kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'kelas' => 'X IPA 1', 'mata_diklat' => 'Matematika', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 2,  'id_kelas' => 2, 'id_mapel' => 2, 'id_guru' => 2, 'kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'kelas' => 'X IPA 2', 'mata_diklat' => 'Fisika', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 3,  'id_kelas' => 3, 'id_mapel' => 3, 'id_guru' => 3, 'kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'kelas' => 'X IPS 1', 'mata_diklat' => 'Kimia', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 4,  'id_kelas' => 4, 'id_mapel' => 4, 'id_guru' => 4, 'kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'kelas' => 'X IPS 2', 'mata_diklat' => 'Biologi', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
+            ['id_mengajar' => 5,  'id_kelas' => 5, 'id_mapel' => 5, 'id_guru' => 5, 'kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'kelas' => 'XI IPA 1', 'mata_diklat' => 'Sejarah', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         DB::table('wali_kelas')->insert([
@@ -211,8 +213,8 @@ class DatabaseSeeder extends Seeder
                 'id_mapel' => 1,
                 'id_guru' => 1,
                 'id_wali_kelas' => $waliKelasIds[0] ?? 1,
-                'total_tugas' => 0,
-                'jumlah_selesai' => 0,
+                'total_tugas' => 2,
+                'jumlah_selesai' => 2,
                 'jumlah_tanggungan' => 0,
                 'created_at' => now(),
                 'updated_at' => now()
@@ -222,9 +224,9 @@ class DatabaseSeeder extends Seeder
                 'id_mapel' => 2,
                 'id_guru' => 2,
                 'id_wali_kelas' => $waliKelasIds[1] ?? 2,
-                'total_tugas' => 0,
-                'jumlah_selesai' => 0,
-                'jumlah_tanggungan' => 0,
+                'total_tugas' => 2,
+                'jumlah_selesai' => 1,
+                'jumlah_tanggungan' => 1,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -233,9 +235,9 @@ class DatabaseSeeder extends Seeder
                 'id_mapel' => 3,
                 'id_guru' => 3,
                 'id_wali_kelas' => $waliKelasIds[2] ?? 3,
-                'total_tugas' => 0,
-                'jumlah_selesai' => 0,
-                'jumlah_tanggungan' => 0,
+                'total_tugas' => 2,
+                'jumlah_selesai' => 2,
+                'jumlah_tanggungan' => 2,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -244,9 +246,9 @@ class DatabaseSeeder extends Seeder
                 'id_mapel' => 4,
                 'id_guru' => 4,
                 'id_wali_kelas' => $waliKelasIds[3] ?? 4,
-                'total_tugas' => 0,
-                'jumlah_selesai' => 0,
-                'jumlah_tanggungan' => 0,
+                'total_tugas' => 2,
+                'jumlah_selesai' => 2,
+                'jumlah_tanggungan' => 2,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -254,6 +256,17 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 5,
                 'id_mapel' => 5,
                 'id_guru' => 5,
+                'id_wali_kelas' => $waliKelasIds[4] ?? 5,
+                'total_tugas' => 2,
+                'jumlah_selesai' => 1,
+                'jumlah_tanggungan' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id_kelas' => 5,
+                'id_mapel' => 6,
+                'id_guru' => 6,
                 'id_wali_kelas' => $waliKelasIds[4] ?? 5,
                 'total_tugas' => 0,
                 'jumlah_selesai' => 0,

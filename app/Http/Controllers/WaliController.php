@@ -69,7 +69,7 @@ class WaliController extends Controller
         $mapelProgress = [];
         foreach ($mapelList as $mapel) {
             $mapelProgress[$mapel->id_mapel] = [
-                'nama_mapel' => $mapel->nama_mapel,
+                'nama_diklat' => $mapel->nama_diklat,
                 'siswa' => []
             ];
 
@@ -89,7 +89,7 @@ class WaliController extends Controller
                     ->value('total_tugas');
 
                 // Debugging - tambahkan ini untuk memeriksa data
-                // Log::info("Mapel: {$mapel->nama_mapel}, Siswa: {$siswa->nama_siswa}, Completed: {$completed}, Total: {$total}");
+                // Log::info("Mapel: {$mapel->nama_diklat}, Siswa: {$siswa->nama_siswa}, Completed: {$completed}, Total: {$total}");
 
                 $mapelProgress[$mapel->id_mapel]['siswa'][$siswa->id_siswa] = ($total > 0) && ($completed == $total);
             }

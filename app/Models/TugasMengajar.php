@@ -31,6 +31,6 @@ class TugasMengajar extends Model
     // Relasi ke Kelas
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas', 'kode_kelas');
+        return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
     }
 }
