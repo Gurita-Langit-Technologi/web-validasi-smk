@@ -16,6 +16,12 @@ use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
 use App\Filament\Imports\SiswaImporter;
 use Filament\Tables\Actions\ImportAction;
+use Filament\Tables\Filters\SelectFilter;
+
+
+
+
+
 
 class SiswaResource extends Resource
 {
@@ -31,7 +37,8 @@ class SiswaResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('no_induk')
                     ->label('No Induk')
-                    ->maxLength(12),
+                    ->maxLength(12)
+                    ->required(),
                 Forms\Components\TextInput::make('nama_siswa')
                     ->required()
                     ->maxLength(255),
@@ -87,13 +94,12 @@ class SiswaResource extends Resource
 
 
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 //  Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -130,6 +136,7 @@ class SiswaResource extends Resource
 
         return 'text2';
     }
+
 
     public static function getPages(): array
     {
