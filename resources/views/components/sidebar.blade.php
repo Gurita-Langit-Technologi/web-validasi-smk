@@ -14,14 +14,14 @@
             <li class="nav-item nav-category">Main</li>
             @if (\Illuminate\Support\Facades\Auth::guard('wali')->check())
                 <li class="nav-item">
-                    <a href="{{ url('/guru') }}" class="nav-link">
+                    <a href="{{ route('wali.dashboard') }}" class="nav-link">
                         <i class="link-icon" data-feather="box"></i>
                         <span class="link-title">Dashboard</span>
                     </a>
                 </li>
             @else
                 <li class="nav-item">
-                    <a href="{{ url('/guru') }}" class="nav-link">
+                    <a href="{{ route('guru.dashboard') }}" class="nav-link">
                         <i class="link-icon" data-feather="box"></i>
                         <span class="link-title">Dashboard</span>
                     </a>
