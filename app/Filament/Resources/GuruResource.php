@@ -16,12 +16,12 @@ use App\Filament\Imports\GuruImporter;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Support\Enums\FontFamily;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 
 class GuruResource extends Resource
 {
     protected static ?string $model = Guru::class;
     protected static ?string $navigationBadgeTooltip = 'Jumlah Guru';
-
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
     protected static ?string $navigationLabel = 'Guru';
 
@@ -31,7 +31,6 @@ class GuruResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('kode_guru')
                     ->required()
-
                     ->suffixIcon('heroicon-o-bookmark-square')
                     ->suffixIconColor('success')
                     ->maxLength(255),
@@ -46,6 +45,10 @@ class GuruResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('avatar')
+                    ->defaultImageUrl('https://picsum.photos/64')
+                    ->circular(),
+
                 Tables\Columns\TextColumn::make('kode_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text1')
@@ -69,9 +72,9 @@ class GuruResource extends Resource
                 // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                // Tables\Actions\DeleteBulkAction::make(),
+                //]),
             ])
             ->headerActions([
                 ImportAction::make()

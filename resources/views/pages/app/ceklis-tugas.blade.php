@@ -17,7 +17,9 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Detail Tugas untuk Mata Pelajaran: {{ $mapel->nama_diklat }}</h6>
+                    <h6 class="card-title">Detail Tugas</h6>
+                    <p>Mata Pelajaran: <strong>{{ $mapel->nama_diklat }}</strong></p>
+                    <p>Kelas: <strong>{{ $rekapKelas->kelas->nama_kelas }}</strong></p>
                     <form action="{{ route('update-status-tugas') }}" method="POST" id="form-tugas">
                         @csrf
                         <div class="table-responsive">

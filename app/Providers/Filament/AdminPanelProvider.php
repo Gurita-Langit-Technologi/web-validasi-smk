@@ -15,6 +15,7 @@ use App\Filament\Resources\MapelResource;
 use App\Filament\Resources\KelasResource;
 use App\Filament\Resources\SiswaResource;
 use App\Filament\Resources\WalikelasResource;
+use App\Filament\Resources\RekapkelasResource;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -76,7 +77,7 @@ class AdminPanelProvider extends PanelProvider
                             ...KelasResource::getNavigationItems(),
                             ...SiswaResource::getNavigationItems(),
                             ...MapelResource::getNavigationItems(),
-
+                            ...RekapKelasResource::getNavigationItems(),
                             ...WaliKelasResource::getNavigationItems(),
                             ...TugasMEngajarResource::getNavigationItems(),
 

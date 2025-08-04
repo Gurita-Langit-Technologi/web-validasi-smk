@@ -61,19 +61,22 @@ class RekapKelasResource extends Resource
     {
         return $table
             ->query(
-                RekapKelas::query()->with(['kelas', 'waliKelas', 'tugasPertama'])
+                RekapKelas::query()->with(['kelas', 'waliKelas', 'guru'])
             )
             ->columns([
                 Tables\Columns\TextColumn::make('kelas.nama_kelas')
                     ->label('Tingkat Kelas')
+                    ->color('text1')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
                     ->label('Kompt Keahlian')
+                    ->color('text2')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('tugas.nama_tugas')
                     ->label('Mapel')
+                    ->color('text3')
                     ->formatStateUsing(function ($state, $record) {
                         return $record->tugas->map(function ($tugas) {
 
@@ -84,7 +87,7 @@ class RekapKelasResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tugas.status')
                     ->label('Status')
-
+                    ->color('text4')
                     ->formatStateUsing(function ($state, $record) {
                         return $record->tugas->map(function ($tugas) {
                             return $tugas->status;
@@ -93,9 +96,14 @@ class RekapKelasResource extends Resource
                     ->html()
 
                     ->sortable(),
+                Tables\Columns\TextColumn::make('guru.nama_guru')
+                    ->label('Nama Guru')
+                    ->color('text5')
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('waliKelas.nama_wali')
                     ->label('Wali Kelas')
+                    ->color('text2')
                     ->sortable(),
 
             ])
@@ -107,9 +115,9 @@ class RekapKelasResource extends Resource
                 // Tables\Actions\ViewAction::make(), // on off untuk view page
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //  Tables\Actions\DeleteBulkAction::make(),
+                //]),
             ]);
     }
 
