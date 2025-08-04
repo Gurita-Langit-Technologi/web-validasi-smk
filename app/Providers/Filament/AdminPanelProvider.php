@@ -6,11 +6,15 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
+
 use Filament\Pages\Dashboard;
 use Filament\Support\Colors\Color;
 use Filament\Navigation\NavigationItem;
 use App\Filament\Resources\GuruResource;
+use App\Filament\Resources\MapelResource;
+use App\Filament\Resources\KelasResource;
 use App\Filament\Resources\SiswaResource;
+use App\Filament\Resources\WalikelasResource;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -22,6 +26,8 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Filament\Navigation\NavigationBuilder;
+use Filament\Navigation\NavigationGroup;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -60,24 +66,43 @@ class AdminPanelProvider extends PanelProvider
 
 
             ])
-            ->navigationItems([
-                NavigationItem::make('Guru Baru')
-                    ->url(fn() => GuruResource::getUrl('create'))
-                    ->icon('heroicon-o-plus')
-                    ->sort(1),
-            ])
-            ->navigationItems([
-                NavigationItem::make('Siswa Baru')
-                    ->url(fn() => SiswaResource::getUrl('create'))
-                    ->icon('heroicon-o-plus')
-                    ->sort(2),
-            ])
-            ->navigationItems([
-                NavigationItem::make('Tugas Mengajar Baru')
-                    ->url(fn() => TugasMengajarResource::getUrl('create'))
-                    ->icon('heroicon-o-plus')
-                    ->sort(3),
-            ])
+
+
+            ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
+                return $builder->groups([
+                    NavigationGroup::make('Master Data')
+                        ->items([
+                            ...GuruResource::getNavigationItems(),
+                            ...KelasResource::getNavigationItems(),
+                            ...SiswaResource::getNavigationItems(),
+                            ...MapelResource::getNavigationItems(),
+
+                            ...WaliKelasResource::getNavigationItems(),
+                            ...TugasMEngajarResource::getNavigationItems(),
+
+                        ]),
+                    NavigationGroup::make('Tambah Data')
+                        ->items([
+                            NavigationItem::make('Guru Baru')
+                                ->url(fn() => GuruResource::getUrl('create'))
+                                ->icon('heroicon-o-user-plus')
+                                ->sort(1),
+                            NavigationItem::make('Siswa Baru')
+                                ->url(fn() => SiswaResource::getUrl('create'))
+                                ->icon('heroicon-o-users')
+                                ->sort(2),
+                            NavigationItem::make('Tugas Mengajar Baru')
+                                ->url(fn() => TugasMengajarResource::getUrl('create'))
+                                ->icon('heroicon-o-cursor-arrow-rays')
+                                ->sort(3),
+
+                        ]),
+
+                ]);
+            })
+
+
+
 
             ->middleware([
                 EncryptCookies::class,
