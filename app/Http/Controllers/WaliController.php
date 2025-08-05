@@ -31,14 +31,12 @@ class WaliController extends Controller
             $query->where('id_kelas', $perwalian->id_kelas);
         })->get();
 
-        // Dapatkan semua siswa di kelas ini
         $siswaList = Siswa::whereHas('rekapPengumpulan', function ($query) use ($perwalian) {
             $query->whereHas('rekapKelas', function ($q) use ($perwalian) {
                 $q->where('id_kelas', $perwalian->id_kelas);
             });
         })->get();
 
-        // Siapkan data untuk tabel pertama (detail tugas)
         $tugasData = [];
         $tugasList = RekapPengumpulan::whereHas('rekapKelas', function ($q) use ($perwalian) {
             $q->where('id_kelas', $perwalian->id_kelas);
@@ -46,7 +44,6 @@ class WaliController extends Controller
             ->select('nama_tugas')
             ->distinct()
             ->orderBy('nama_tugas')
-            ->take(5)
             ->pluck('nama_tugas');
 
         foreach ($siswaList as $siswa) {
@@ -74,7 +71,6 @@ class WaliController extends Controller
             ];
 
             foreach ($siswaList as $siswa) {
-                // Hitung tugas yang selesai untuk mapel ini
                 $completed = RekapPengumpulan::whereHas('rekapKelas', function ($q) use ($mapel, $perwalian) {
                     $q->where('id_mapel', $mapel->id_mapel)
                         ->where('id_kelas', $perwalian->id_kelas);
@@ -83,18 +79,20 @@ class WaliController extends Controller
                     ->where('status', 'Selesai')
                     ->count();
 
-                // Hitung total tugas untuk mapel ini
+
                 $total = RekapKelas::where('id_mapel', $mapel->id_mapel)
                     ->where('id_kelas', $perwalian->id_kelas)
                     ->value('total_tugas');
 
-                // Debugging - tambahkan ini untuk memeriksa data
                 // Log::info("Mapel: {$mapel->nama_diklat}, Siswa: {$siswa->nama_siswa}, Completed: {$completed}, Total: {$total}");
 
                 $mapelProgress[$mapel->id_mapel]['siswa'][$siswa->id_siswa] = ($total > 0) && ($completed == $total);
             }
         }
 
+        // dd($mapelProgress);
+        // dd($siswaList);
+        // dd($tugasData);
 
         return view('pages.dashboard.dashboard-wali', [
             'isWaliKelas' => true,

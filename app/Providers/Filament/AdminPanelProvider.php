@@ -58,7 +58,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('SMK-PGRI 1')
 
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            // ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([\App\Filament\Pages\Dashboard::class])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
@@ -70,36 +70,40 @@ class AdminPanelProvider extends PanelProvider
 
 
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
-                return $builder->groups([
-                    NavigationGroup::make('Master Data')
-                        ->items([
-                            ...GuruResource::getNavigationItems(),
-                            ...KelasResource::getNavigationItems(),
-                            ...SiswaResource::getNavigationItems(),
-                            ...MapelResource::getNavigationItems(),
-                            ...RekapKelasResource::getNavigationItems(),
-                            ...WaliKelasResource::getNavigationItems(),
-                            ...TugasMEngajarResource::getNavigationItems(),
-
-                        ]),
-                    NavigationGroup::make('Tambah Data')
-                        ->items([
-                            NavigationItem::make('Guru Baru')
-                                ->url(fn() => GuruResource::getUrl('create'))
-                                ->icon('heroicon-o-user-plus')
-                                ->sort(1),
-                            NavigationItem::make('Siswa Baru')
-                                ->url(fn() => SiswaResource::getUrl('create'))
-                                ->icon('heroicon-o-users')
-                                ->sort(2),
-                            NavigationItem::make('Tugas Mengajar Baru')
-                                ->url(fn() => TugasMengajarResource::getUrl('create'))
-                                ->icon('heroicon-o-cursor-arrow-rays')
-                                ->sort(3),
-
-                        ]),
-
-                ]);
+                return $builder
+                    ->items([
+                        NavigationItem::make('Dashboard')
+                            ->icon('heroicon-o-home')
+                            ->url(route('filament.admin.pages.dashboard')) // atau `Dashboard::getUrl()`
+                            ->isActiveWhen(fn() => request()->routeIs('filament.admin.pages.dashboard')),
+                    ])
+                    ->groups([
+                        NavigationGroup::make('Master Data')
+                            ->items([
+                                ...GuruResource::getNavigationItems(),
+                                ...KelasResource::getNavigationItems(),
+                                ...SiswaResource::getNavigationItems(),
+                                ...MapelResource::getNavigationItems(),
+                                ...RekapKelasResource::getNavigationItems(),
+                                ...WaliKelasResource::getNavigationItems(),
+                                ...TugasMEngajarResource::getNavigationItems(),
+                            ]),
+                        NavigationGroup::make('Tambah Data')
+                            ->items([
+                                NavigationItem::make('Guru Baru')
+                                    ->url(fn() => GuruResource::getUrl('create'))
+                                    ->icon('heroicon-o-user-plus')
+                                    ->sort(1),
+                                NavigationItem::make('Siswa Baru')
+                                    ->url(fn() => SiswaResource::getUrl('create'))
+                                    ->icon('heroicon-o-users')
+                                    ->sort(2),
+                                NavigationItem::make('Tugas Mengajar Baru')
+                                    ->url(fn() => TugasMengajarResource::getUrl('create'))
+                                    ->icon('heroicon-o-cursor-arrow-rays')
+                                    ->sort(3),
+                            ]),
+                    ]);
             })
 
 
