@@ -158,10 +158,6 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
         // Seeder untuk tabel siswa
         DB::table('siswa')->insert([
             [
@@ -172,15 +168,10 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 2,
+                'id_kelas' => 1,
                 'nama_siswa' => 'Superman Santoso',
                 'no_induk' => '234567890123',
-                'id_kelas' => 2,
                 'nama_siswa' => 'Alex Santoso',
-<<<<<<< HEAD
-                // 'nama_kelas' => 'X IPA 2',
-=======
->>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -188,10 +179,6 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 3,
                 'no_induk' => '345678901234',
                 'nama_siswa' => 'Citra Ayu',
-<<<<<<< HEAD
-                //'nama_kelas' => 'X IPS 1',
-=======
->>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -199,43 +186,6 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 4,
                 'no_induk' => '456789012345',
                 'nama_siswa' => 'Dedi Kusuma',
-<<<<<<< HEAD
-                // 'nama_kelas' => 'X IPS 2',
-=======
->>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_kelas' => 5,
-                'no_induk' => '567890123456',
-                'nama_siswa' => 'Eka Putri',
-<<<<<<< HEAD
-                // 'nama_kelas' => 'XI IPA 1',
-=======
->>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_kelas' => 6,
-                'no_induk' => '678901234567',
-                'nama_siswa' => 'Fajar Hidayat',
-<<<<<<< HEAD
-                // 'nama_kelas' => 'XI IPA 2',
-=======
->>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_kelas' => 7,
-                'no_induk' => '789012345678',
-                'nama_siswa' => 'Gina Larasati',
-<<<<<<< HEAD
-                //  'nama_kelas' => 'XI IPS 1',
-=======
->>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -243,10 +193,6 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 1,
                 'no_induk' => '890123456789',
                 'nama_siswa' => 'Hadi Pratama',
-<<<<<<< HEAD
-                //  'nama_kelas' => 'X IPA 1',
-=======
->>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -254,10 +200,6 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 2,
                 'no_induk' => '901234567890',
                 'nama_siswa' => 'Indah Safitri',
-<<<<<<< HEAD
-                // 'nama_kelas' => 'X IPA 2',
-=======
->>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -265,10 +207,6 @@ class DatabaseSeeder extends Seeder
                 'id_kelas' => 3,
                 'no_induk' => '012345678901',
                 'nama_siswa' => 'Joko Wahyu',
-<<<<<<< HEAD
-                // 'nama_kelas' => 'X IPS 1',
-=======
->>>>>>> a310cdf6c605cca2a2f8650658961f6423b7a8c5
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -280,11 +218,11 @@ class DatabaseSeeder extends Seeder
         // Seeder untuk tabel mapel
         DB::table('mapel')->insert([
             ['kode_mapel' => '101', 'nama_diklat' => 'Matematika', 'id_guru' => 1, 'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '102', 'nama_diklat' => 'Fisika',     'id_guru' => 1, 'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '103', 'nama_diklat' => 'Kimia',      'id_guru' => 2, 'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '104', 'nama_diklat' => 'Biologi',    'id_guru' => 2, 'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '105', 'nama_diklat' => 'Sejarah',    'id_guru' => 3, 'created_at' => now(), 'updated_at' => now()],
-            ['kode_mapel' => '106', 'nama_diklat' => 'B.Inggris',    'id_guru' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '102', 'nama_diklat' => 'Fisika',     'id_guru' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '103', 'nama_diklat' => 'Kimia',      'id_guru' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '104', 'nama_diklat' => 'Biologi',    'id_guru' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '105', 'nama_diklat' => 'Sejarah',    'id_guru' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['kode_mapel' => '106', 'nama_diklat' => 'B.Inggris',    'id_guru' => 6, 'created_at' => now(), 'updated_at' => now()],
         ]);
 
 
@@ -305,21 +243,6 @@ class DatabaseSeeder extends Seeder
         //         ]);
         //     }
         // }
-
-        $gurumapel = DB::table('guru')->get();
-
-        foreach ($mapels as $mapel) {
-            foreach ($gurumapel as $gm) {
-
-                DB::table('guru_mapel')->insert([
-                    'id_guru' => $gm->id_guru,
-                    'kode_guru' => $gm->kode_guru,
-                    'kode_mapel' => $mapel->id_mapel,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-        }
 
         DB::table('tugas_mengajar')->insert([
             ['id_mengajar' => 1, 'id_kelas' => 1, 'id_mapel' => 1, 'id_guru' => 1, 'kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'kelas' => 'X IPA 1', 'mata_diklat' => 'Matematika', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
@@ -353,13 +276,24 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'id_kelas' => 1,
+                'id_mapel' => 2,
+                'id_guru' => 2,
+                'id_wali_kelas' => $waliKelasIds[0] ?? 1,
+                'total_tugas' => 2,
+                'jumlah_selesai' => 2,
+                'jumlah_tanggungan' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
                 'id_kelas' => 2,
                 'id_mapel' => 2,
                 'id_guru' => 2,
                 'id_wali_kelas' => $waliKelasIds[1] ?? 2,
-                'total_tugas' => 2,
-                'jumlah_selesai' => 1,
-                'jumlah_tanggungan' => 1,
+                'total_tugas' => 4,
+                'jumlah_selesai' => 2,
+                'jumlah_tanggungan' => 2,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -434,21 +368,20 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-
             [
                 'id_rekap_kelas' => 2,
-                'id_siswa' => 2,
+                'id_siswa' => 1,
                 'id_mapel' => 2,
                 'nama_tugas' => 'Tugas Fisika 1',
                 'tanggal_pengumpulan' => now()->addDays(5)->toDateString(),
-                'nilai' => 0,
-                'status' => 'Belum Selesai',
+                'nilai' => 80,
+                'status' => 'Selesai',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'id_rekap_kelas' => 2,
-                'id_siswa' => 2,
+                'id_siswa' => 1,
                 'id_mapel' => 2,
                 'nama_tugas' => 'Tugas Fisika 2',
                 'tanggal_pengumpulan' => now()->addDays(8)->toDateString(),
@@ -461,6 +394,28 @@ class DatabaseSeeder extends Seeder
             [
                 'id_rekap_kelas' => 3,
                 'id_siswa' => 3,
+                'id_mapel' => 2,
+                'nama_tugas' => 'Tugas Fisika 1',
+                'tanggal_pengumpulan' => now()->addDays(5)->toDateString(),
+                'nilai' => 0,
+                'status' => 'Belum Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_rekap_kelas' => 3,
+                'id_siswa' => 3,
+                'id_mapel' => 2,
+                'nama_tugas' => 'Tugas Fisika 2',
+                'tanggal_pengumpulan' => now()->addDays(8)->toDateString(),
+                'nilai' => 70,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_rekap_kelas' => 3,
+                'id_siswa' => 4,
                 'id_mapel' => 3,
                 'nama_tugas' => 'Tugas Kimia 1',
                 'tanggal_pengumpulan' => now()->addDays(4)->toDateString(),
@@ -471,7 +426,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'id_rekap_kelas' => 3,
-                'id_siswa' => 3,
+                'id_siswa' => 4,
                 'id_mapel' => 3,
                 'nama_tugas' => 'Tugas Kimia 2',
                 'tanggal_pengumpulan' => now()->addDays(7)->toDateString(),
@@ -529,7 +484,7 @@ class DatabaseSeeder extends Seeder
 
             [
                 'id_rekap_kelas' => 1,
-                'id_siswa' => 8,
+                'id_siswa' => 2,
                 'id_mapel' => 1,
                 'nama_tugas' => 'Tugas Matematika 1',
                 'tanggal_pengumpulan' => now()->addDays(3)->toDateString(),
@@ -540,11 +495,33 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'id_rekap_kelas' => 1,
-                'id_siswa' => 8,
+                'id_siswa' => 2,
                 'id_mapel' => 1,
                 'nama_tugas' => 'Tugas Matematika 2',
                 'tanggal_pengumpulan' => now()->addDays(6)->toDateString(),
                 'nilai' => 95,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_rekap_kelas' => 2,
+                'id_siswa' => 2,
+                'id_mapel' => 2,
+                'nama_tugas' => 'Tugas Fisika 1',
+                'tanggal_pengumpulan' => now()->addDays(5)->toDateString(),
+                'nilai' => 90,
+                'status' => 'Selesai',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_rekap_kelas' => 2,
+                'id_siswa' => 2,
+                'id_mapel' => 2,
+                'nama_tugas' => 'Tugas Fisika 2',
+                'tanggal_pengumpulan' => now()->addDays(8)->toDateString(),
+                'nilai' => 80,
                 'status' => 'Selesai',
                 'created_at' => now(),
                 'updated_at' => now(),
