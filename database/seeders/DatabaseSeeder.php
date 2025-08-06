@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        // Ambil mapping kode_guru => id
+        $this->call([
+            TaskSeeder::class,
+        ]);
 
 
 

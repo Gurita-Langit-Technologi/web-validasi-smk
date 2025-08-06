@@ -29,6 +29,8 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationGroup;
+use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -57,6 +59,29 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(url: '/images/fic.png')
             ->brandName('SMK-PGRI 1')
 
+            // ->plugins([FilamentFullCalendarPlugin::make()]) // seting kalender
+            ->plugin(
+                FilamentFullCalendarPlugin::make()
+                    //->schedulerLicenseKey()
+                    ->selectable(true)
+                    ->editable(true)
+                    ->timezone('Asia/Jakarta') // <- isi sesuai timezone kamu
+                    ->locale('id') // <- lokal bahasa, misal 'id' untuk Indonesia
+                    ->plugins([
+                        'dayGrid',
+                        'timeGrid',
+                        'interaction',
+                        'list',
+                    ])
+                    ->config([
+                        'initialView' => 'dayGridMonth',
+                        'headerToolbar' => [
+                            'left' => 'prev,next today',
+                            'center' => 'title',
+                            'right' => 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+                        ],
+                    ])
+            )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([\App\Filament\Pages\Dashboard::class])
