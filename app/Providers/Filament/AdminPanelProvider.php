@@ -62,7 +62,7 @@ class AdminPanelProvider extends PanelProvider
             // ->plugins([FilamentFullCalendarPlugin::make()]) // seting kalender
             ->plugin(
                 FilamentFullCalendarPlugin::make()
-                    //->schedulerLicenseKey()
+                    ->schedulerLicenseKey('')
                     ->selectable(true)
                     ->editable(true)
                     ->timezone('Asia/Jakarta') // <- isi sesuai timezone kamu

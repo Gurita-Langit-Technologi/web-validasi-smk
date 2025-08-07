@@ -12,7 +12,7 @@
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^3.1",
         "resend/resend-laravel": "^0.16.0",
-        "saade/filament-fullcalendar": "^3.0"
+        "saade/filament-fullcalendar": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

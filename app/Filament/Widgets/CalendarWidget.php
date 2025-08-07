@@ -7,6 +7,19 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Model;
 use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
+use Filament\Actions\CreateAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DateTimePicker; // Import DateTimePicker
+use Filament\Forms;
+use GuzzleHttp\Promise\Create;
+use Saade\FilamentFullCalendar\Data\EventData;
+use App\Filament\Resources\TaskResource;
+use Filament\Forms\Components\Grid;
+
+
 
 class CalendarWidget extends FullCalendarWidget
 {
@@ -14,22 +27,115 @@ class CalendarWidget extends FullCalendarWidget
 
     public function fetchEvents(array $fetchInfo): array
     {
+
         return Task::where('start', '>=', $fetchInfo['start'])
             ->where('end', '<=', $fetchInfo['end'])
             ->get()
-            ->map(function (Task $task) {
-                return [
-                    'id'    => $task->id,
-                    'title' => $task->uraian_kegiatan,
-                    'start' => $task->start,
-                    'end'   => $task->end,
-                ];
-            })
+            ->map(
+                fn(Task $task) => EventData::make()
+                    ->id($task->id)
+                    ->title($task->uraian_kegiatan)
+                    ->start($task->start)
+                    ->end($task->end)
+                    ->url(
+                        url: TaskResource::getUrl(name: 'view', parameters: ['record' => $task]),
+                        shouldOpenUrlInNewTab: true
+                    )
+
+            )
             ->toArray();
     }
 
-    public static function canView(): bool
+
+    public function getFormSchema(): array
+    {
+
+        return [
+            TextInput::make('uraian_kegiatan')
+                ->label('Uraian Kegiatan')
+                ->required(),
+
+            Grid::make()
+                ->schema([
+                    DateTimePicker::make('start'),
+
+                    DateTimePicker::make('end'),
+                ]),
+        ];
+    }
+
+
+
+    protected function getModelActions(): array
+    {
+        return [
+            EditAction::make()
+                ->mountUsing(
+                    function (Task $record, Forms\Form $form, array $arguments) {
+                        $form->fill([
+                            'uraian_kegiatan' => $record->name,
+                            'start' => $arguments['event']['start'] ?? $record->start,
+                            'end' => $arguments['event']['end'] ?? $record->end
+                        ]);
+                    }
+                ),
+            DeleteAction::make(),
+
+        ];
+    }
+
+
+
+    protected function viewAction(): ViewAction
+
+    {
+        return ViewAction::make();
+    }
+
+
+    public function config(): array
+    {
+        return [
+            'firstDay' => 1,
+            'headerToolbar' => [
+                'left' => 'dayGridWeek,dayGridDay',
+                'center' => 'title',
+                'right' => 'prev,next today',
+            ],
+        ];
+    }
+
+    public function eventDidMount(): string
+    {
+        return <<<JS
+        function({ event, timeText, isStart, isEnd, isMirror, isPast, isFuture, isToday, el, view }){
+            el.setAttribute("x-tooltip", "tooltip");
+            el.setAttribute("x-data", "{ tooltip: '"+event.title+"' }");
+        }
+    JS;
+    }
+
+
+
+
+    // This method handles the click event on a calendar event
+    /*
+    public function eventClick(array $info): void
+    {
+        $this->mountAction('edit', [
+            'record' => $info['id'],
+        ]);
+    }
+        */
+
+
+
+
+
+
+    /*public static function canView(): bool
     {
         return true;
     }
+        */
 }

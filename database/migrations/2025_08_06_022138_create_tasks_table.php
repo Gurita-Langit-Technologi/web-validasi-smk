@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('uraian_kegiatan');         // Nama task (untuk judul event)
-            $table->dateTime('start');      // Tanggal dan waktu mulai
-            $table->dateTime('end');        // Tanggal dan waktu selesai
+            $table->string('uraian_kegiatan');       // Nama task (untuk judul event)
+            $table->dateTime('start');
+            $table->dateTime('end');      // Tanggal dan waktu selesai
             $table->timestamps();           // created_at dan updated_at
         });
     }

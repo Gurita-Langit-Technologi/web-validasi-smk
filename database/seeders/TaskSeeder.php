@@ -11,7 +11,7 @@ class TaskSeeder extends Seeder
     public function run(): void
     {
         //alternatif seeder 1
-        Task::insert([
+        DB::table('tasks')->insert([
             [
                 'uraian_kegiatan' => 'Rapat Persiapan Guru',
                 'start' => '2025-08-10 08:00:00',
