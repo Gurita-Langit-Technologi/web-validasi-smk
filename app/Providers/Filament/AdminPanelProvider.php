@@ -32,6 +32,7 @@ use Filament\Navigation\NavigationGroup;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 
 
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -59,7 +60,6 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(url: '/images/fic.png')
             ->brandName('SMK-PGRI 1')
 
-            // ->plugins([FilamentFullCalendarPlugin::make()]) // seting kalender
             ->plugin(
                 FilamentFullCalendarPlugin::make()
                     ->schedulerLicenseKey('')

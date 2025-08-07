@@ -18,6 +18,11 @@ use GuzzleHttp\Promise\Create;
 use Saade\FilamentFullCalendar\Data\EventData;
 use App\Filament\Resources\TaskResource;
 use Filament\Forms\Components\Grid;
+use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Support\Facades\Storage;
+use League\Csv\Reader;
+use League\Csv\Statement;
 
 
 
@@ -114,28 +119,4 @@ class CalendarWidget extends FullCalendarWidget
         }
     JS;
     }
-
-
-
-
-    // This method handles the click event on a calendar event
-    /*
-    public function eventClick(array $info): void
-    {
-        $this->mountAction('edit', [
-            'record' => $info['id'],
-        ]);
-    }
-        */
-
-
-
-
-
-
-    /*public static function canView(): bool
-    {
-        return true;
-    }
-        */
 }
