@@ -25,10 +25,14 @@ class KelasResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('kode_kelas')
+                    ->required()
+                    ->maxLength(30),
 
                 Forms\Components\TextInput::make('nama_kelas')
                     ->required()
                     ->maxLength(10),
+
                 Forms\Components\Select::make('tingkat_kelas')
                     // ->searchable()
                     ->options([

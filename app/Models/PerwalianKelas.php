@@ -10,6 +10,9 @@ class PerwalianKelas extends Model
     protected $fillable = [
         'id_wali_kelas',
         'id_kelas',
+        'id_guru',
+        'kelas',
+        'kompetensi_keahlian',
     ];
     public function walikelas()
     {
@@ -26,6 +29,6 @@ class PerwalianKelas extends Model
 
     public function guru()
     {
-        return $this->belongsTo(Guru::class, 'id_wali_kelas', 'id_guru');
+        return $this->belongsTo(Guru::class, 'id_guru', 'id_guru');
     }
 }

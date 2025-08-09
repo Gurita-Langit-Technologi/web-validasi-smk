@@ -10,7 +10,12 @@ class Kelas extends Model
     protected $table = 'kelas';
     protected $primaryKey = 'id_kelas';
 
-    protected $fillable = ['nama_kelas', 'kompetensi_keahlian'];
+    protected $fillable = [
+        'kode_kelas',
+        'nama_kelas',
+        'tingkat_kelas',
+        'kompetensi_keahlian',
+    ];
 
     public function rekapKelas()
     {

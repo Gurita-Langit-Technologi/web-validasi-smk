@@ -15,6 +15,7 @@ use App\Filament\Resources\MapelResource;
 use App\Filament\Resources\KelasResource;
 use App\Filament\Resources\SiswaResource;
 use App\Filament\Resources\WalikelasResource;
+use App\Filament\Resources\PerwalianKelasResource;
 use App\Filament\Resources\RekapkelasResource;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
@@ -110,7 +111,8 @@ class AdminPanelProvider extends PanelProvider
                                 ...SiswaResource::getNavigationItems(),
                                 ...MapelResource::getNavigationItems(),
                                 ...RekapKelasResource::getNavigationItems(),
-                                ...WaliKelasResource::getNavigationItems(),
+                                ...PerwalianKelasResource::getNavigationItems(),
+
                                 ...TugasMEngajarResource::getNavigationItems(),
                             ]),
                         NavigationGroup::make('Tambah Data')

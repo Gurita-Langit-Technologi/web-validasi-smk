@@ -12,19 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('perwalian_kelas', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('id_wali_kelas');
-            $table->foreign('id_wali_kelas')
-                ->references('id_wali_kelas')
-                ->on('wali_kelas')
+            $table->id('id'); // auto increment
+            $table->unsignedBigInteger('id_guru'); // langsung ke guru
+            $table->unsignedBigInteger('id_kelas'); // langsung ke kelas
+
+            $table->foreign('id_guru')
+                ->references('id_guru')
+                ->on('guru')
                 ->onDelete('cascade');
-            $table->unsignedBigInteger('id_kelas');
+
             $table->foreign('id_kelas')
                 ->references('id_kelas')
                 ->on('kelas')
                 ->onDelete('cascade');
-            $table->string('kelas');
-            $table->string('kompetensi_keahlian');
+
             $table->timestamps();
         });
     }

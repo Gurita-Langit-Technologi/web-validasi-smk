@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('nama_kelas', 10);
             $table->string('kompetensi_keahlian');
             $table->foreignId('id_wali_kelas')
+                ->nullable()
                 ->constrained('wali_kelas', 'id_wali_kelas')
-                ->onDelete('cascade');
+                ->nullOnDelete(); // Biar kalau wali_kelas dihapus, kolom ini jadi NULL
             $table->timestamps();
         });
     }

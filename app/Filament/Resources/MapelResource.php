@@ -28,13 +28,9 @@ class MapelResource extends Resource
 
                 Forms\Components\TextInput::make('kode_mapel')
                     ->required()
-                    ->label('Mapel')
+                    ->label('Kode Mapel')
                     ->maxLength(80),
-                Forms\Components\Select::make('kode_guru')
-                    ->required()
-                    ->relationship('guru', 'kode_guru')
-                    ->disabled(fn(string $operation) => $operation === 'edit')
-                    ->label('Kode Guru'),
+
 
                 Forms\Components\Select::make('nama_guru')
                     ->required()
