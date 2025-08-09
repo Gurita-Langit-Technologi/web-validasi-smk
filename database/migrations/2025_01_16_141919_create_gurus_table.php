@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('guru', function (Blueprint $table) {
             $table->id('id_guru');
             $table->string('kode_guru')->unique();
+            $table->string('foto_guru')->nullable();
             $table->string('nama_guru', 80);
             $table->timestamps();
         });
