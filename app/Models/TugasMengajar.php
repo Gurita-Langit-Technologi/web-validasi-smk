@@ -27,16 +27,16 @@ class TugasMengajar extends Model
     // App\Models\TugasMengajar.php
     public function guru()
     {
-        return $this->belongsTo(Guru::class, 'id_guru', 'id_guru');
+        return $this->belongsTo(Guru::class, 'id_guru');
     }
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
+        return $this->belongsTo(Kelas::class, 'id_kelas');
     }
 
     public function mapel()
     {
-        return $this->belongsTo(Mapel::class, 'id_mapel', 'id_mapel');
+        return $this->belongsTo(Mapel::class, 'id_mapel');
     }
 }
