@@ -12,10 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('perwalian_kelas', function (Blueprint $table) {
-            $table->id('id'); // auto increment
-            $table->unsignedBigInteger('id_guru'); // langsung ke guru
-            $table->unsignedBigInteger('id_kelas'); // langsung ke kelas
+            $table->id(); // auto increment primary key
 
+            $table->unsignedBigInteger('id_guru');  // relasi ke guru
+            $table->unsignedBigInteger('id_kelas'); // relasi ke kelas
+
+            // Constraint unik supaya 1 guru hanya jadi 1 wali kelas
+            $table->unique('id_guru');
+
+            // Foreign keys
             $table->foreign('id_guru')
                 ->references('id_guru')
                 ->on('guru')
