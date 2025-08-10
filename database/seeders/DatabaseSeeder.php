@@ -247,11 +247,41 @@ class DatabaseSeeder extends Seeder
         // }
 
         DB::table('tugas_mengajar')->insert([
-            ['id_mengajar' => 1, 'id_kelas' => 1, 'id_mapel' => 1, 'id_guru' => 1, 'kode_guru' => '1234567890', 'nama_guru' => 'Budi Santoso', 'kelas' => 'X IPA 1', 'mata_diklat' => 'Matematika', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 2,  'id_kelas' => 2, 'id_mapel' => 2, 'id_guru' => 2, 'kode_guru' => '0987654321', 'nama_guru' => 'Ani Setiawati', 'kelas' => 'X IPA 2', 'mata_diklat' => 'Fisika', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 3,  'id_kelas' => 3, 'id_mapel' => 3, 'id_guru' => 3, 'kode_guru' => '1122334455', 'nama_guru' => 'Dewi Lestari', 'kelas' => 'X IPS 1', 'mata_diklat' => 'Kimia', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 4,  'id_kelas' => 4, 'id_mapel' => 4, 'id_guru' => 4, 'kode_guru' => '5566778899', 'nama_guru' => 'Samsul Arifin', 'kelas' => 'X IPS 2', 'mata_diklat' => 'Biologi', 'kompetensi_keahlian' => 'IPS', 'created_at' => now(), 'updated_at' => now()],
-            ['id_mengajar' => 5,  'id_kelas' => 5, 'id_mapel' => 5, 'id_guru' => 5, 'kode_guru' => '6677889900', 'nama_guru' => 'Rahmat Hidayat', 'kelas' => 'XI IPA 1', 'mata_diklat' => 'Sejarah', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
+            [
+                'id_guru' => 1,
+                'id_kelas' => 1,
+                'id_mapel' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_guru' => 2,
+                'id_kelas' => 2,
+                'id_mapel' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_guru' => 3,
+                'id_kelas' => 3,
+                'id_mapel' => 3,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_guru' => 4,
+                'id_kelas' => 4,
+                'id_mapel' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_guru' => 5,
+                'id_kelas' => 5,
+                'id_mapel' => 5,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
 

@@ -27,11 +27,21 @@ class PerwalianKelasResource extends Resource
                 Select::make('id_guru')
                     ->relationship('guru', 'nama_guru')
                     ->required()
+                    ->unique(
+                        table: PerwalianKelas::class,
+                        column: 'id_guru',
+                        ignoreRecord: true, // penting untuk update
+
+                    )
+                    ->validationMessages([
+                        'unique' => 'Guru ini sudah menjadi wali kelas.',
+                    ])
                     ->label('Nama Wali'),
 
                 Select::make('id_kelas')
                     ->relationship('kelas', 'nama_kelas')
                     ->required()
+
                     ->label('Kelas'),
 
             ]);
