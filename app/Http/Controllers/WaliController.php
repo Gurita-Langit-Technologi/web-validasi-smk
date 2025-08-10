@@ -41,10 +41,17 @@ class WaliController extends Controller
         $tugasList = RekapPengumpulan::whereHas('rekapKelas', function ($q) use ($perwalian) {
             $q->where('id_kelas', $perwalian->id_kelas);
         })
-            ->select('nama_tugas')
+            ->with('mapel')
+            ->select('nama_tugas', 'id_mapel')
             ->distinct()
+            ->orderBy('id_mapel')
             ->orderBy('nama_tugas')
-            ->pluck('nama_tugas');
+            ->get()
+            ->groupBy('id_mapel')
+            ->flatMap(function ($group) {
+                return $group->pluck('nama_tugas');
+            });
+
 
         foreach ($siswaList as $siswa) {
             $tugasData[$siswa->id_siswa] = [
@@ -84,15 +91,9 @@ class WaliController extends Controller
                     ->where('id_kelas', $perwalian->id_kelas)
                     ->value('total_tugas');
 
-                // Log::info("Mapel: {$mapel->nama_diklat}, Siswa: {$siswa->nama_siswa}, Completed: {$completed}, Total: {$total}");
-
                 $mapelProgress[$mapel->id_mapel]['siswa'][$siswa->id_siswa] = ($total > 0) && ($completed == $total);
             }
         }
-
-        // dd($mapelProgress);
-        // dd($siswaList);
-        // dd($tugasData);
 
         return view('pages.dashboard.dashboard-wali', [
             'isWaliKelas' => true,
