@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id(); // auto increment primary key
 
             $table->unsignedBigInteger('id_guru');  // relasi ke guru
+            $table->unsignedBigInteger('id_wali_kelas');
             $table->unsignedBigInteger('id_kelas'); // relasi ke kelas
 
             // Constraint unik supaya 1 guru hanya jadi 1 wali kelas
@@ -25,6 +26,10 @@ return new class extends Migration
                 ->references('id_guru')
                 ->on('guru')
                 ->onDelete('cascade');
+
+            $table->foreign('id_wali_kelas')
+                ->references('id_wali_kelas')
+                ->on('wali_kelas');
 
             $table->foreign('id_kelas')
                 ->references('id_kelas')

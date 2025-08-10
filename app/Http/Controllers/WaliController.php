@@ -86,7 +86,6 @@ class WaliController extends Controller
                     ->where('status', 'Selesai')
                     ->count();
 
-
                 $total = RekapKelas::where('id_mapel', $mapel->id_mapel)
                     ->where('id_kelas', $perwalian->id_kelas)
                     ->value('total_tugas');

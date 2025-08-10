@@ -284,7 +284,6 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-
         /*
         DB::table('perwalian_kelas')->insert([
             ['id_wali_kelas' => 1, 'id_kelas' => 1,  'kelas' => 'X IPA 1', 'kompetensi_keahlian' => 'IPA', 'created_at' => now(), 'updated_at' => now()],
@@ -295,11 +294,11 @@ class DatabaseSeeder extends Seeder
         ]);
         */
         DB::table('perwalian_kelas')->insert([
-            ['id_guru' => 1, 'id_kelas' => 1, 'created_at' => now(), 'updated_at' => now()],
-            ['id_guru' => 2, 'id_kelas' => 2, 'created_at' => now(), 'updated_at' => now()],
-            ['id_guru' => 3, 'id_kelas' => 3, 'created_at' => now(), 'updated_at' => now()],
-            ['id_guru' => 4, 'id_kelas' => 4, 'created_at' => now(), 'updated_at' => now()],
-            ['id_guru' => 5, 'id_kelas' => 5, 'created_at' => now(), 'updated_at' => now()],
+            ['id_wali_kelas' => 1, 'id_guru' => 1, 'id_kelas' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['id_wali_kelas' => 2, 'id_guru' => 2, 'id_kelas' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['id_wali_kelas' => 3, 'id_guru' => 3, 'id_kelas' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['id_wali_kelas' => 4, 'id_guru' => 4, 'id_kelas' => 4, 'created_at' => now(), 'updated_at' => now()],
+            ['id_wali_kelas' => 5, 'id_guru' => 5, 'id_kelas' => 5, 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         $waliKelasIds = DB::table('wali_kelas')->pluck('id_wali_kelas')->toArray();
