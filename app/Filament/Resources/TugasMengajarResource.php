@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Support\Enums\FontFamily;
 use App\Filament\Imports\TugasMEngajarImporter;
 use Filament\Tables\Actions\ImportAction;
+use App\Models\Guru;
+use App\Models\Kelas;
+use App\Models\Mapel;
 
 class TugasMengajarResource extends Resource
 {
@@ -29,25 +32,27 @@ class TugasMengajarResource extends Resource
         return $form
             ->schema([
 
-                Forms\Components\Select::make('kode_guru')
+                Forms\Components\Select::make('id_guru')
                     ->label('Kode Guru')
                     ->relationship('guru', 'kode_guru') // pastikan field 'kode_kelas' ada di tabel kelas
                     ->searchable()
                     ->preload()
                     ->required(),
-                Forms\Components\TextInput::make('nama_guru')
-                    ->required()
-                    ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
-                    ->maxLength(255),
 
-
-                Forms\Components\Select::make('kode_kelas')
+                Forms\Components\Select::make('id_kelas')
                     ->label('Kelas')
-                    ->relationship('kelas', 'kode_kelas') // pastikan field 'kode_kelas' ada di tabel kelas
+                    ->relationship('kelas', 'nama_kelas')
                     ->searchable()
                     ->preload()
                     ->required(),
 
+                Forms\Components\Select::make('id_mapel')
+                    ->label('Mapel')
+                    ->relationship('mapel', 'nama_diklat')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                /*
                 Forms\Components\Select::make('kompetensi_keahlian')
                     ->options([
                         'TM' => 'Teknik Pemesinan',
@@ -57,6 +62,7 @@ class TugasMengajarResource extends Resource
                     ])
                     ->preload()
                     ->required(),
+                    */
 
             ]);
     }
@@ -66,10 +72,12 @@ class TugasMengajarResource extends Resource
         return $table
 
             ->query(
-                TugasMengajar::query()->with(['kelas'])
+                TugasMengajar::query()->with(['kelas', 'guru', 'mapel'])
             )
             ->columns([
-                Tables\Columns\TextColumn::make('kode_guru')
+
+
+                Tables\Columns\TextColumn::make('guru.kode_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
 
                     ->color('text1')
@@ -79,21 +87,23 @@ class TugasMengajarResource extends Resource
                     ->copyMessage('Kode Guru copied')
                     ->copyMessageDuration(1500)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nama_guru')
+
+                Tables\Columns\TextColumn::make('guru.nama_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text2')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('kelas')
+
+                Tables\Columns\TextColumn::make('kelas.nama_kelas')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text3')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('mata_diklat')
+                Tables\Columns\TextColumn::make('mapel.nama_diklat')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text3')
                     ->label('Mapel')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('kompetensi_keahlian')
+                Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text5')
                     ->label('Kompetensi Keahlian')
