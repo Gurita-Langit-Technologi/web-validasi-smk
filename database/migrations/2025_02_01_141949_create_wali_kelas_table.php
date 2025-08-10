@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_guru');
             $table->string('kode_wali');
             $table->string('nama_wali');
+            $table->enum('role', ['wali kelas', 'koordinator'])->default('wali kelas');
             $table->string('password');
             $table->timestamps();
 
