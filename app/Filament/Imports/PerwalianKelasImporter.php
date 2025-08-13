@@ -2,16 +2,15 @@
 
 namespace App\Filament\Imports;
 
-use App\Models\TugasMengajar;
+use App\Models\PerwalianKelas;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 use Illuminate\Support\Facades\Log;
 
-class TugasMengajarImporter extends Importer
+class PerwalianKelasImporter extends Importer
 {
-    protected static ?string $model = TugasMengajar::class;
-
+    protected static ?string $model = PerwalianKelas::class;
 
     public static function getColumns(): array
     {
@@ -22,47 +21,49 @@ class TugasMengajarImporter extends Importer
                     resolveUsing: ['nama_guru', 'kode_guru'] // cari guru berdasarkan nama atau kode
                 ),
 
-            ImportColumn::make('nama_diklat') //ini harus disesuaikan dengan kolom d csv, wes itu kunci kesalahan setengah hari ini selain harus menggunakan relation
-                ->relationship(
-                    name: 'mapel',
-                    resolveUsing: ['nama_diklat', 'kode_mapel'] // cari mapel berdasarkan nama atau kode
-                ),
-
             ImportColumn::make('nama_kelas') //ini harus disesuaikan dengan kolom d csv, wes itu kunci kesalahan setengah hari ini selain harus menggunakan relation
                 ->relationship(
                     name: 'kelas',
-                    resolveUsing: ['nama_kelas', 'kode_kelas'] // cari kelas berdasarkan nama atau kode
+                    resolveUsing: ['kode_kelas', 'nama_kelas'] // cari berdasarkan nama atau kode
                 ),
+
+
         ];
     }
-    public function resolveRecord(): ?TugasMengajar
+
+    public function resolveRecord(): ?PerwalianKelas
     {
-        // Selalu buat record baru, tidak update berdasarkan id
-        return new TugasMengajar();
+
+
+        return new PerwalianKelas();
     }
 
     public function getJobBatchName(): ?string
     {
-        return 'tugasmengajar-import';
+        return 'perwalian-kelas-import';
     }
 
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        foreach ($import->getFailedRows() as $row) {
-            Log::error('Row gagal: ', [
-                'data' => $row->data,
-                'errors' => $row->errors,
-            ]);
-        }
-
-        $body = 'Tugas mengajar berhasil diimpor: '
+        $body = 'Perwalian Kelas berhasil diimpor: '
             . number_format($import->successful_rows) . ' '
             . str('baris')->plural($import->successful_rows) . ' berhasil.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
             $body .= ' ' . number_format($failedRowsCount) . ' '
                 . str('baris')->plural($failedRowsCount) . ' gagal diimpor.';
+
+            // Tambahkan detail error langsung di notifikasi
+            $body .= "\n\nDetail error:\n";
+            foreach ($import->getFailedRows() as $index => $row) {
+                $rowNumber = $index + 1; // Nomor baris
+                $errors = implode(', ', $row->errors ?? []);
+                $dataPreview = implode(' | ', $row->data ?? []);
+
+                $body .= "Baris {$rowNumber}: {$dataPreview}\n";
+                $body .= "Error: {$errors}\n\n";
+            }
         }
 
         return $body;

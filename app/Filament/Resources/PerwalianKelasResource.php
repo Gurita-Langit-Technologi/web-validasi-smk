@@ -13,6 +13,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
+use App\Filament\Imports\PerwalianKelasImporter;
+use Filament\Tables\Actions\ImportAction;
 
 class PerwalianKelasResource extends Resource
 {
@@ -99,11 +101,16 @@ class PerwalianKelasResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //  Tables\Actions\BulkActionGroup::make([
+                //    Tables\Actions\DeleteBulkAction::make(),
+                //  ]),
+            ])
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(PerwalianKelasImporter::class)
             ]);
     }
+
 
     public static function getRelations(): array
     {
