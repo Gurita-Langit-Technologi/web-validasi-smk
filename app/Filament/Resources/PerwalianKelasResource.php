@@ -119,6 +119,18 @@ class PerwalianKelasResource extends Resource
         ];
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::$model::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        $count = static::$model::count();
+
+        return 'text2';
+    }
+
     public static function getPages(): array
     {
         return [
