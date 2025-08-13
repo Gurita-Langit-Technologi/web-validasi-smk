@@ -27,6 +27,7 @@ class KelasResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('kode_kelas')
                     ->required()
+
                     ->maxLength(30),
 
                 Forms\Components\TextInput::make('nama_kelas')
@@ -66,9 +67,11 @@ class KelasResource extends Resource
 
                 Tables\Columns\TextColumn::make('nama_kelas')
                     ->color('text2')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tingkat_kelas')
                     ->color('text3')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kompetensi_keahlian')
                     ->color('text4')
