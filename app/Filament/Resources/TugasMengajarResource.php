@@ -80,6 +80,7 @@ class TugasMengajarResource extends Resource
                 Tables\Columns\TextColumn::make('guru.kode_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->sortable()
+                    ->label('Kode Guru')
                     ->color('text1')
                     ->icon('heroicon-o-check-circle')
                     ->fontFamily(FontFamily::Mono)
