@@ -16,7 +16,7 @@ class Guru extends Authenticatable
     protected $table = 'guru';
     protected $primaryKey = 'id_guru';
 
-    protected $fillable = ['kode_guru', 'nama_guru', 'password'];
+    protected $fillable = ['kode_guru', 'nama_guru', 'foto_guru', 'password'];
 
     protected $hidden = ['password'];
 

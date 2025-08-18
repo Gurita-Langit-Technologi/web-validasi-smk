@@ -18,6 +18,7 @@ use Filament\Support\Enums\FontFamily;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 
+
 class GuruResource extends Resource
 {
     protected static ?string $model = Guru::class;
@@ -31,11 +32,13 @@ class GuruResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('kode_guru')
                     ->required()
+
                     ->suffixIcon('heroicon-o-bookmark-square')
                     ->suffixIconColor('success')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nama_guru')
                     ->required()
+
                     ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->maxLength(80),
             ]);
@@ -45,13 +48,25 @@ class GuruResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('avatar')
-                    ->defaultImageUrl('https://picsum.photos/64')
-                    ->circular(),
+                // ImageColumn::make('avatar')
+                // ->defaultImageUrl('https://picsum.photos/64')
+                //->Height(50)
+
+                // ->circular(),
+                ImageColumn::make('foto_guru')
+                    ->label('Foto')
+                    ->disk('public') // ambil dari storage/app/public
+                    ->defaultImageUrl(url('storage/guru/default.jpg')), // gambar default
+
+
+
+
 
                 Tables\Columns\TextColumn::make('kode_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text1')
+                    ->searchable()
+                    ->sortable()
 
                     ->icon('heroicon-o-bookmark-square')
                     ->fontFamily(FontFamily::Mono)
@@ -60,6 +75,8 @@ class GuruResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
+                    ->searchable()
+                    ->sortable()
                     ->color('text2')
                     ->searchable(),
 

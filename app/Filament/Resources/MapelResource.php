@@ -55,20 +55,24 @@ class MapelResource extends Resource
                 Tables\Columns\TextColumn::make('kode_mapel')
                     ->label('Kode Mapel')
                     ->color('text1')
+                    ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('nama_diklat')
                     ->label('Mapel')
                     ->color('text2')
+                    ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('guru.kode_guru')
                     ->label('Kode Guru')
+                    ->sortable()
                     ->color('text4')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('guru.nama_guru')
                     ->label('Nama Guru')
+                    ->sortable()
                     ->color('text4')
                     ->searchable(),
 

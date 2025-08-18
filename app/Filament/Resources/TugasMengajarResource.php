@@ -79,7 +79,8 @@ class TugasMengajarResource extends Resource
 
                 Tables\Columns\TextColumn::make('guru.kode_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
-
+                    ->sortable()
+                    ->label('Kode Guru')
                     ->color('text1')
                     ->icon('heroicon-o-check-circle')
                     ->fontFamily(FontFamily::Mono)
@@ -91,20 +92,24 @@ class TugasMengajarResource extends Resource
                 Tables\Columns\TextColumn::make('guru.nama_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text2')
+                    ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('kelas.nama_kelas')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text3')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('mapel.nama_diklat')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
+                    ->sortable()
                     ->color('text3')
                     ->label('Mapel')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
+                    ->sortable()
                     ->color('text5')
                     ->label('Kompetensi Keahlian')
             ])
