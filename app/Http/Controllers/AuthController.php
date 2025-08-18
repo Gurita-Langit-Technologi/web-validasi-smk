@@ -18,12 +18,12 @@ class AuthController extends Controller
 {
     public function showGuruLoginForm()
     {
-        return view('auth.login'); // view untuk guru
+        return view('auth.login');
     }
 
     public function showWaliLoginForm()
     {
-        return view('auth.login_wali'); // view untuk wali kelas
+        return view('auth.login_wali');
     }
 
     public function loginGuru(Request $request)
@@ -53,14 +53,16 @@ class AuthController extends Controller
 
         $wali = WaliKelas::where('kode_wali', $request->kode_wali)->first();
 
-        if ($wali && Hash::check($request->password, $wali->password)) {
+        if ($wali && $wali->role == 'wali kelas' && Hash::check($request->password, $wali->password)) {
             Auth::guard('wali')->login($wali);
             return redirect()->route('wali.dashboard');
+        } else if ($wali && $wali->role == 'koordinator' && Hash::check($request->password, $wali->password)) {
+            Auth::guard('wali')->login($wali);
+            return view('pages.dashboard.dashboard-koordinator');
         }
 
         return back()->withErrors(['login.wali.form' => 'Kode atau password salah']);
     }
-
 
 
     public function logout(Request $request)

@@ -56,6 +56,7 @@ class DatabaseSeeder extends Seeder
             ['kode' => '1122334455', 'nama' => 'Dewi Lestari',     'password' => 'password3'],
             ['kode' => '5566778899', 'nama' => 'Samsul Arifin',    'password' => 'password4'],
             ['kode' => '6677889900', 'nama' => 'Rahmat Hidayat',   'password' => 'password5'],
+
         ];
 
         foreach ($waliData as $data) {
@@ -80,6 +81,10 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->command->info(" Seeder wali_kelas selesai dijalankan.");
+
+        DB::table('wali_kelas')->insert([
+            ['id_guru' => 5, 'kode_wali' => '1000000001', 'nama_wali' => 'Rahmat Hidayat', 'role' => 'koordinator',  'password' => Hash::make('password0')],
+        ]);
 
 
         //seeder kelas

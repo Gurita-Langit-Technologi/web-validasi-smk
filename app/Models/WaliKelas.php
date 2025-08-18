@@ -14,6 +14,7 @@ class WaliKelas extends Authenticatable
         'nama_wali',
         'id_guru', // penting
         'password',
+        'role'
     ];
 
 

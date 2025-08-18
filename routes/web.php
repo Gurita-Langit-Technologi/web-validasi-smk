@@ -4,6 +4,7 @@ use App\Exports\RekapTugasExport;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\KoordinatorController;
 use App\Http\Controllers\RekapTugasController;
 use App\Http\Controllers\WaliController;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,8 @@ Route::middleware(['auth:guru'])->prefix('guru')->group(function () {
 Route::middleware(['auth:wali'])->prefix('wali')->group(function () {
     Route::get('/dashboard', [WaliController::class, 'dashboard'])->name('wali.dashboard');
 });
+
+Route::get('/koordinator/dashboard', [KoordinatorController::class, 'dashboard'])->name('koordinator.dashboard');
 
 Route::get('/guru/create-password', [GuruController::class, 'create'])->name('guru.create');
 Route::post('/guru/create-password', [GuruController::class, 'store'])->name('guru.set-password');
