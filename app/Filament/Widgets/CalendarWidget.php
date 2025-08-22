@@ -119,4 +119,43 @@ class CalendarWidget extends FullCalendarWidget
         }
     JS;
     }
+
+
+    /**
+     * Tambahkan tombol Import CSV di toolbar widget
+     */
+    protected function getHeaderActions(): array
+    {
+        return [
+            CreateAction::make(),
+            Action::make('importCsv')
+                ->label('Import CSV')
+                ->color('success')
+                ->icon('heroicon-o-arrow-up-tray')
+                ->form([
+                    FileUpload::make('csv_file')
+                        ->label('Upload CSV')
+                        ->disk('local')
+                        ->directory('imports')
+                        ->acceptedFileTypes(['text/csv'])
+                        ->required(),
+                ])
+                ->action(function (array $data): void {
+                    $filePath = Storage::disk('local')->path($data['csv_file']);
+
+                    $csv = Reader::createFromPath($filePath, 'r');
+                    $csv->setHeaderOffset(0);
+
+                    $records = (new Statement())->process($csv);
+
+                    foreach ($records as $record) {
+                        Task::create([
+                            'uraian_kegiatan' => $record['uraian_kegiatan'] ?? 'Tanpa Judul',
+                            'start' => $record['start'] ?? now(),
+                            'end' => $record['end'] ?? now()->addHour(),
+                        ]);
+                    }
+                }),
+        ];
+    }
 }
