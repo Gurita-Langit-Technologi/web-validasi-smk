@@ -94,7 +94,11 @@
                                                 class="d-block mt-3 text-muted text-primary">
                                                 Login sebagai <span class="text-primary">Wali Kelas</span>
                                             </a>
-                                            <a href="{{ route('guru.create') }}" class="d-block mt-2 text-muted">
+                                            <a href="{{ route('login.koordinator.form') }}"
+                                                class="d-block mt-1 text-muted text-danger">
+                                                Login sebagai <span class="text-danger">Koordinator</span>
+                                            </a>
+                                            <a href="{{ route('guru.create') }}" class="d-block mt-3 text-muted">
                                                 Belum punya password? Buat di sini
                                             </a>
 

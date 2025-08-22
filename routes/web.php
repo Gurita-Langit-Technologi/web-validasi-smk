@@ -23,6 +23,12 @@ Route::prefix('guru')->group(function () {
     Route::post('/login', [AuthController::class, 'loginGuru'])->name('login.guru');
 });
 
+Route::prefix('koordinator')->group(function () {
+    Route::get('/login', [AuthController::class, 'showKoordinatorLoginForm'])->name('login.koordinator.form');
+    Route::post('/login', [AuthController::class, 'loginKoordinator'])->name('login.koordinator');
+});
+
+
 // Login untuk Wali Kelas
 Route::prefix('wali')->group(function () {
     Route::get('/login', [AuthController::class, 'showWaliLoginForm'])->name('login.wali.form');

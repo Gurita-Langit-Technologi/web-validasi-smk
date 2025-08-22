@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login | wali kelas</title>
+    <title>Login | Koordinator Ujian</title>
     <link rel="stylesheet" href="{{ asset('vendors/core/core.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/feather-font/css/iconfont.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/flag-icon-css/css/flag-icon.min.css') }}">
@@ -54,7 +54,8 @@
                                             </div>
                                         @endif
 
-                                        <form class="forms-sample" method="POST" action="{{ route('login.wali') }}">
+                                        <form class="forms-sample" method="POST"
+                                            action="{{ route('login.koordinator') }}">
                                             @csrf
 
                                             <div class="form-group">
@@ -90,14 +91,18 @@
                                                     Login
                                                 </button>
                                             </div>
-                                            <a href="{{ route('login.waliform') }}"
+                                            <a href="{{ route('login.guru.form') }}"
                                                 class="d-block mt-3 text-muted text-success">
+                                                Login sebagai <span class="text-success">Guru</span>
+                                            </a>
+                                            <a href="{{ route('login.wali.form') }}"
+                                                class="d-block mt-1 text-muted text-success">
                                                 Login sebagai <span class="text-success">Wali</span>
                                             </a>
 
                                             <!-- Tambahkan link forgot password -->
                                             <a href="{{ route('forgot-password-form') }}"
-                                                class="d-block mt-2 text-muted">
+                                                class="d-block mt-3 text-muted">
                                                 Lupa password?
                                             </a>
 
