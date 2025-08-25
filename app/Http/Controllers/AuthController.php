@@ -26,29 +26,29 @@ class AuthController extends Controller
         return view('auth.login_wali');
     }
 
-    public function showKoordinatorLoginForm()
-    {
-        return view('auth.login-koordinator');
-    }
+    // public function showKoordinatorLoginForm()
+    // {
+    //     return view('auth.login-koordinator');
+    // }
 
-    public function loginKoordinator(Request $request)
-    {
-        $request->validate([
-            'kode_wali' => 'required',
-            'password' => 'required',
-        ]);
+    // public function loginKoordinator(Request $request)
+    // {
+    //     $request->validate([
+    //         'kode_wali' => 'required',
+    //         'password' => 'required',
+    //     ]);
 
-        $koordinator = WaliKelas::where('kode_wali', $request->kode_wali)
-            ->where('role', 'koordinator')
-            ->first();
+    //     $koordinator = WaliKelas::where('kode_wali', $request->kode_wali)
+    //         ->where('role', 'koordinator')
+    //         ->first();
 
-        if ($koordinator && Hash::check($request->password, $koordinator->password)) {
-            Auth::guard('wali')->login($koordinator);
-            return redirect()->route('koordinator.dashboard');
-        }
+    //     if ($koordinator && Hash::check($request->password, $koordinator->password)) {
+    //         Auth::guard('wali')->login($koordinator);
+    //         return redirect()->route('koordinator.dashboard');
+    //     }
 
-        return back()->withErrors(['login.koordinator.form' => 'Kode atau password salah']);
-    }
+    //     return back()->withErrors(['login.koordinator.form' => 'Kode atau password salah']);
+    // }
 
 
     public function loginGuru(Request $request)

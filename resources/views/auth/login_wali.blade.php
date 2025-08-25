@@ -94,7 +94,7 @@
                                                 class="d-block mt-3 text-muted text-success">
                                                 Login sebagai <span class="text-success">Guru</span>
                                             </a>
-                                            <a href="{{ route('login.koordinator.form') }}"
+                                            <a href="{{ route('koordinator.dashboard') }}"
                                                 class="d-block mt-1 text-muted text-danger">
                                                 Login sebagai <span class="text-danger">Koordinator</span>
                                             </a>

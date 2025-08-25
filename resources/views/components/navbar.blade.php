@@ -65,18 +65,33 @@
                                     <span>Switch User</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                    class="nav-link">
-                                    <i class="link-icon" data-feather="log-out"></i>
-                                    <span class="link-title">Logout</span>
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                </form>
-                            </li>
+                            @if (Auth::guard('guru')->user() || Auth::guard('wali')->user())
+                                <li class="nav-item">
+                                    <a href="#"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                        class="nav-link">
+                                        <i class="link-icon" data-feather="log-out"></i>
+                                        <span class="link-title">Logout</span>
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                    </form>
+                                </li>
+                            @else
+                                <li class="nav-item">
+                                    <a href="#"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                        class="nav-link">
+                                        <i class="link-icon" data-feather="log-out"></i>
+                                        <span class="link-title">Logout</span>
+                                    </a>
+                                    <form id="logout-form" action="{{ route('login.wali.form') }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                    </form>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </div>

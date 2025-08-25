@@ -82,9 +82,9 @@ class DatabaseSeeder extends Seeder
 
         // $this->command->info(" Seeder wali_kelas selesai dijalankan.");
 
-        DB::table('wali_kelas')->insert([
-            ['id_guru' => 5, 'kode_wali' => '1000000001', 'nama_wali' => 'Rahmat Hidayat', 'role' => 'koordinator',  'password' => Hash::make('password0')],
-        ]);
+        // DB::table('wali_kelas')->insert([
+        //     ['id_guru' => 5, 'kode_wali' => '1000000001', 'nama_wali' => 'Rahmat Hidayat', 'role' => 'koordinator',  'password' => Hash::make('password0')],
+        // ]);
 
 
         // //seeder kelas
