@@ -85,15 +85,15 @@ class AdminPanelProvider extends PanelProvider
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([\App\Filament\Pages\Dashboard::class])
+            // ->pages([\App\Filament\Pages\Dashboard::class])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            /* ->widgets([
+            ->widgets([
 
                 Widgets\StatsOverviewWidget::class,
 
 
             ])
-                */
+
 
 
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
@@ -113,7 +113,6 @@ class AdminPanelProvider extends PanelProvider
                                 ...MapelResource::getNavigationItems(),
                                 ...RekapKelasResource::getNavigationItems(),
                                 ...PerwalianKelasResource::getNavigationItems(),
-
                                 ...TugasMEngajarResource::getNavigationItems(),
                             ]),
                         NavigationGroup::make('Tambah Data')
