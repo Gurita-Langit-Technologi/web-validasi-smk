@@ -31,10 +31,6 @@ class MapelResource extends Resource
                     ->label('Kode Mapel')
                     ->maxLength(80),
 
-                Forms\Components\Select::make('id_guru')
-                    ->relationship('guru', 'nama_guru')
-                    ->required()
-                    ->label('Nama Guru'),
 
 
                 Forms\Components\Select::make('nama_guru')

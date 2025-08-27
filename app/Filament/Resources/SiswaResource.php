@@ -42,15 +42,15 @@ class SiswaResource extends Resource
                 Forms\Components\TextInput::make('nama_siswa')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('nama_kelas')
-                    ->label('Nama Kelas')
-                    ->relationship('kelas', 'nama_kelas') // pastikan field 'kode_kelas' ada di tabel kelas
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Forms\Components\Select::make('kelas_id')
+                // Forms\Components\Select::make('nama_kelas')
+                //     ->label('Nama Kelas')
+                //     ->relationship('kelas', 'nama_kelas') // pastikan field 'kode_kelas' ada di tabel kelas
+                //     ->searchable()
+                //     ->preload()
+                //     ->required(),
+                Forms\Components\Select::make('id_kelas')
                     ->label('Kelas')
-                    ->relationship('kelas', 'kode_kelas') // pastikan field 'kode_kelas' ada di tabel kelas
+                    ->relationship('kelas', 'nama_kelas')
                     ->searchable()
                     ->preload()
                     ->required(),

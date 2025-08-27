@@ -12,87 +12,55 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 
 class WaliKelasResource extends Resource
 {
     protected static ?string $model = WaliKelas::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-identification';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('id_guru')
-                    ->relationship('guru', 'nama_guru')
+                Forms\Components\TextInput::make('id_guru')
                     ->required()
-                    ->label('Nama Wali'),
-                Select::make('kode_guru')
-                    ->relationship('guru', 'kode_guru')
+                    ->numeric(),
+                Forms\Components\TextInput::make('kode_wali')
                     ->required()
-                    ->label('Kode Guru'),
-
-
-
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('nama_wali')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('role')
+                    ->required(),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->required()
+                    ->maxLength(255),
             ]);
-
-        /* return $form
-            ->schema([
-                Select::make('id_guru')
-                    ->relationship('guru', 'nama_guru')
-                    // ->relationship(name: 'guru'. 'nama_guru', titleAttribute: 'nama_guru')
-                    ->required()
-                    ->label('Nama Wali'),
-
-                Select::make('id_kelas')
-                    ->relationship('kelas', 'nama_kelas')
-                    ->required()
-                    ->label('Nama Kelas'),
-
-                Select::make('kompetensi_keahlian')
-                    ->relationship('kelas', 'kompetensi_keahlian')
-                    ->required()
-                    ->label('Kompetensi Keahlian'),
-
-
-
-
-
-            ]);
-            */
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->query(
-                WaliKelas::query()->with(['kelas'])
-            )
             ->columns([
-                Tables\Columns\TextColumn::make('guru.kode_guru')
-                    ->label('Kode Guru')
-                    ->color('text1')
+                Tables\Columns\TextColumn::make('id_guru')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kode_wali')
                     ->searchable(),
-
                 Tables\Columns\TextColumn::make('nama_wali')
-                    ->label('Wali Kelas')
-                    ->color('text2')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('kelas.nama_kelas')
-                    ->color('text3')
-                    ->label('Nama Kelas')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kelas.tingkat_kelas')
-                    ->color('text4')
-                    ->label('Tingkat Kelas')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
-                    ->label('Kompetensi Keahlian')
-                    ->color('text5')
-                    ->searchable(),
-
+                Tables\Columns\TextColumn::make('role'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -101,9 +69,9 @@ class WaliKelasResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                // Tables\Actions\BulkActionGroup::make([
-                //  Tables\Actions\DeleteBulkAction::make(),
-                // ]),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 

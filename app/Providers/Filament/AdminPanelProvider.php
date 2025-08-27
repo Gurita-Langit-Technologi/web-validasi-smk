@@ -113,6 +113,7 @@ class AdminPanelProvider extends PanelProvider
                                 ...MapelResource::getNavigationItems(),
                                 ...RekapKelasResource::getNavigationItems(),
                                 ...PerwalianKelasResource::getNavigationItems(),
+                                ...WaliKelasResource::getNavigationItems(),
                                 ...TugasMEngajarResource::getNavigationItems(),
                             ]),
                         NavigationGroup::make('Tambah Data')

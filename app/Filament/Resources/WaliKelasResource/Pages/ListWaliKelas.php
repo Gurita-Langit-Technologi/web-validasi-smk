@@ -16,8 +16,4 @@ class ListWaliKelas extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-    public function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
 }
