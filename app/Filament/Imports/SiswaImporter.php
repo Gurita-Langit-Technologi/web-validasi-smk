@@ -32,7 +32,7 @@ class SiswaImporter extends Importer
     public function resolveRecord(): ?Siswa
     {
         return Siswa::firstOrNew([
-            'id_siswa' => $this->data['id_siswa'],
+            'no_induk' => $this->data['no_induk'],
         ]);
     }
     public function getJobBatchName(): ?string

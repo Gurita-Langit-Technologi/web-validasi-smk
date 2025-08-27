@@ -19,7 +19,7 @@ class Kelas extends Model
 
     public function rekapKelas()
     {
-        return $this->hasMany(RekapKelas::class, 'id_kelas');
+        return $this->hasMany(RekapKelas::class, 'id_kelas', 'id_kelas');
     }
 
     public function tugasMengajar()

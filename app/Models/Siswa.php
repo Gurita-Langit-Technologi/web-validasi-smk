@@ -15,7 +15,8 @@ class Siswa extends Model
         'nama_siswa',
         'nama_kelas',
         'id_kelas',
-        'kompetensi_keahlian'
+        'kompetensi_keahlian',
+        'no_induk',
 
     ];
 
@@ -31,7 +32,7 @@ class Siswa extends Model
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas');
+        return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
     }
     // app/Models/Siswa.php
 

@@ -48,6 +48,11 @@ class GuruResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id_guru')
+                    ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
+                    ->color('text1')
+                    ->searchable()
+                    ->sortable(),
                 // ImageColumn::make('avatar')
                 // ->defaultImageUrl('https://picsum.photos/64')
                 //->Height(50)
