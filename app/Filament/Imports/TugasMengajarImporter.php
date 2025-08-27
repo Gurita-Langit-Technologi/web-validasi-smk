@@ -22,16 +22,17 @@ class TugasMengajarImporter extends Importer
                     resolveUsing: ['nama_guru', 'kode_guru'] // cari guru berdasarkan nama atau kode
                 ),
 
-            ImportColumn::make('nama_diklat') //ini harus disesuaikan dengan kolom d csv, wes itu kunci kesalahan setengah hari ini selain harus menggunakan relation
-                ->relationship(
-                    name: 'mapel',
-                    resolveUsing: ['nama_diklat', 'kode_mapel'] // cari mapel berdasarkan nama atau kode
-                ),
+
 
             ImportColumn::make('nama_kelas') //ini harus disesuaikan dengan kolom d csv, wes itu kunci kesalahan setengah hari ini selain harus menggunakan relation
                 ->relationship(
                     name: 'kelas',
                     resolveUsing: ['nama_kelas', 'kode_kelas'] // cari kelas berdasarkan nama atau kode
+                ),
+            ImportColumn::make('nama_diklat') //ini harus disesuaikan dengan kolom d csv, wes itu kunci kesalahan setengah hari ini selain harus menggunakan relation
+                ->relationship(
+                    name: 'mapel',
+                    resolveUsing: ['nama_diklat', 'kode_mapel'] // cari mapel berdasarkan nama atau kode
                 ),
         ];
     }

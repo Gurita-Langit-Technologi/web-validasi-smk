@@ -15,6 +15,7 @@ class PerwalianKelasImporter extends Importer
     public static function getColumns(): array
     {
         return [
+
             ImportColumn::make('nama_guru') //ini harus disesuaikan dengan kolom d csv, wes itu kunci kesalahan setengah hari ini selain harus menggunakan relation
                 ->relationship(
                     name: 'guru', // relasi di model TugasMengajar
@@ -25,7 +26,7 @@ class PerwalianKelasImporter extends Importer
                 ->relationship(
                     name: 'kelas',
                     resolveUsing: ['kode_kelas', 'nama_kelas'] // cari berdasarkan nama atau kode
-                ),
+                )
 
 
         ];

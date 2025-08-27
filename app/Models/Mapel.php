@@ -9,7 +9,7 @@ class Mapel extends Model
     protected $table = 'mapel';
     protected $primaryKey = 'id_mapel';
 
-    protected $fillable = ['kode_mapel', 'nama_diklat'];
+    protected $fillable = ['kode_mapel', 'nama_diklat', 'id_guru'];
 
     public function tugasMengajar()
     {

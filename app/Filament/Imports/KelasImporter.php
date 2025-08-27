@@ -17,12 +17,13 @@ class KelasImporter extends Importer
             ImportColumn::make('kode_kelas')
                 ->requiredMapping()
                 ->rules(['required', 'max:30']),
+            ImportColumn::make('nama_kelas')
+                ->requiredMapping()
+                ->rules(['required', 'max:255']),
             ImportColumn::make('tingkat_kelas')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            ImportColumn::make('nama_kelas')
-                ->requiredMapping()
-                ->rules(['required', 'max:10']),
+
             ImportColumn::make('kompetensi_keahlian')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
@@ -48,5 +49,9 @@ class KelasImporter extends Importer
         }
 
         return $body;
+    }
+    public function getJobBatchName(): ?string
+    {
+        return 'kelas-import';
     }
 }
