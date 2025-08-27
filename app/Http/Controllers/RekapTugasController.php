@@ -49,8 +49,9 @@ class RekapTugasController extends Controller
                 ->where('status', 'Selesai')
                 ->count();
 
-            $rekap->jumlah_selesai = $jumlahSelesai;
-            $rekap->jumlah_tanggungan = $rekap->total_tugas - $jumlahSelesai;
+
+            $rekap->jumlah_selesai = min($jumlahSelesai, $rekap->total_tugas);
+            $rekap->jumlah_tanggungan = max(0, $rekap->total_tugas - $rekap->jumlah_selesai);
             $rekap->save();
             if ($mengajar->id_guru == $guruIdLogin) {
                 $rekapTugas->push($rekap);
