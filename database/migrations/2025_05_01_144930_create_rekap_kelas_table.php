@@ -13,14 +13,19 @@ return new class extends Migration
     {
         Schema::create('rekap_kelas', function (Blueprint $table) {
             $table->id('id_rekap_kelas');
-            $table->bigInteger('id_kelas')->reference('id_kelas')->on('kelas');
-            $table->bigInteger('id_mapel')->reference('id_mapel')->on('mapel');
-            $table->bigInteger('id_guru')->reference('id_guru')->on('guru');
-            $table->bigInteger('id_wali_kelas')->reference('id_wali_kelas')->on('wali_kelas');
+            $table->unsignedbigInteger('id_kelas');
+            $table->unsignedbigInteger('id_mapel');
+            $table->unsignedbigInteger('id_guru');
+            $table->unsignedbigInteger('id_wali_kelas');
             $table->integer('total_tugas')->length(30)->default(0);
             $table->integer('jumlah_selesai')->length(30)->default(0);
             $table->integer('jumlah_tanggungan')->length(30)->default(0);
             $table->timestamps();
+
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');
+            $table->foreign('id_mapel')->references('id_mapel')->on('mapel')->onDelete('cascade');
+            $table->foreign('id_guru')->references('id_guru')->on('guru')->onDelete('cascade');
+            $table->foreign('id_wali_kelas')->references('id_wali_kelas')->on('wali_kelas')->onDelete('cascade');
         });
     }
 

@@ -9,7 +9,7 @@ class RekapKelas extends Model
     protected $table = 'rekap_kelas';
     protected $primaryKey = 'id_rekap_kelas';
 
-    protected $fillable = ['id_kelas', 'id_mapel', 'id_guru', 'total_tugas', 'jumlah_selesai', 'jumlah_tanggungan',];
+    protected $fillable = ['id_kelas', 'id_mapel', 'id_guru', 'id_wali_kelas', 'total_tugas', 'jumlah_selesai', 'jumlah_tanggungan'];
 
     public function guru()
     {

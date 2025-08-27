@@ -192,7 +192,7 @@
             old_name: input.dataset.oldName || null
         }));
 
-        fetch(`/guru/generate-tasks-per-class/${classId}`, {
+        fetch(`/guru/generate-tasks-per-class/${classId}`, { // Pastikan route ini benar
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -206,7 +206,7 @@
             .then(data => {
                 alert(data.message);
                 if (data.success) {
-                    // generate data-old-name untuk semua input yang berhasil digenerate
+                    // Update data-old-name untuk semua input yang berhasil diupdate
                     taskInputs.forEach((input, index) => {
                         if (tasks[index].new_name) {
                             input.dataset.oldName = tasks[index].new_name;
