@@ -15,6 +15,7 @@ return new class extends Migration
 
             $table->bigIncrements('id_wali_kelas'); // ⬅️ Penting: membuat kolom PK dan index
             $table->unsignedBigInteger('id_guru');
+            $table->unsignedBigInteger('id_kelas');
             $table->string('kode_wali');
             $table->string('nama_wali');
             $table->enum('role', ['wali kelas', 'koordinator'])->default('wali kelas');
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_guru')->references('id_guru')->on('guru')->onDelete('cascade');
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');
         });
     }
 

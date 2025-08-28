@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Guru;
+use App\Models\Kelas;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -50,35 +51,7 @@ class DatabaseSeeder extends Seeder
 
 
         // //seeder wali kelas
-        $waliData = [
-            ['kode' => '1234567890', 'nama' => 'Budi Santoso',     'password' => 'password1'],
-            ['kode' => '0987654321', 'nama' => 'Ani Setiawati',    'password' => 'password2'],
-            ['kode' => '1122334455', 'nama' => 'Dewi Lestari',     'password' => 'password3'],
-            ['kode' => '5566778899', 'nama' => 'Samsul Arifin',    'password' => 'password4'],
-            ['kode' => '6677889900', 'nama' => 'Rahmat Hidayat',   'password' => 'password5'],
 
-        ];
-
-        foreach ($waliData as $data) {
-            $guru = Guru::where('kode_guru', $data['kode'])->first();
-
-            if ($guru) {
-                WaliKelas::updateOrCreate(
-                    ['id_guru' => $guru->id_guru],
-                    [
-                        'kode_wali'  => $data['kode'],
-                        'nama_wali'  => $data['nama'],
-                        'password'   => Hash::make($data['password']),
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]
-                );
-
-                $this->command->info(" Wali Kelas untuk {$data['nama']} berhasil dibuat.");
-            } else {
-                $this->command->warn("Guru dengan kode {$data['kode']} tidak ditemukan. Wali tidak dibuat.");
-            }
-        }
 
         // $this->command->info(" Seeder wali_kelas selesai dijalankan.");
 
@@ -92,7 +65,6 @@ class DatabaseSeeder extends Seeder
 
         DB::table('kelas')->insert([
             [
-                'id_wali_kelas' => 1,
                 'kode_kelas' => 'XIPA1',
                 'kompetensi_keahlian' => 'IPA',
                 'nama_kelas' => 'X IPA 1',
@@ -101,7 +73,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id_wali_kelas' => 1,
                 'kode_kelas' => 'XIPA2',
                 'kompetensi_keahlian' => 'IPA',
                 'nama_kelas' => 'X IPA 2',
@@ -110,7 +81,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id_wali_kelas' => 2,
                 'kode_kelas' => 'XIPS1',
                 'kompetensi_keahlian' => 'IPS',
                 'nama_kelas' => 'X IPS 1',
@@ -119,7 +89,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id_wali_kelas' => 2,
                 'kode_kelas' => 'XIPS2',
                 'kompetensi_keahlian' => 'IPS',
                 'nama_kelas' => 'X IPS 2',
@@ -128,7 +97,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id_wali_kelas' => 3,
                 'kode_kelas' => 'XIIPA1',
                 'kompetensi_keahlian' => 'IPA',
                 'nama_kelas' => 'XI IPA 1',
@@ -137,7 +105,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id_wali_kelas' => 3,
                 'kode_kelas' => 'XIIPA2',
                 'kompetensi_keahlian' => 'IPA',
                 'nama_kelas' => 'XI IPA 2',
@@ -146,7 +113,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id_wali_kelas' => 4,
                 'kode_kelas' => 'XIIPS1',
                 'kompetensi_keahlian' => 'IPS',
                 'nama_kelas' => 'XI IPS 1',
@@ -155,7 +121,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id_wali_kelas' => 5,
                 'kode_kelas' => 'XIITM1',
                 'kompetensi_keahlian' => 'TM',
                 'nama_kelas' => 'XII TM 1',
@@ -220,7 +185,41 @@ class DatabaseSeeder extends Seeder
             // ... lanjutkan lainnya
         ]);
 
+        $waliData = [
+            ['kode' => '1234567890', 'nama' => 'Budi Santoso',     'password' => 'password1'],
+            ['kode' => '0987654321', 'nama' => 'Ani Setiawati',    'password' => 'password2'],
+            ['kode' => '1122334455', 'nama' => 'Dewi Lestari',     'password' => 'password3'],
+            ['kode' => '5566778899', 'nama' => 'Samsul Arifin',    'password' => 'password4'],
+            ['kode' => '6677889900', 'nama' => 'Rahmat Hidayat',   'password' => 'password5'],
+        ];
 
+        // Ambil semua kelas yang tersedia
+        $kelasList = Kelas::all();
+
+        foreach ($waliData as $index => $data) {
+            $guru = Guru::where('kode_guru', $data['kode'])->first();
+
+            if ($guru) {
+                // Assign kelas secara berurutan, jika kelas habis maka ulang dari awal
+                $kelas = $kelasList[$index % count($kelasList)];
+
+                WaliKelas::updateOrCreate(
+                    ['id_guru' => $guru->id_guru],
+                    [
+                        'id_kelas'   => $kelas->id_kelas,
+                        'kode_wali'  => $data['kode'],
+                        'nama_wali'  => $data['nama'],
+                        'password'   => Hash::make($data['password']),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+
+                $this->command->info("Wali Kelas {$data['nama']} berhasil diassign ke kelas {$kelas->nama_kelas}.");
+            } else {
+                $this->command->warn("Guru dengan kode {$data['kode']} tidak ditemukan. Wali tidak dibuat.");
+            }
+        }
 
         // // Seeder untuk tabel mapel
         DB::table('mapel')->insert([

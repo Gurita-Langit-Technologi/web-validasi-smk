@@ -13,6 +13,7 @@ class WaliKelas extends Authenticatable
         'kode_wali',
         'nama_wali',
         'id_guru', // penting
+        'id_kelas',
         'password',
         'role'
     ];
@@ -34,6 +35,6 @@ class WaliKelas extends Authenticatable
     }
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_wali_kelas', 'id_wali_kelas');
+        return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
     }
 }

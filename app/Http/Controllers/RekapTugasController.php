@@ -18,7 +18,7 @@ class RekapTugasController extends Controller
     public function index()
     {
         $tugasMengajar = TugasMengajar::with([
-            'kelas.waliKelas',
+            'kelas',
             'mapel',
             'guru'
         ])->get();
@@ -26,7 +26,11 @@ class RekapTugasController extends Controller
         $rekapTugas = collect();
         $guruIdLogin = Auth::guard('guru')->user()->id_guru;
 
+        $waliKelasMap = WaliKelas::with('kelas')->get()->keyBy('id_kelas');
+
         foreach ($tugasMengajar as $mengajar) {
+            $waliKelas = $waliKelasMap->get($mengajar->id_kelas);
+
             $rekap = RekapKelas::firstOrCreate(
                 [
                     'id_kelas' => $mengajar->id_kelas,
@@ -34,14 +38,14 @@ class RekapTugasController extends Controller
                     'id_guru' => $mengajar->id_guru,
                 ],
                 [
-                    'id_wali_kelas' => $mengajar->kelas->id_wali_kelas,
+                    'id_wali_kelas' => $waliKelas ? $waliKelas->id_wali_kelas : null,
                     'total_tugas' => 0,
                     'jumlah_selesai' => 0,
                     'jumlah_tanggungan' => 0,
                 ]
             );
 
-            $rekap->load(['kelas.waliKelas', 'mapel', 'guru', 'tugas']);
+            $rekap->load(['kelas', 'mapel', 'guru', 'tugas', 'waliKelas']);
 
             $rekap->total_tugas = $rekap->tugas->unique('nama_tugas')->count();
 
@@ -49,10 +53,11 @@ class RekapTugasController extends Controller
                 ->where('status', 'Selesai')
                 ->count();
 
-
             $rekap->jumlah_selesai = min($jumlahSelesai, $rekap->total_tugas);
             $rekap->jumlah_tanggungan = max(0, $rekap->total_tugas - $rekap->jumlah_selesai);
+
             $rekap->save();
+
             if ($mengajar->id_guru == $guruIdLogin) {
                 $rekapTugas->push($rekap);
             }
