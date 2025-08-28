@@ -112,7 +112,7 @@ class AdminPanelProvider extends PanelProvider
                                 ...SiswaResource::getNavigationItems(),
                                 ...MapelResource::getNavigationItems(),
                                 ...RekapKelasResource::getNavigationItems(),
-                                ...PerwalianKelasResource::getNavigationItems(),
+                                //  ...PerwalianKelasResource::getNavigationItems(),
                                 ...WaliKelasResource::getNavigationItems(),
                                 ...TugasMEngajarResource::getNavigationItems(),
                             ]),

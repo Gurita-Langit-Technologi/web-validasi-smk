@@ -52,17 +52,7 @@ class TugasMengajarResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required(),
-                /*
-                Forms\Components\Select::make('kompetensi_keahlian')
-                    ->options([
-                        'TM' => 'Teknik Pemesinan',
-                        'TO' => 'Teknik Otomotif',
-                        'TE' => 'Teknik Elektro',
-                        'AKL' => 'Akutansi Lembaga dan Keuangan'
-                    ])
-                    ->preload()
-                    ->required(),
-                    */
+
 
             ]);
     }

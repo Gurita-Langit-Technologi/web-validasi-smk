@@ -35,6 +35,6 @@ class WaliKelas extends Authenticatable
     }
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
+        return $this->hasOne(Kelas::class, 'id_kelas', 'id_kelas');
     }
 }
