@@ -26,10 +26,17 @@ class RekapTugasController extends Controller
         $rekapTugas = collect();
         $guruIdLogin = Auth::guard('guru')->user()->id_guru;
 
+
         $waliKelasMap = WaliKelas::with('kelas')->get()->keyBy('id_kelas');
 
         foreach ($tugasMengajar as $mengajar) {
             $waliKelas = $waliKelasMap->get($mengajar->id_kelas);
+            // tambahan
+            // Jika tidak ada wali kelas untuk id_kelas ini, lewati iterasi ini
+            // atau kirim pesan error
+            if (!$waliKelas) {
+                continue; // Melewati kelas yang tidak memiliki wali kelas
+            }
 
             $rekap = RekapKelas::firstOrCreate(
                 [
@@ -38,12 +45,14 @@ class RekapTugasController extends Controller
                     'id_guru' => $mengajar->id_guru,
                 ],
                 [
-                    'id_wali_kelas' => $waliKelas ? $waliKelas->id_wali_kelas : null,
+                    //'id_wali_kelas' => $waliKelas ? $waliKelas->id_wali_kelas : null, // katanya gemini disini masalahnya
+                    'id_wali_kelas' => $waliKelas->id_wali_kelas,
                     'total_tugas' => 0,
                     'jumlah_selesai' => 0,
                     'jumlah_tanggungan' => 0,
                 ]
             );
+
 
             $rekap->load(['kelas', 'mapel', 'guru', 'tugas', 'waliKelas']);
 
