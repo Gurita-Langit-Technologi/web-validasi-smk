@@ -41,6 +41,7 @@ class TugasMengajarResource extends Resource
 
                 Forms\Components\Select::make('id_kelas')
                     ->label('Kelas')
+                    ->multiple()
                     ->relationship('kelas', 'nama_kelas')
                     ->searchable()
                     ->preload()
@@ -100,6 +101,7 @@ class TugasMengajarResource extends Resource
                 Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->sortable()
+
                     ->color('text5')
                     ->label('Kompetensi Keahlian')
             ])

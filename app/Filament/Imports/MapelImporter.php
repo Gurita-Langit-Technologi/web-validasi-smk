@@ -16,14 +16,17 @@ class MapelImporter extends Importer
         return [
             ImportColumn::make('kode_mapel')
                 ->requiredMapping()
-                ->rules(['required', 'max:255']),
+                ->rules(['required', 'max:20']),
             ImportColumn::make('nama_diklat')
                 ->requiredMapping()
                 ->label('Nama Diklat')
                 ->rules(['required', 'max:80']),
             ImportColumn::make('id_mapel')
                 ->requiredMapping()
-                ->rules(['required', 'max:255']),
+                ->rules(['required', 'max:20']),
+            ImportColumn::make('id_guru')
+                ->requiredMapping()
+                ->rules(['required', 'max:20']),
 
         ];
     }
