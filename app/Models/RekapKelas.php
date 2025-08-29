@@ -46,4 +46,8 @@ class RekapKelas extends Model
     {
         return $this->hasMany(Siswa::class, 'id_kelas');
     }
+    public function rekapPengumpulan()
+    {
+        return $this->hasMany(RekapPengumpulan::class, 'id_rekap_kelas', 'id_rekap_kelas');
+    }
 }
