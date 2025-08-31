@@ -16,19 +16,17 @@ class TugasMengajarImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('id_guru')
+            ImportColumn::make('kode_guru')
                 ->requiredMapping()
-                ->rules(['required', 'max:30']),
+                ->rules(['required', 'max:20', 'exists:guru,kode_guru']),
 
-            ImportColumn::make('id_kelas')
+            ImportColumn::make('kode_kelas')
                 ->requiredMapping()
-                ->rules(['required', 'max:30']),
+                ->rules(['required', 'max:20', 'exists:kelas,kode_kelas']),
 
-
-
-            ImportColumn::make('id_mapel')
+            ImportColumn::make('kode_mapel')
                 ->requiredMapping()
-                ->rules(['required', 'max:30']),
+                ->rules(['required', 'max:20', 'exists:mapel,kode_mapel']),
         ];
     }
     public function resolveRecord(): ?TugasMengajar
@@ -45,20 +43,10 @@ class TugasMengajarImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        foreach ($import->getFailedRows() as $row) {
-            Log::error('Row gagal: ', [
-                'data' => $row->data,
-                'errors' => $row->errors,
-            ]);
-        }
-
-        $body = 'Tugas mengajar berhasil diimpor: '
-            . number_format($import->successful_rows) . ' '
-            . str('baris')->plural($import->successful_rows) . ' berhasil.';
+        $body = 'Data Wali kelas berhasil ditambahkan ' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' ' . number_format($failedRowsCount) . ' '
-                . str('baris')->plural($failedRowsCount) . ' gagal diimpor.';
+            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to import.';
         }
 
         return $body;

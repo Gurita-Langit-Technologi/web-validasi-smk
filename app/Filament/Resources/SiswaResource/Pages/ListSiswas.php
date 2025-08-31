@@ -16,7 +16,7 @@ class ListSiswas extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            //  Actions\CreateAction::make(),
+            Actions\CreateAction::make(),
         ];
     }
     //customize redirect after create

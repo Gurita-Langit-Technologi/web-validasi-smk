@@ -13,7 +13,7 @@ class Mapel extends Model
 
     public function tugasMengajar()
     {
-        return $this->hasMany(TugasMengajar::class, 'id_mapel', 'id_mapel');
+        return $this->hasMany(TugasMengajar::class, 'id_mapel', 'kode_mapel');
     }
 
     // Relasi dengan rekap_pengumpulan (1 Mapel bisa memiliki banyak rekap tugas)
