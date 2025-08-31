@@ -8,25 +8,55 @@ use App\Models\PerwalianKelas;
 use App\Models\RekapKelas;
 use App\Models\RekapPengumpulan;
 use App\Models\Siswa;
+use App\Models\WaliKelas;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class WaliController extends Controller
 {
+
+    public function create()
+    {
+        return view('auth.register-wali');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'kode_wali' => 'required|exists:wali,kode_wali',
+            'email' => 'required',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $wali = WaliKelas::where('kode_wali', $request->kode_wali)->first();
+
+        if (!$wali) {
+            return back()->withErrors(['kode wali' => 'kode wali tidak ditemukan']);
+        }
+
+        $wali->password = Hash::make($request->password);
+        $wali->save();
+
+        return redirect()->route('login.wali.form')->with('success', 'Password berhasil dibuat, silakan login.');
+    }
+
     public function dashboard()
     {
 
         $waliKelas = Auth::guard('wali')->user();
 
-        $perwalian = PerwalianKelas::with('kelas')->where('id_wali_kelas', $waliKelas->id_wali_kelas)->first();
+        $waliKelas = WaliKelas::with('kelas')->find($waliKelas->id_wali_kelas);
 
-        if (!$perwalian) {
-            return view('pages.app.dashboard', [
+        if (!$waliKelas || !$waliKelas->kelas) {
+            return view('pages.dashboard.dashboard-wali', [
                 'isWaliKelas' => true,
                 'error' => 'Anda belum ditugaskan sebagai wali kelas'
             ]);
         }
 
-        // Dapatkan semua mapel di kelas ini
+        // Ambil perwalian dari data wali langsung
+        $perwalian = $waliKelas;
+
         $mapelList = Mapel::whereHas('rekapKelas', function ($query) use ($perwalian) {
             $query->where('id_kelas', $perwalian->id_kelas);
         })->get();

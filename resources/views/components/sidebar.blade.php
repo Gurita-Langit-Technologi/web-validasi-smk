@@ -38,11 +38,12 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('page-kelas') }}"
-                        class="nav-link {{ request()->routeIs('page-kelas') ? 'active' : '' }}">
+                        class="nav-link {{ request()->routeIs('page-kelas*') || request()->routeIs('detail-tugas*') ? 'active' : '' }}">
                         <i class="link-icon" data-feather="message-square"></i>
                         <span class="link-title">Detail tugas</span>
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                         class="nav-link">

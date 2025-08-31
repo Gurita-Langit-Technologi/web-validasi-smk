@@ -67,3 +67,6 @@ Route::get('/koordinator/dashboard', [KoordinatorController::class, 'dashboard']
 
 Route::get('/guru/create-password', [GuruController::class, 'create'])->name('guru.create');
 Route::post('/guru/create-password', [GuruController::class, 'store'])->name('guru.set-password');
+
+Route::get('/wali/create-password', [WaliController::class, 'create'])->name('wali.create');
+Route::post('/wali/create-password', [WaliController::class, 'store'])->name('wali.set-password');
