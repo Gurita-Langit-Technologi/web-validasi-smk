@@ -32,7 +32,6 @@ class MapelResource extends Resource
                     ->maxLength(80),
 
 
-
                 Forms\Components\Select::make('nama_guru')
                     ->required()
                     ->relationship('guru', 'nama_guru')

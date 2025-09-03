@@ -232,61 +232,53 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        // // Seeder untuk tabel tugas
-        // $mapels = DB::table('mapel')->get();
 
-        // // foreach ($mapels as $mapel) {
-        // //     for ($i = 1; $i <= $mapel->total_tugas; $i++) {
-        // //         DB::table('tugas')->insert([
-        // //             'id_siswa' => rand(1, 5),  // Assign a random siswa
-        // //             'id_mapel' => $mapel->id_mapel,
-        // //             'nama_tugas' => $mapel->nama_diklat . ' Tugas ' . $i,
-        // //             'Tanggal_pengumpulan' => now()->addDays(rand(7, 14))->toDateString(),  // Random due date between 7 and 14 days
-        // //             'keterangan' => 'Tugas nomor ' . $i . ' untuk ' . $mapel->nama_diklat,
-        // //             'status' => $i % 2 == 0 ? 'Selesai' : 'Belum Selesai',  // Random status
-        // //             'created_at' => now(),
-        // //             'updated_at' => now(),
-        // //         ]);
-        // //     }
-        // // }
 
         DB::table('tugas_mengajar')->insert([
             [
-                'id_guru' => 1,
-                'id_kelas' => 1,
-                'id_mapel' => 1,
+                'kode_guru'  => '1234567890', // Budi Santoso
+                'kode_kelas' => 'XIPA1',      // ada di seeder kelas
+                'kode_mapel' => '101',        // Matematika
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'id_guru' => 2,
-                'id_kelas' => 2,
-                'id_mapel' => 2,
+                'kode_guru'  => '0987654321', // Ani Setiawati
+                'kode_kelas' => 'XIPA2',
+                'kode_mapel' => '102',        // Fisika
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'id_guru' => 3,
-                'id_kelas' => 3,
-                'id_mapel' => 3,
+                'kode_guru'  => '0011223344', // Dewi Lestari
+                'kode_kelas' => 'XIPS1',
+                'kode_mapel' => '103',        // Kimia
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'id_guru' => 4,
-                'id_kelas' => 4,
-                'id_mapel' => 4,
+                'kode_guru'  => '5566778899', // Samsul Arifin
+                'kode_kelas' => 'XIPS2',
+                'kode_mapel' => '104',        // Biologi
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'id_guru' => 5,
-                'id_kelas' => 5,
-                'id_mapel' => 5,
+                'kode_guru'  => '6677889900', // Rahmat Hidayat
+                'kode_kelas' => 'XIIPA1',     // ada di seeder kelas
+                'kode_mapel' => '105',        // Sejarah
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_guru'  => '1122334455', // Rafi Suyoso
+                'kode_kelas' => 'XIIPA2',     // ada di seeder kelas
+                'kode_mapel' => '106',        // B.Inggris
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ]);
+
 
         // /*
         // DB::table('perwalian_kelas')->insert([
