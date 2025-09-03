@@ -16,6 +16,8 @@ class KelasController extends Controller
             ->where('id_guru', $guru->id_guru)
             ->get();
 
+
+
         return view('pages.app.page-kelas', compact('rekapKelas'));
     }
 }

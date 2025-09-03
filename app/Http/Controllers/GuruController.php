@@ -42,6 +42,12 @@ class GuruController extends Controller
         $user_guru->password = Hash::make($request->password);
         $user_guru->save();
 
+        $user_wali = WaliKelas::where('id_guru', $guru->id_guru)->first();
+        if ($user_wali) {
+            $user_wali->password = Hash::make($request->password);
+            $user_wali->save();
+        }
+
         return redirect()->route('login.guru.form')->with('success', 'Password berhasil dibuat, silakan login.');
     }
 

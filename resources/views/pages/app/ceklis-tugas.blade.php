@@ -6,7 +6,8 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url('/guru/dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('page-kelas') }}">Kelas</a></li>
             <li class="breadcrumb-item active" aria-current="page">Detail Tugas</li>
         </ol>
     </nav>
@@ -23,8 +24,8 @@
                     <form action="{{ route('update-status-tugas') }}" method="POST" id="form-tugas">
                         @csrf
                         <div class="table-responsive">
-                            <table class="table text-center" id="tabel-tugas">
-                                <thead>
+                            <table class="table" id="tabel-tugas">
+                                <thead class="text-center">
                                     <tr>
                                         <th>Nama Siswa</th>
                                         @foreach ($tugas as $task)
@@ -60,11 +61,15 @@
                                                     <input type="hidden"
                                                         name="tugas[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
                                                         value="Belum Selesai">
-                                                    <input type="checkbox"
-                                                        name="tugas[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
-                                                        value="Selesai"
-                                                        {{ $rekap && $rekap->status == 'Selesai' ? 'checked' : '' }}
-                                                        onchange="toggleTanggal(this, '{{ $student->id_siswa }}', '{{ $task->id_tugas }}')">
+                                                    <div
+                                                        style="display: flex; justify-content: center; align-items: center;">
+                                                        <input type="checkbox"
+                                                            name="tugas[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                            value="Selesai"
+                                                            {{ $rekap && $rekap->status == 'Selesai' ? 'checked' : '' }}
+                                                            onchange="toggleTanggal(this, '{{ $student->id_siswa }}', '{{ $task->id_tugas }}')">
+                                                    </div>
+
                                                     <div class="mt-2">
                                                         <input type="date" class="form-control"
                                                             name="tanggal_pengumpulan[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
@@ -80,12 +85,12 @@
                                                         min="0" max="100">
                                                 </td>
                                             @endforeach
-                                            <td>
+                                            <td class="text-center">
                                                 {{ $siswaStatus[$student->id_siswa]['completed'] }}/{{ $siswaStatus[$student->id_siswa]['total'] }}
                                                 Tugas
                                             </td>
-                                            <td>
-                                                <div class="rounded-circle bg-{{ $siswaStatus[$student->id_siswa]['status'] }}"
+                                            <td class="text-center">
+                                                <div class="rounded-circle bg-{{ $siswaStatus[$student->id_siswa]['status'] }} mx-auto"
                                                     style="width: 20px; height: 20px;"></div>
                                             </td>
                                         </tr>

@@ -44,7 +44,7 @@
                                         <td>{{ $kelas->mapel->nama_diklat }}</td>
                                         <td>{{ $kelas->kelas->nama_kelas }}</td>
                                         <td>
-                                            <a href="{{ route('detail-tugas', $kelas->mapel->id_mapel) }}"
+                                            <a href="{{ route('detail-tugas', $kelas->kelas->id_kelas) }}"
                                                 class="btn btn-success btn-sm">Detail</a>
                                         </td>
                                     </tr>

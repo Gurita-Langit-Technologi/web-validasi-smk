@@ -23,7 +23,7 @@ class WaliController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_wali' => 'required|exists:wali,kode_wali',
+            'kode_wali' => 'required|exists:wali_kelas,kode_wali',
             'email' => 'required',
             'password' => 'required|min:6|confirmed',
         ]);

@@ -38,10 +38,11 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('page-kelas') }}"
-                        class="nav-link {{ request()->routeIs('page-kelas*') || request()->routeIs('detail-tugas*') ? 'active' : '' }}">
+                        class="nav-link {{ request()->routeIs('guru.page-kelas') || request()->routeIs('guru.detail-tugas') ? 'active' : '' }}">
                         <i class="link-icon" data-feather="message-square"></i>
                         <span class="link-title">Detail tugas</span>
                     </a>
+
                 </li>
 
                 <li class="nav-item">

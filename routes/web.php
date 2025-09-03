@@ -44,7 +44,7 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 
 Route::middleware(['auth:guru'])->prefix('guru')->group(function () {
     Route::get('/dashboard', [GuruController::class, 'dashboard'])->name('guru.dashboard');
-    Route::get('/form-tugas/{id_mapel}', [RekapTugasController::class, 'showDetailTugas'])->name('detail-tugas');
+    Route::get('/form-tugas/{id_kelas}', [RekapTugasController::class, 'showDetailTugas'])->name('detail-tugas');
     Route::get('/page-tugas', [RekapTugasController::class, 'index'])->name('page-tugas');
     Route::get('/rekap-tugas/edit/{id}', [RekapTugasController::class, 'edit'])->name('rekap-tugas.edit');
     Route::post('/rekap-tugas/update/{id}', [RekapTugasController::class, 'update'])->name('rekap-tugas.update');
@@ -68,5 +68,5 @@ Route::get('/koordinator/dashboard', [KoordinatorController::class, 'dashboard']
 Route::get('/guru/create-password', [GuruController::class, 'create'])->name('guru.create');
 Route::post('/guru/create-password', [GuruController::class, 'store'])->name('guru.set-password');
 
-Route::get('/wali/create-password', [WaliController::class, 'create'])->name('wali.create');
-Route::post('/wali/create-password', [WaliController::class, 'store'])->name('wali.set-password');
+// Route::get('/wali/create-password', [WaliController::class, 'create'])->name('wali.create');
+// Route::post('/wali/create-password', [WaliController::class, 'store'])->name('wali.set-password');

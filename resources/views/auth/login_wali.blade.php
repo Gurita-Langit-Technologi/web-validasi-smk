@@ -98,7 +98,7 @@
                                                 class="d-block mt-1 text-muted text-danger">
                                                 Login sebagai <span class="text-danger">Koordinator</span>
                                             </a>
-                                            <a href="{{ route('wali.create') }}" class="d-block mt-2 text-muted">
+                                            <a href="{{ route('guru.create') }}" class="d-block mt-2 text-muted">
                                                 Belum punya password? Buat di sini
                                             </a>
 

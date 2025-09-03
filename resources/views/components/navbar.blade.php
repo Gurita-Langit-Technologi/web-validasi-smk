@@ -86,10 +86,10 @@
                                         <i class="link-icon" data-feather="log-out"></i>
                                         <span class="link-title">Logout</span>
                                     </a>
-                                    <form id="logout-form" action="{{ route('login.wali.form') }}" method="POST"
-                                        style="display: none;">
-                                        @csrf
-                                    </form>
+                                    <a href="{{ route('login.wali.form') }}" class="nav-link">
+                                        <i class="link-icon" data-feather="log-in"></i>
+                                        <span class="link-title">Login</span>
+                                    </a>
                                 </li>
                             @endif
                         </ul>
