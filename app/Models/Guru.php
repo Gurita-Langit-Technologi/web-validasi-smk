@@ -32,7 +32,7 @@ class Guru extends Authenticatable
 
     public function tugasMengajar()
     {
-        return $this->hasMany(TugasMengajar::class, 'id_guru', 'kode_guru');
+        return $this->hasMany(TugasMengajar::class, 'id_guru', 'id_guru');
     }
 
     public function auth()

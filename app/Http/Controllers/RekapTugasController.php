@@ -39,37 +39,33 @@ class RekapTugasController extends Controller
                 continue; // Melewati kelas yang tidak memiliki wali kelas
             }
 
-            $rekap = RekapKelas::where('id_kelas', $mengajar->id_kelas)
-                ->where('id_mapel', $mengajar->id_mapel)
-                ->where('id_guru', $mengajar->id_guru)
-                ->first();
-
-            if (!$rekap) {
-                $rekap = RekapKelas::create([
+            $rekap = RekapKelas::updateOrCreate(
+                [
                     'id_kelas' => $mengajar->id_kelas,
                     'id_mapel' => $mengajar->id_mapel,
                     'id_guru' => $mengajar->id_guru,
+                ],
+                [
                     'id_wali_kelas' => $waliKelas->id_wali_kelas,
-                    'total_tugas' => 0,
-                    'jumlah_selesai' => 0,
-                    'jumlah_tanggungan' => 0,
-                ]);
-            }
+                ]
+            );
 
+            $totalTugas = TugasMengajar::where('id_guru', $mengajar->id_guru)
+                ->where('id_kelas', $mengajar->id_kelas)
+                ->where('id_mapel', $mengajar->id_mapel)
+                ->count();
 
-
-            $rekap->load(['kelas', 'mapel', 'guru', 'tugas', 'waliKelas']);
-
-            $rekap->total_tugas = $rekap->tugas->unique('nama_tugas')->count();
+            $rekap->total_tugas = $totalTugas;
 
             $jumlahSelesai = RekapPengumpulan::where('id_rekap_kelas', $rekap->id_rekap_kelas)
                 ->where('status', 'Selesai')
                 ->count();
 
-            $rekap->jumlah_selesai = min($jumlahSelesai, $rekap->total_tugas);
+            $rekap->jumlah_selesai   = min($jumlahSelesai, $rekap->total_tugas);
             $rekap->jumlah_tanggungan = max(0, $rekap->total_tugas - $rekap->jumlah_selesai);
 
             $rekap->save();
+
 
             if ($mengajar->id_guru == $guruIdLogin) {
                 $rekapTugas->push($rekap);
