@@ -221,6 +221,16 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        DB::table('wali_kelas')->insert([
+            'kode_wali' => '1122334455',
+            'id_kelas' => 8,
+            'id_guru' => 6,
+            'nama_wali' => 'Rafi Suyoso',
+            'password'   => Hash::make('12345678'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         // // Seeder untuk tabel mapel
         DB::table('mapel')->insert([
             ['kode_mapel' => '101', 'nama_diklat' => 'Matematika', 'id_guru' => 1, 'created_at' => now(), 'updated_at' => now()],
@@ -250,43 +260,51 @@ class DatabaseSeeder extends Seeder
         // //     }
         // // }
 
-        // DB::table('tugas_mengajar')->insert([
-        //     [
-        //         'id_guru' => 1,
-        //         'id_kelas' => 1,
-        //         'id_mapel' => 1,
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //     ],
-        //     [
-        //         'id_guru' => 2,
-        //         'id_kelas' => 2,
-        //         'id_mapel' => 2,
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //     ],
-        //     [
-        //         'id_guru' => 3,
-        //         'id_kelas' => 3,
-        //         'id_mapel' => 3,
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //     ],
-        //     [
-        //         'id_guru' => 4,
-        //         'id_kelas' => 4,
-        //         'id_mapel' => 4,
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //     ],
-        //     [
-        //         'id_guru' => 5,
-        //         'id_kelas' => 5,
-        //         'id_mapel' => 5,
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //     ],
-        // ]);
+        DB::table('tugas_mengajar')->insert([
+            [
+                'id_guru' => 1,
+                'id_kelas' => 1,
+                'id_mapel' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_guru' => 2,
+                'id_kelas' => 2,
+                'id_mapel' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_guru' => 3,
+                'id_kelas' => 3,
+                'id_mapel' => 3,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_guru' => 4,
+                'id_kelas' => 4,
+                'id_mapel' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id_guru' => 5,
+                'id_kelas' => 5,
+                'id_mapel' => 5,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id_guru' => 1,
+                'id_kelas' => 8,
+                'id_mapel' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
 
         // /*
         // DB::table('perwalian_kelas')->insert([

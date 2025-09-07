@@ -13,6 +13,7 @@ use App\Models\WaliKelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class GuruController extends Controller
 {
@@ -62,5 +63,31 @@ class GuruController extends Controller
 
 
         return redirect()->route('login.guru.form');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'foto_guru' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $guru = Auth::guard('guru')->user();
+
+        // Hapus foto lama jika ada
+        if ($guru->foto_guru && Storage::disk('public')->exists($guru->foto_guru)) {
+            Storage::disk('public')->delete($guru->foto_guru);
+        }
+
+        // Upload foto baru
+        if ($request->hasFile('foto_guru')) {
+            $file = $request->file('foto_guru');
+            $filename = 'guru_' . $guru->id_guru . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('guru_photos', $filename, 'public');
+
+            $guru->foto_guru = $path;
+            $guru->save();
+        }
+
+        return redirect()->back()->with('success', 'Foto profil berhasil diperbarui!');
     }
 }

@@ -44,7 +44,9 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 
 Route::middleware(['auth:guru'])->prefix('guru')->group(function () {
     Route::get('/dashboard', [GuruController::class, 'dashboard'])->name('guru.dashboard');
-    Route::get('/form-tugas/{id_kelas}', [RekapTugasController::class, 'showDetailTugas'])->name('detail-tugas');
+    Route::post('/update-profile', [GuruController::class, 'updateProfile'])->name('guru.update-profile');
+    Route::post('/logout', [AuthController::class, 'logoutGuru'])->name('logout.guru');
+    Route::get('/form-tugas/{id_mapel}/{id_kelas}', [RekapTugasController::class, 'showDetailTugas'])->name('detail-tugas');
     Route::get('/page-tugas', [RekapTugasController::class, 'index'])->name('page-tugas');
     Route::get('/rekap-tugas/edit/{id}', [RekapTugasController::class, 'edit'])->name('rekap-tugas.edit');
     Route::post('/rekap-tugas/update/{id}', [RekapTugasController::class, 'update'])->name('rekap-tugas.update');

@@ -52,6 +52,11 @@ class MapelResource extends Resource
                 Mapel::query()->with(['guru'])
             )
             ->columns([
+                Tables\Columns\TextColumn::make('id_mapel')
+                    ->label('ID Mapel')
+                    ->color('text1')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('kode_mapel')
                     ->label('Kode Mapel')
                     ->color('text1')

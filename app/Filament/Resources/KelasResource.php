@@ -64,12 +64,14 @@ class KelasResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id_kelas')
+                    ->label('ID Kelas')
 
                     ->color('text2')
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('nama_kelas')
+
                     ->color('text2')
                     ->sortable()
                     ->searchable(),

@@ -13,7 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Support\Enums\FontFamily;
-use App\Filament\Imports\TugasMEngajarImporter;
+use App\Filament\Imports\TugasMengajarImporter;
 use Filament\Tables\Actions\ImportAction;
 use App\Models\Guru;
 use App\Models\Kelas;
@@ -41,7 +41,7 @@ class TugasMengajarResource extends Resource
 
                 Forms\Components\Select::make('id_kelas')
                     ->label('Kelas')
-                    //  ->multiple()
+                    // ->multiple()
                     ->relationship('kelas', 'nama_kelas')
                     ->searchable()
                     ->preload()
@@ -68,7 +68,7 @@ class TugasMengajarResource extends Resource
             ->columns([
 
 
-                Tables\Columns\TextColumn::make('kode_guru')
+                Tables\Columns\TextColumn::make('guru.kode_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->sortable()
                     ->label('Kode Guru')
@@ -81,43 +81,29 @@ class TugasMengajarResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('guru.nama_guru')
-                    ->label('Nama Guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text2')
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('kode_mapel')
-                    ->label('Kode Mapel')
+                Tables\Columns\TextColumn::make('kelas.nama_kelas')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text3')
                     ->sortable()
                     ->searchable(),
-
                 Tables\Columns\TextColumn::make('mapel.nama_diklat')
-                    ->label('Namas Mapel')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
+                    ->sortable()
                     ->color('text3')
-                    ->sortable()
+                    ->label('Mapel')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('kode_kelas')
+                Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
-                    ->color('text4')
                     ->sortable()
-                    ->searchable(),
-                // Tables\Columns\TextColumn::make('mapel.nama_diklat')
-                //     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
-                //     ->sortable()
-                //     ->color('text3')
-                //     ->label('Mapel')
-                //     ->searchable(),
 
-                // Tables\Columns\TextColumn::make('kelas.kompetensi_keahlian')
-                //     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
-                //     ->sortable()
-                //     ->color('text5')
-                //     ->label('Kompetensi Keahlian')
+                    ->color('text5')
+                    ->label('Kompetensi Keahlian')
             ])
             ->filters([
                 //

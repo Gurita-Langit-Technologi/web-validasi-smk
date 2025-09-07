@@ -57,7 +57,7 @@
                                                     <input type="hidden" name="id_siswa[]"
                                                         value="{{ $student->id_siswa }}">
                                                     <input type="hidden" name="id_rekap_kelas"
-                                                        value="{{ $rekap->id_rekap_kelas }}">
+                                                        value="{{ $rekap->id_rekap_kelas ?? '' }}">
                                                     <input type="hidden"
                                                         name="tugas[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
                                                         value="Belum Selesai">

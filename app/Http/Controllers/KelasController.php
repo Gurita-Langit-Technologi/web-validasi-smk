@@ -12,12 +12,12 @@ class KelasController extends Controller
     {
         // Ambil guru yang sedang login
         $guru = Auth::guard('guru')->user();
-        $rekapKelas = RekapKelas::with(['kelas', 'mapel', 'guru'])
+
+        // Ambil data tugas mengajar untuk guru yang sedang login
+        $tugasMengajar = \App\Models\TugasMengajar::with(['kelas', 'mapel', 'guru'])
             ->where('id_guru', $guru->id_guru)
             ->get();
 
-
-
-        return view('pages.app.page-kelas', compact('rekapKelas'));
+        return view('pages.app.page-kelas', compact('tugasMengajar'));
     }
 }

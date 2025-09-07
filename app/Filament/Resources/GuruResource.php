@@ -32,15 +32,31 @@ class GuruResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('kode_guru')
                     ->required()
-
+                    ->unique(ignoreRecord: true)
                     ->suffixIcon('heroicon-o-bookmark-square')
                     ->suffixIconColor('success')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->validationMessages([
+                        'unique' => 'Kode guru sudah digunakan. Silakan gunakan kode yang berbeda.',
+                    ]),
                 Forms\Components\TextInput::make('nama_guru')
                     ->required()
-
                     ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->maxLength(80),
+                Forms\Components\FileUpload::make('foto_guru')
+                    ->label('Foto Guru')
+                    ->image()
+                    ->disk('public')
+                    ->directory('guru_photos')
+                    ->visibility('public')
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        '1:1',
+                    ])
+                    ->maxSize(2048)
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif'])
+                    ->helperText('Format: JPG, PNG, GIF. Maksimal 2MB')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -49,6 +65,7 @@ class GuruResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id_guru')
+                    ->label('ID Guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text1')
                     ->searchable()
@@ -60,8 +77,12 @@ class GuruResource extends Resource
                 // ->circular(),
                 ImageColumn::make('foto_guru')
                     ->label('Foto')
-                    ->disk('public') // ambil dari storage/app/public
-                    ->defaultImageUrl(url('storage/guru/default.jpg')), // gambar default
+                    ->disk('public')
+                    ->height(60)
+                    ->width(60)
+                    ->circular()
+                    ->defaultImageUrl(url('images/default-avatar.svg'))
+                    ->placeholder('Tidak ada foto'),
 
 
 
@@ -69,6 +90,7 @@ class GuruResource extends Resource
 
                 Tables\Columns\TextColumn::make('kode_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
+                    ->label('Kode Guru')
                     ->color('text1')
                     ->searchable()
                     ->sortable()
@@ -80,6 +102,7 @@ class GuruResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
+                    ->label('Nama Guru')
                     ->searchable()
                     ->sortable()
                     ->color('text2')
@@ -123,8 +146,6 @@ class GuruResource extends Resource
 
     public static function getNavigationBadgeColor(): ?string
     {
-        $count = static::$model::count();
-
         return 'info';
     }
 

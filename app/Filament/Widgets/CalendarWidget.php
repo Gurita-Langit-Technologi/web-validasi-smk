@@ -23,6 +23,7 @@ use Filament\Forms\Components\FileUpload;
 use Illuminate\Support\Facades\Storage;
 use League\Csv\Reader;
 use League\Csv\Statement;
+use Carbon\Carbon;
 
 
 
@@ -127,33 +128,71 @@ class CalendarWidget extends FullCalendarWidget
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->label('Jadwal Baru')
+                ->color('primary'),
             Action::make('importCsv')
-                ->label('Import CSV')
+                ->label('Import Jadwal CSV')
                 ->color('success')
                 ->icon('heroicon-o-arrow-up-tray')
+                ->button()
                 ->form([
                     FileUpload::make('csv_file')
-                        ->label('Upload CSV')
+                        ->label('Upload File CSV')
                         ->disk('local')
                         ->directory('imports')
-                        ->acceptedFileTypes(['text/csv'])
-                        ->required(),
+                        ->acceptedFileTypes(['text/csv', 'application/csv'])
+                        ->required()
+                        ->helperText('Format CSV: uraian_kegiatan,start,end. Contoh: "Rapat Guru","2025-01-15 08:00:00","2025-01-15 10:00:00"'),
                 ])
                 ->action(function (array $data): void {
-                    $filePath = Storage::disk('local')->path($data['csv_file']);
+                    try {
+                        $filePath = Storage::disk('local')->path($data['csv_file']);
 
-                    $csv = Reader::createFromPath($filePath, 'r');
-                    $csv->setHeaderOffset(0);
+                        $csv = Reader::createFromPath($filePath, 'r');
+                        $csv->setHeaderOffset(0);
 
-                    $records = (new Statement())->process($csv);
+                        $records = (new Statement())->process($csv);
+                        $importedCount = 0;
 
-                    foreach ($records as $record) {
-                        Task::create([
-                            'uraian_kegiatan' => $record['uraian_kegiatan'] ?? 'Tanpa Judul',
-                            'start' => $record['start'] ?? now(),
-                            'end' => $record['end'] ?? now()->addHour(),
-                        ]);
+                        foreach ($records as $record) {
+                            // Validasi data
+                            $uraian = $record['uraian_kegiatan'] ?? $record['uraian'] ?? 'Tanpa Judul';
+                            $start = $record['start'] ?? $record['tanggal_mulai'] ?? now();
+                            $end = $record['end'] ?? $record['tanggal_selesai'] ?? now()->addHour();
+
+                            // Parse tanggal jika dalam format string
+                            if (is_string($start)) {
+                                $start = Carbon::parse($start);
+                            }
+                            if (is_string($end)) {
+                                $end = Carbon::parse($end);
+                            }
+
+                            Task::create([
+                                'uraian_kegiatan' => $uraian,
+                                'start' => $start,
+                                'end' => $end,
+                            ]);
+
+                            $importedCount++;
+                        }
+
+                        // Hapus file setelah import
+                        Storage::disk('local')->delete($data['csv_file']);
+
+                        // Tampilkan notifikasi sukses
+                        \Filament\Notifications\Notification::make()
+                            ->title('Import Berhasil!')
+                            ->body("Berhasil mengimport {$importedCount} jadwal dari CSV.")
+                            ->success()
+                            ->send();
+                    } catch (\Exception $e) {
+                        \Filament\Notifications\Notification::make()
+                            ->title('Import Gagal!')
+                            ->body('Terjadi kesalahan saat mengimport CSV: ' . $e->getMessage())
+                            ->danger()
+                            ->send();
                     }
                 }),
         ];

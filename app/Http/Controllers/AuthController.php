@@ -101,6 +101,15 @@ class AuthController extends Controller
         return redirect('/');
     }
 
+    public function logoutGuru(Request $request)
+    {
+        Auth::guard('guru')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login.guru.form')->with('success', 'Anda telah berhasil logout.');
+    }
+
     public function showForgotPasswordForm()
     {
         return view('auth.forgot-password');
@@ -125,7 +134,7 @@ class AuthController extends Controller
             ['token' => Hash::make($token), 'created_at' => now()]
         );
 
-        Mail::send('emails.reset-password', ['token' => $token], function ($message) use ($guru) {
+        Mail::send('mails.link-reset-password', ['token' => $token], function ($message) use ($guru) {
             $message->to($guru->email)
                 ->subject('Reset Password');
         });

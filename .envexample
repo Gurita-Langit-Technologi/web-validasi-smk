@@ -48,13 +48,27 @@ REDIS_HOST=127.0.0.1
 REDIS_PASSWORD=null
 REDIS_PORT=6379
 
-MAIL_MAILER=log
-MAIL_SCHEME=null
-MAIL_HOST=127.0.0.1
-MAIL_PORT=2525
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_FROM_ADDRESS="hello@example.com"
+
+
+# mailpit mail send development
+# MAIL_MAILER=log
+# MAIL_SCHEME=null
+# MAIL_HOST=127.0.0.1
+# MAIL_PORT=2525
+# MAIL_USERNAME=null
+# MAIL_PASSWORD=null
+# MAIL_FROM_ADDRESS="hello@example.com"
+# MAIL_FROM_NAME="${APP_NAME}"
+
+# mailpit mail send production
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=kadafiahmad342@gmail.com
+MAIL_PASSWORD=ckszvwoyboqcwbgn
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=kadafiahmad342@gmail.com
 MAIL_FROM_NAME="${APP_NAME}"
 
 AWS_ACCESS_KEY_ID=

@@ -27,7 +27,6 @@ class RekapTugasController extends Controller
         $guruIdLogin = Auth::guard('guru')->user()->id_guru;
 
 
-
         $waliKelasMap = WaliKelas::with('kelas')->get()->keyBy('id_kelas');
 
         foreach ($tugasMengajar as $mengajar) {
@@ -39,33 +38,34 @@ class RekapTugasController extends Controller
                 continue; // Melewati kelas yang tidak memiliki wali kelas
             }
 
-            $rekap = RekapKelas::updateOrCreate(
+            $rekap = RekapKelas::firstOrCreate(
                 [
                     'id_kelas' => $mengajar->id_kelas,
                     'id_mapel' => $mengajar->id_mapel,
                     'id_guru' => $mengajar->id_guru,
                 ],
                 [
+                    //'id_wali_kelas' => $waliKelas ? $waliKelas->id_wali_kelas : null, // katanya gemini disini masalahnya
                     'id_wali_kelas' => $waliKelas->id_wali_kelas,
+                    'total_tugas' => 0,
+                    'jumlah_selesai' => 0,
+                    'jumlah_tanggungan' => 0,
                 ]
             );
 
-            $totalTugas = TugasMengajar::where('id_guru', $mengajar->id_guru)
-                ->where('id_kelas', $mengajar->id_kelas)
-                ->where('id_mapel', $mengajar->id_mapel)
-                ->count();
 
-            $rekap->total_tugas = $totalTugas;
+            $rekap->load(['kelas', 'mapel', 'guru', 'tugas', 'waliKelas']);
+
+            $rekap->total_tugas = $rekap->tugas->unique('nama_tugas')->count();
 
             $jumlahSelesai = RekapPengumpulan::where('id_rekap_kelas', $rekap->id_rekap_kelas)
                 ->where('status', 'Selesai')
                 ->count();
 
-            $rekap->jumlah_selesai   = min($jumlahSelesai, $rekap->total_tugas);
+            $rekap->jumlah_selesai = min($jumlahSelesai, $rekap->total_tugas);
             $rekap->jumlah_tanggungan = max(0, $rekap->total_tugas - $rekap->jumlah_selesai);
 
             $rekap->save();
-
 
             if ($mengajar->id_guru == $guruIdLogin) {
                 $rekapTugas->push($rekap);
@@ -89,13 +89,13 @@ class RekapTugasController extends Controller
             'jumlah_tanggungan' => $request->total_tugas - $request->jumlah_selesai,
         ]);
 
-        return redirect()->route('rekap-tugas')->with('success', 'Data berhasil diperbarui!');
+        return redirect()->route('page-tugas')->with('success', 'Data berhasil diperbarui!');
     }
 
-    public function showDetailTugas($id_mapel)
+    public function showDetailTugas($id_mapel, $id_kelas)
     {
         $mapel = Mapel::find($id_mapel);
-        $rekapKelas = RekapKelas::with('kelas')->where('id_mapel', $id_mapel)->first();
+        $rekapKelas = RekapKelas::with('kelas')->where('id_mapel', $id_mapel)->where('id_kelas', $id_kelas)->first();
 
         if (!$rekapKelas) {
             return redirect()->back()->with('error', 'Data rekap kelas tidak ditemukan.');
@@ -238,7 +238,7 @@ class RekapTugasController extends Controller
             return response()->json(['message' => 'Nama tugas tidak boleh kosong!'], 400);
         }
 
-        $siswaList = Siswa::where('nama_kelas', $kelas->nama_kelas)->get();
+        $siswaList = Siswa::where('id_kelas', $kelas->id_kelas)->get();
 
         foreach ($siswaList as $siswa) {
             RekapPengumpulan::create([
@@ -253,7 +253,7 @@ class RekapTugasController extends Controller
         $rekap->total_tugas += 1;
         $rekap->jumlah_selesai = RekapPengumpulan::where('id_mapel', $mapel->id_mapel)
             ->whereHas('siswa', function ($query) use ($kelas) {
-                $query->where('nama_kelas', $kelas->nama_kelas);
+                $query->where('id_kelas', $kelas->id_kelas);
             })->where('status', 'Selesai')->count();
 
         $rekap->jumlah_tanggungan = $rekap->total_tugas - $rekap->jumlah_selesai;
@@ -406,7 +406,7 @@ class RekapTugasController extends Controller
     //     foreach ($rekapList as $rekap) {
     //         $mapel = $rekap->mapel;
     //         $kelas = $rekap->kelas;
-    //         $siswaList = Siswa::where('nama_kelas', $kelas->nama_kelas)->get();
+    //         $siswaList = Siswa::where('id_kelas', $kelas->id_kelas)->get();
     //         $tasks = $request->tasks[$rekap->id_rekap] ?? [];
 
     //         $totalTugas = 0; // Menghitung total tugas baru
