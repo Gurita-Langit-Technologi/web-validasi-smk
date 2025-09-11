@@ -80,15 +80,15 @@
                                 </li>
                             @else
                                 <li class="nav-item">
-                                    <a href="#"
+                                    {{-- <a href="#"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                         class="nav-link">
                                         <i class="link-icon" data-feather="log-out"></i>
                                         <span class="link-title">Logout</span>
-                                    </a>
+                                    </a> --}}
                                     <a href="{{ route('login.wali.form') }}" class="nav-link">
                                         <i class="link-icon" data-feather="log-in"></i>
-                                        <span class="link-title">Login</span>
+                                        <span class="link-title">Logout</span>
                                     </a>
                                 </li>
                             @endif

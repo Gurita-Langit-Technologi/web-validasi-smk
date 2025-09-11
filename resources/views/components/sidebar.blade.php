@@ -21,7 +21,7 @@
                         <span class="link-title">Dashboard</span>
                     </a>
                 </li>
-            @else
+            @elseif (\Illuminate\Support\Facades\Auth::guard('guru')->check())
                 <li class="nav-item">
                     <a href="{{ route('guru.dashboard') }}"
                         class="nav-link {{ request()->routeIs('guru.dashboard') ? 'active' : '' }}">
@@ -38,11 +38,10 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('page-kelas') }}"
-                        class="nav-link {{ request()->routeIs('guru.page-kelas') || request()->routeIs('guru.detail-tugas') ? 'active' : '' }}">
+                        class="nav-link {{ request()->routeIs('page-kelas') || request()->routeIs('detail-tugas') ? 'active' : '' }}">
                         <i class="link-icon" data-feather="message-square"></i>
                         <span class="link-title">Detail tugas</span>
                     </a>
-
                 </li>
 
                 <li class="nav-item">
@@ -54,6 +53,14 @@
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
+                </li>
+            @else
+                <li class="nav-item">
+                    <a href="{{ route('guru.dashboard') }}"
+                        class="nav-link {{ request()->routeIs('guru.dashboard') ? 'active' : '' }}">
+                        <i class="link-icon" data-feather="box"></i>
+                        <span class="link-title">Dashboard</span>
+                    </a>
                 </li>
             @endif
         </ul>

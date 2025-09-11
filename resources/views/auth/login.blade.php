@@ -91,20 +91,20 @@
                                                 </button>
                                             </div>
                                             <a href="{{ route('login.wali.form') }}"
-                                                class="d-block mt-3 text-muted text-primary">
+                                                class="d-block mt-3 text-dark text-primary">
                                                 Login sebagai <span class="text-primary">Wali Kelas</span>
                                             </a>
                                             <a href="{{ route('koordinator.dashboard') }}"
-                                                class="d-block mt-1 text-muted text-danger">
+                                                class="d-block mt-1 text-dark text-danger">
                                                 Login sebagai <span class="text-danger">Koordinator</span>
                                             </a>
-                                            <a href="{{ route('guru.create') }}" class="d-block mt-3 text-muted">
+                                            <a href="{{ route('guru.create') }}" class="d-block mt-3 text-dark">
                                                 Belum punya password? Buat di sini
                                             </a>
 
                                             <!-- Tambahkan link forgot password -->
                                             <a href="{{ route('forgot-password-form') }}"
-                                                class="d-block mt-2 text-muted">
+                                                class="d-block mt-2 text-dark">
                                                 Lupa password?
                                             </a>
 

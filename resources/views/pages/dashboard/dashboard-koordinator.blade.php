@@ -26,22 +26,22 @@
         <div class="card-body">
             <form method="GET" action="{{ route('koordinator.dashboard') }}">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="no_induk">No Induk Siswa (NISN)</label>
                             <input type="text" class="form-control" id="no_induk" name="no_induk"
                                 value="{{ request('no_induk') }}" placeholder="Masukkan NISN">
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="nama_siswa">Nama Siswa</label>
                             <input type="text" class="form-control" id="nama_siswa" name="nama_siswa"
                                 value="{{ request('nama_siswa') }}" placeholder="Masukkan Nama Siswa">
                         </div>
                     </div>
-                    <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">Cari</button>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100 mt-4">Cari</button>
                     </div>
                 </div>
             </form>
@@ -74,7 +74,7 @@
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-bordered mb-0">
-                        <thead class="thead-light">
+                        <thead class="thead-light text-center">
                             <tr>
                                 <th>Mata Pelajaran</th>
                                 <th>Nama Tugas</th>
