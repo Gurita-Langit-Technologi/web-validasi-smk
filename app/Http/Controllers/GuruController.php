@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Schema;
 
 class GuruController extends Controller
 {
@@ -54,13 +55,17 @@ class GuruController extends Controller
 
     public function dashboard()
     {
-
         $guru = Auth::guard('guru')->user();
+        
+        // Get email from UserGuru
+        $userGuru = UserGuru::where('guru_id', $guru->id_guru)->first();
+        $email = $userGuru->email ?? null;
+        
         return view('pages.dashboard.dashboard-guru', [
             'isWaliKelas' => false,
-            'guru' => $guru
+            'guru' => $guru,
+            'email' => $email
         ]);
-
 
         return redirect()->route('login.guru.form');
     }
@@ -68,26 +73,59 @@ class GuruController extends Controller
     public function updateProfile(Request $request)
     {
         $request->validate([
-            'foto_guru' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama_guru' => 'required|string|max:80',
+            'email' => 'required|email',
+            'no_telepon' => 'nullable|string|max:20',
+            'foto_guru' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $guru = Auth::guard('guru')->user();
 
-        // Hapus foto lama jika ada
-        if ($guru->foto_guru && Storage::disk('public')->exists($guru->foto_guru)) {
-            Storage::disk('public')->delete($guru->foto_guru);
+        // Update nama_guru
+        $guru->nama_guru = $request->nama_guru;
+        
+        // Update no_telepon if column exists
+        if (Schema::hasColumn('guru', 'no_telepon')) {
+            $guru->no_telepon = $request->no_telepon;
         }
 
-        // Upload foto baru
+        // Handle foto upload
         if ($request->hasFile('foto_guru')) {
+
+            
+            // Hapus foto lama jika ada
+            if ($guru->foto_guru && Storage::disk('public')->exists($guru->foto_guru)) {
+                Storage::disk('public')->delete($guru->foto_guru);
+            }
+
             $file = $request->file('foto_guru');
             $filename = 'guru_' . $guru->id_guru . '_' . time() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('guru_photos', $filename, 'public');
-
             $guru->foto_guru = $path;
-            $guru->save();
+
+            // dd([
+            //     'path' => $path,
+            //     'exists' => Storage::disk('public')->exists($path),
+            //     'url' => Storage::disk('public')->url($path),
+            // ]);
+            
         }
 
-        return redirect()->back()->with('success', 'Foto profil berhasil diperbarui!');
+        $guru->save();
+
+        // Update email di UserGuru
+        $userGuru = UserGuru::where('guru_id', $guru->id_guru)->first();
+        if ($userGuru) {
+            $userGuru->email = $request->email;
+            $userGuru->save();
+        } else {
+            // Jika belum ada, buat baru
+            $userGuru = new UserGuru;
+            $userGuru->guru_id = $guru->id_guru;
+            $userGuru->email = $request->email;
+            $userGuru->save();
+        }
+
+        return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
     }
 }

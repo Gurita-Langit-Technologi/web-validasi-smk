@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Schema;
 
 class Guru extends Authenticatable
 {
     use Notifiable;
-    public $incrementing = true;
-    protected $keyType = 'int';
 
 
     protected $table = 'guru';
     protected $primaryKey = 'id_guru';
 
-    protected $fillable = ['kode_guru', 'nama_guru', 'foto_guru', 'password'];
+    protected $fillable = ['kode_guru', 'nama_guru', 'foto_guru', 'password', 'no_telepon'];
 
     protected $hidden = ['password'];
 
@@ -46,5 +45,10 @@ class Guru extends Authenticatable
     public function waliKelas()
     {
         return $this->hasOne(WaliKelas::class, 'id_guru');
+    }
+
+    public function userGuru()
+    {
+        return $this->hasOne(UserGuru::class, 'guru_id', 'id_guru');
     }
 }

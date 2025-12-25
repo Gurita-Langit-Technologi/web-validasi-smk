@@ -29,7 +29,7 @@
                                     <tr>
                                         <th>Nama Siswa</th>
                                         @foreach ($tugas as $task)
-                                            <th>{{ $task->nama_tugas }}</th>
+                                            <th style="min-width: 300px;">{{ $task->nama_tugas }}</th>
                                         @endforeach
                                         <th>Status</th>
                                         <th>Indikator</th>
@@ -51,7 +51,7 @@
                                                     // dd($rekap->id_rekap_kelas);
 
                                                 @endphp
-                                                <td>
+                                                <td style="min-width: 300px;">
                                                     <input type="hidden" name="tugas[{{ $student->id_siswa }}][new]"
                                                         value="Belum Selesai">
                                                     <input type="hidden" name="id_siswa[]"
@@ -70,19 +70,26 @@
                                                             onchange="toggleTanggal(this, '{{ $student->id_siswa }}', '{{ $task->id_tugas }}')">
                                                     </div>
 
-                                                    <div class="mt-2">
-                                                        <input type="date" class="form-control"
+                                                    <div class="mt-2 d-flex align-items-center">
+                                                        <label class="form-label mb-0 me-2" style="min-width: 30px;">Tgl</label>
+                                                        <input type="date" class="form-control ml-2"
                                                             name="tanggal_pengumpulan[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
                                                             value="{{ $rekap->tanggal_pengumpulan ?? '' }}"
                                                             id="tanggal_{{ $student->id_siswa }}_{{ $task->id_tugas }}"
                                                             {{ $rekap && $rekap->status == 'Selesai' ? '' : 'disabled' }}>
-                                                        <textarea class="form-control mt-2" name="keterangan[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                    </div>
+                                                    <div class="mt-2 d-flex align-items-start">
+                                                        <label class="form-label mb-0 me-2" style="min-width: 30px;">Ket.</label>
+                                                        <textarea class="form-control ml-2" name="keterangan[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
                                                             placeholder="Keterangan">{{ $rekap->keterangan ?? '' }}</textarea>
                                                     </div>
-                                                    <input type="number" class="form-control mt-2"
-                                                        name="nilai[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
-                                                        value="{{ $rekap->nilai ?? '' }}" placeholder="Nilai"
-                                                        min="0" max="100">
+                                                    <div class="mt-2 d-flex align-items-center">
+                                                        <label class="form-label mb-0 me-2" style="min-width: 30px;">Nilai</label>
+                                                        <input type="number" class="form-control ml-2"
+                                                            name="nilai[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                            value="{{ $rekap->nilai ?? '' }}" placeholder="Nilai"
+                                                            min="0" max="100">
+                                                    </div>
                                                 </td>
                                             @endforeach
                                             <td class="text-center">

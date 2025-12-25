@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('kode_guru')->unique();
             $table->string('foto_guru')->nullable();
             $table->string('nama_guru', 80);
+            $table->string('no_telepon')->nullable();
             $table->timestamps();
         });
     }

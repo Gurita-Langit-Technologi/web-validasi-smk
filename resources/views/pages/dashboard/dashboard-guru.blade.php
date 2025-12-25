@@ -2,6 +2,7 @@
 
 @php
     use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Facades\Schema;
 @endphp
 
 @section('title', 'Dashboard Guru')
@@ -68,78 +69,93 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 text-center">
-                            <div class="profile-photo-section">
-                                @if ($guru->foto_guru)
-                                    <img src="{{ asset('images/' . $guru->foto_guru) }}" alt="Foto Profil"
-                                        class="profile-photo" width="200" height="200">
-                                @else
-                                    <div class="profile-photo-placeholder">
-                                        <img src="{{ asset('images/user.jpg') }}" alt="Foto Profil" class="profile-photo"
-                                            width="200" height="200">
-                                    </div>
-                                @endif
-                                <p class="mt-2 text-muted">Foto Profil</p>
-                            </div>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Nama Lengkap</label>
-                                        <input type="text" class="form-control" value="{{ $guru->nama_guru }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Kode Guru</label>
-                                        <input type="text" class="form-control" value="{{ $guru->kode_guru }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Email</label>
-                                        <input type="email" class="form-control"
-                                            value="{{ $guru->email ?? 'guru@smk.com' }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">No. Telepon</label>
-                                        <input type="tel" class="form-control" value="+62 123 456 789" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Status</label>
-                                        <input type="text" class="form-control" value="Guru Aktif" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Total Kelas</label>
-                                        <input type="text" class="form-control"
-                                            value="{{ $guru->tugasMengajar->count() }} Kelas" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Terakhir Login</label>
-                                        <input type="text" class="form-control" value="{{ now()->format('d/m/Y H:i') }}"
-                                            readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Tanggal Bergabung</label>
-                                        <input type="text" class="form-control"
-                                            value="{{ $guru->created_at->format('d/m/Y') }}" readonly>
-                                    </div>
+                    <form action="{{ route('guru.update-profile') }}" method="POST" enctype="multipart/form-data" id="formEditProfile">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-3 text-center">
+                                <div class="profile-photo-section">
+                                <label for="foto_guru" style="cursor: pointer;">
+                                        @if ($guru->foto_guru)
+                                            <img src="{{ Storage::url($guru->foto_guru) }}" 
+                                                alt="Foto Profil" class="profile-photo" width="200" height="200" id="previewFoto"
+                                                onerror="this.onerror=null;">
+                                        @else
+                                            <div class="profile-photo-placeholder">
+                                                <img src="{{ asset('images/user.jpg') }}" alt="Foto Profil" class="profile-photo" width="200" height="200" id="previewFoto">
+                                            </div>
+                                        @endif
+                                        <input type="file" name="foto_guru" id="foto_guru" accept="image/jpeg,image/png,image/gif" style="display: none;">
+                                    </label>
+                                    <p class="mt-2 text-muted">Foto Profil (Klik untuk ubah)</p>
                                 </div>
                             </div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Nama Lengkap</label>
+                                            <input type="text" class="form-control" name="nama_guru" value="{{ $guru->nama_guru }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Kode Guru</label>
+                                            <input type="text" class="form-control" value="{{ $guru->kode_guru }}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" name="email" 
+                                                value="{{ $email ?? ($guru->userGuru->email ?? '') }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">No. Telepon</label>
+                                            <input type="tel" class="form-control" name="no_telepon" 
+                                                value="{{ $guru->no_telepon ?? '' }}" placeholder="Contoh: 081234567890">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Status</label>
+                                            <input type="text" class="form-control text-success" value="Guru Aktif" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Total Kelas</label>
+                                            <input type="text" class="form-control"
+                                                value="{{ $guru->tugasMengajar->count() }} Kelas" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Terakhir Login</label>
+                                            <input type="text" class="form-control" value="{{ now()->format('d/m/Y H:i') }}"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Tanggal Bergabung</label>
+                                            <input type="text" class="form-control"
+                                                value="{{ $guru->created_at->format('d/m/Y') }}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Simpan Perubahan
+                                    </button>
+                                    <a href="{{ route('guru.dashboard') }}" class="btn btn-secondary">
+                                        <i class="fas fa-times"></i> Batal
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -666,47 +682,38 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Preview foto sebelum upload
             const fileInput = document.getElementById('foto_guru');
-            const uploadForm = document.getElementById('uploadForm');
-            const btnEdit = document.querySelector('.btn-edit');
-            const btnSave = document.querySelector('.btn-save');
-
-            fileInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    // Validasi ukuran file
-                    if (file.size > 2 * 1024 * 1024) {
-                        alert('Ukuran file terlalu besar. Maksimal 2MB.');
-                        this.value = '';
-                        return;
-                    }
-
-                    // Validasi tipe file
-                    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                    if (!allowedTypes.includes(file.type)) {
-                        alert('Format file tidak didukung. Gunakan JPG, PNG, atau GIF.');
-                        this.value = '';
-                        return;
-                    }
-
-                    // Preview gambar
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const img = document.querySelector('.profile-photo');
-                        const placeholder = document.querySelector('.profile-photo-placeholder');
-
-                        if (img) {
-                            img.src = e.target.result;
-                        } else if (placeholder) {
-                            placeholder.innerHTML = '<img src="' + e.target.result +
-                                '" class="profile-photo" alt="Preview">';
+            const previewFoto = document.getElementById('previewFoto');
+            
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        // Validasi ukuran file
+                        if (file.size > 2 * 1024 * 1024) {
+                            alert('Ukuran file terlalu besar. Maksimal 2MB.');
+                            this.value = '';
+                            return;
                         }
-                    };
-                    reader.readAsDataURL(file);
 
-                    // Show save button
-                    btnSave.style.display = 'flex';
-                }
-            });
+                        // Validasi tipe file
+                        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                        if (!allowedTypes.includes(file.type)) {
+                            alert('Format file tidak didukung. Gunakan JPG, PNG, atau GIF.');
+                            this.value = '';
+                            return;
+                        }
+
+                        // Preview gambar
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            if (previewFoto) {
+                                previewFoto.src = e.target.result;
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
 
             // Click pada foto untuk trigger file input
             const photoContainer = document.querySelector('.profile-photo-container');
@@ -717,10 +724,16 @@
             }
 
             // Form submission dengan loading state
-            uploadForm.addEventListener('submit', function() {
-                btnSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-                btnSave.disabled = true;
-            });
+            const formEditProfile = document.getElementById('formEditProfile');
+            if (formEditProfile) {
+                formEditProfile.addEventListener('submit', function() {
+                    const btnSave = document.querySelector('.btn-primary');
+                    if (btnSave) {
+                        btnSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                        btnSave.disabled = true;
+                    }
+                });
+            }
 
             // Sidebar navigation
             const navItems = document.querySelectorAll('.nav-item');
