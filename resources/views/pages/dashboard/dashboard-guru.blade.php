@@ -69,24 +69,62 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('guru.update-profile') }}" method="POST" enctype="multipart/form-data" id="formEditProfile">
+                    <form action="{{ route('guru.update-profile') }}" method="POST" enctype="multipart/form-data"
+                        id="formEditProfile">
                         @csrf
                         <div class="row">
                             <div class="col-md-3 text-center">
                                 <div class="profile-photo-section">
-                                <label for="foto_guru" style="cursor: pointer;">
-                                        @if ($guru->foto_guru)
-                                            <img src="{{ Storage::url($guru->foto_guru) }}" 
-                                                alt="Foto Profil" class="profile-photo" width="200" height="200" id="previewFoto"
-                                                onerror="this.onerror=null;">
-                                        @else
-                                            <div class="profile-photo-placeholder">
-                                                <img src="{{ asset('images/user.jpg') }}" alt="Foto Profil" class="profile-photo" width="200" height="200" id="previewFoto">
-                                            </div>
-                                        @endif
-                                        <input type="file" name="foto_guru" id="foto_guru" accept="image/jpeg,image/png,image/gif" style="display: none;">
-                                    </label>
+                                    @if ($guru->foto_guru)
+                                        <img src="{{ Storage::url($guru->foto_guru) }}" alt="Foto Profil"
+                                            class="profile-photo" width="200" height="200" id="previewFoto"
+                                            onerror="this.onerror=null;">
+                                    @else
+                                        <div class="profile-photo-placeholder">
+                                            <img src="{{ asset('images/user.jpg') }}" alt="Foto Profil"
+                                                class="profile-photo" width="200" height="200" id="previewFoto">
+                                        </div>
+                                    @endif
+                                    <input type="file" name="foto_guru" id="foto_guru"
+                                        accept="image/jpeg,image/png,image/gif" style="display: none;">
                                     <p class="mt-2 text-muted">Foto Profil (Klik untuk ubah)</p>
+                                    <div id="fileNameDisplay" class="mt-2" style="display: none;">
+                                        <small class="text-success">
+                                            <i class="fas fa-check-circle"></i> <span id="fileNameText"></span>
+                                        </small>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-primary mt-2" id="btnChangePhoto">
+                                        <i class="fas fa-camera"></i> Ubah Foto
+                                    </button>
+                                    <script>
+                                        // Inline script untuk memastikan tombol berfungsi - HANYA sebagai fallback
+                                        (function() {
+                                            console.log('🔧 Inline script untuk tombol foto dimuat');
+
+                                            // Tunggu sebentar untuk memastikan setupPhotoUpload tidak akan dipanggil
+                                            setTimeout(function() {
+                                                const btn = document.getElementById('btnChangePhoto');
+                                                const fileInput = document.getElementById('foto_guru');
+
+                                                // Cek apakah button sudah punya event listener
+                                                // Jika belum ada handler, baru tambahkan
+                                                if (btn && fileInput && !btn.hasAttribute('data-handler-attached')) {
+                                                    console.log('🔧 Menambahkan fallback handler untuk tombol');
+                                                    btn.setAttribute('data-handler-attached', 'true');
+
+                                                    btn.addEventListener('click', function(e) {
+                                                        e.preventDefault();
+                                                        e.stopPropagation();
+                                                        console.log('🖱️ Tombol diklik (fallback inline)');
+                                                        fileInput.click();
+                                                    });
+                                                    console.log('✅ Fallback event listener tombol terpasang');
+                                                } else {
+                                                    console.log('ℹ️ Button sudah punya handler, skip inline script');
+                                                }
+                                            }, 500); // Tunggu 500ms untuk memastikan setupPhotoUpload selesai
+                                        })();
+                                    </script>
                                 </div>
                             </div>
                             <div class="col-md-9">
@@ -94,33 +132,36 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="form-label">Nama Lengkap</label>
-                                            <input type="text" class="form-control" name="nama_guru" value="{{ $guru->nama_guru }}" required>
+                                            <input type="text" class="form-control" name="nama_guru"
+                                                value="{{ $guru->nama_guru }}" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="form-label">Kode Guru</label>
-                                            <input type="text" class="form-control" value="{{ $guru->kode_guru }}" readonly>
+                                            <input type="text" class="form-control" value="{{ $guru->kode_guru }}"
+                                                readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="form-label">Email</label>
-                                            <input type="email" class="form-control" name="email" 
+                                            <input type="email" class="form-control" name="email"
                                                 value="{{ $email ?? ($guru->userGuru->email ?? '') }}" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="form-label">No. Telepon</label>
-                                            <input type="tel" class="form-control" name="no_telepon" 
+                                            <input type="tel" class="form-control" name="no_telepon"
                                                 value="{{ $guru->no_telepon ?? '' }}" placeholder="Contoh: 081234567890">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="form-label">Status</label>
-                                            <input type="text" class="form-control text-success" value="Guru Aktif" readonly>
+                                            <input type="text" class="form-control text-success" value="Guru Aktif"
+                                                readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -133,8 +174,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="form-label">Terakhir Login</label>
-                                            <input type="text" class="form-control" value="{{ now()->format('d/m/Y H:i') }}"
-                                                readonly>
+                                            <input type="text" class="form-control"
+                                                value="{{ now()->format('d/m/Y H:i') }}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -373,6 +414,53 @@
         .profile-photo-placeholder i {
             font-size: 3rem;
             color: #5a5c69;
+        }
+
+        #btnChangePhoto {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
+            cursor: pointer;
+            pointer-events: auto;
+            z-index: 10;
+            position: relative;
+        }
+
+        #btnChangePhoto:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+            background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+        }
+
+        #btnChangePhoto:active {
+            transform: translateY(0);
+        }
+
+        #btnChangePhoto i {
+            margin-right: 0.5rem;
+        }
+
+        #fileNameDisplay {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #28a745;
+        }
+
+        #fileNameDisplay small {
+            display: block;
+            word-break: break-word;
+        }
+
+        #fileNameDisplay i {
+            margin-right: 0.25rem;
         }
 
 
@@ -679,143 +767,584 @@
 
 @section('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Preview foto sebelum upload
-            const fileInput = document.getElementById('foto_guru');
-            const previewFoto = document.getElementById('previewFoto');
-            
-            if (fileInput) {
-                fileInput.addEventListener('change', function(e) {
-                    const file = e.target.files[0];
-                    if (file) {
+        // Log untuk memastikan script dimuat - HARUS muncul pertama
+        // Script ini HARUS dieksekusi langsung tanpa menunggu DOMContentLoaded
+        (function() {
+                'use strict';
+                console.log('📜 ========================================');
+                console.log('📜 Script dashboard-guru.blade.php DIMUAT');
+                console.log('📜 ========================================');
+                console.log('📜 Timestamp:', new Date().toISOString());
+                console.log('📜 Document ready state:', document.readyState);
+                console.log('📜 Location:', window.location.href);
+
+                // Fungsi utama untuk setup upload foto
+                function setupPhotoUpload() {
+                    // Cek apakah sudah diinisialisasi untuk mencegah duplikasi
+                    if (window.photoUploadInitialized) {
+                        console.log('⚠️ Photo upload sudah diinisialisasi, skip setupPhotoUpload');
+                        return;
+                    }
+                    window.photoUploadInitialized = true;
+
+                    console.log('🚀 ========================================');
+                    console.log('🚀 Setup photo upload DIMULAI');
+                    console.log('🚀 ========================================');
+
+                    const fileInput = document.getElementById('foto_guru');
+                    let previewFoto = document.getElementById('previewFoto');
+                    const btnChangePhoto = document.getElementById('btnChangePhoto');
+                    const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+                    const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : null;
+
+                    // Debug: Cek elemen yang ditemukan
+                    console.log('File Input:', fileInput ? '✅ Ditemukan' : '❌ Tidak ditemukan');
+                    console.log('Preview Foto:', previewFoto ? '✅ Ditemukan' : '❌ Tidak ditemukan');
+                    console.log('Button Change Photo:', btnChangePhoto ? '✅ Ditemukan' : '❌ Tidak ditemukan');
+                    console.log('CSRF Token:', csrfToken ? '✅ Ditemukan' : '❌ Tidak ditemukan');
+
+                    if (!fileInput) {
+                        console.error('❌ File input dengan ID "foto_guru" tidak ditemukan!');
+                        return;
+                    }
+
+                    // Cari preview foto (bisa di dalam placeholder atau langsung)
+                    if (!previewFoto) {
+                        // Coba cari di dalam placeholder
+                        const placeholder = document.querySelector('.profile-photo-placeholder');
+                        if (placeholder) {
+                            previewFoto = placeholder.querySelector('img');
+                            console.log('📍 Preview ditemukan di dalam placeholder');
+                        }
+                    }
+
+                    if (!previewFoto) {
+                        console.error('❌ Preview foto dengan ID "previewFoto" tidak ditemukan!');
+                        console.error('📍 Mencoba mencari semua img di halaman...');
+                        const allImages = document.querySelectorAll('img');
+                        console.log('📍 Total gambar ditemukan:', allImages.length);
+                        allImages.forEach((img, index) => {
+                            console.log(`📍 Image ${index}:`, img.id, img.src);
+                        });
+                        // Jangan return, tetap lanjutkan karena mungkin akan dibuat nanti
+                    } else {
+                        // Simpan URL foto asli untuk fallback
+                        previewFoto.dataset.originalSrc = previewFoto.src;
+                        console.log('📸 URL foto asli disimpan:', previewFoto.src);
+                        console.log('📍 Preview element:', previewFoto);
+                    }
+
+                    // Click pada button untuk trigger file input
+                    // Hapus event listener lama jika ada untuk mencegah duplikasi
+                    if (btnChangePhoto) {
+                        // Hapus onclick dari HTML jika ada
+                        if (btnChangePhoto.hasAttribute('onclick')) {
+                            btnChangePhoto.removeAttribute('onclick');
+                            console.log('🗑️ Onclick attribute dihapus dari HTML');
+                        }
+
+                        // Clone button untuk menghapus semua event listener lama
+                        const newBtn = btnChangePhoto.cloneNode(true);
+                        btnChangePhoto.parentNode.replaceChild(newBtn, btnChangePhoto);
+                        const btnChangePhotoNew = document.getElementById('btnChangePhoto');
+
+                        // Pasang event listener baru (hanya sekali)
+                        btnChangePhotoNew.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            console.log('🖱️ Tombol "Ubah Foto" diklik (setupPhotoUpload)');
+
+                            const currentFileInput = document.getElementById('foto_guru');
+                            if (currentFileInput) {
+                                console.log('📂 Membuka file picker...');
+                                currentFileInput.click();
+                            } else {
+                                console.error('❌ File input tidak ditemukan saat tombol diklik!');
+                            }
+                        }, {
+                            once: false
+                        });
+
+                        // Tandai bahwa handler sudah terpasang
+                        btnChangePhotoNew.setAttribute('data-handler-attached', 'true');
+                        console.log('✅ Event listener untuk tombol terpasang (setupPhotoUpload)');
+                    } else {
+                        console.error('❌ Tombol btnChangePhoto tidak ditemukan!');
+                    }
+
+                    // Upload foto saat file dipilih
+                    // Hapus event listener lama jika ada untuk mencegah duplikasi
+                    // Clone file input untuk menghapus semua event listener lama
+                    const newFileInput = fileInput.cloneNode(true);
+                    fileInput.parentNode.replaceChild(newFileInput, fileInput);
+                    const fileInputNew = document.getElementById('foto_guru');
+
+                    // Tandai bahwa handler sudah terpasang
+                    if (fileInputNew) {
+                        fileInputNew.setAttribute('data-handler-attached', 'true');
+                    }
+
+                    fileInputNew.addEventListener('change', function(e) {
+                        console.log('📁 File dipilih, memproses...');
+
+                        const file = e.target.files[0];
+                        if (!file) {
+                            console.warn('⚠️ Tidak ada file yang dipilih');
+                            return;
+                        }
+
+                        console.log('📄 File info:', {
+                            name: file.name,
+                            size: file.size,
+                            type: file.type
+                        });
+
                         // Validasi ukuran file
                         if (file.size > 2 * 1024 * 1024) {
                             alert('Ukuran file terlalu besar. Maksimal 2MB.');
+                            console.error('❌ File terlalu besar:', file.size, 'bytes');
                             this.value = '';
+                            hideFileName();
                             return;
                         }
 
                         // Validasi tipe file
-                        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
                         if (!allowedTypes.includes(file.type)) {
                             alert('Format file tidak didukung. Gunakan JPG, PNG, atau GIF.');
+                            console.error('❌ Format file tidak didukung:', file.type);
                             this.value = '';
+                            hideFileName();
                             return;
                         }
 
-                        // Preview gambar
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            if (previewFoto) {
-                                previewFoto.src = e.target.result;
+                        console.log('✅ Validasi file berhasil');
+
+                        // Tampilkan nama file
+                        showFileName(file.name);
+                        console.log('📝 Nama file ditampilkan:', file.name);
+
+                        // Preview gambar sementara - HARUS langsung update
+                        let previewImg = document.getElementById('previewFoto');
+
+                        // Jika tidak ditemukan, coba cari di dalam placeholder
+                        if (!previewImg) {
+                            const placeholder = document.querySelector('.profile-photo-placeholder');
+                            if (placeholder) {
+                                previewImg = placeholder.querySelector('img');
                             }
+                        }
+
+                        if (!previewImg) {
+                            console.error('❌ Preview image tidak ditemukan!');
+                            hideFileName();
+                            return;
+                        }
+
+                        console.log('🖼️ Membaca file untuk preview...');
+                        console.log('📍 Preview element ditemukan:', previewImg);
+                        console.log('📍 Current src:', previewImg.src);
+
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            console.log('✅ File berhasil dibaca, mengupdate preview...');
+                            console.log('📸 Data URL length:', e.target.result.length);
+
+                            // Hapus placeholder wrapper jika ada (SEBELUM update src)
+                            const placeholder = previewImg.closest('.profile-photo-placeholder');
+                            if (placeholder && placeholder.parentElement) {
+                                console.log('🗑️ Menghapus placeholder wrapper...');
+                                // Pindahkan img keluar dari placeholder
+                                const imgClone = previewImg.cloneNode(true);
+                                placeholder.parentElement.insertBefore(imgClone, placeholder);
+                                placeholder.remove();
+                                // Update reference ke img yang baru
+                                previewImg = imgClone;
+                                // Update ID untuk memastikan bisa ditemukan lagi
+                                previewImg.id = 'previewFoto';
+                            }
+
+                            // Update src gambar - INI YANG PENTING
+                            const newSrc = e.target.result;
+                            previewImg.src = newSrc;
+                            previewImg.setAttribute('src', newSrc); // Force update
+                            console.log('🖼️ Preview gambar diupdate dengan src baru');
+                            console.log('📍 New src length:', newSrc.length);
+
+                            // Pastikan gambar terlihat dan styling benar
+                            previewImg.style.display = 'block';
+                            previewImg.style.visibility = 'visible';
+                            previewImg.style.width = '200px';
+                            previewImg.style.height = '200px';
+                            previewImg.style.borderRadius = '50%';
+                            previewImg.style.objectFit = 'cover';
+                            previewImg.style.border = '4px solid #e3e6f0';
+
+                            // Force browser untuk reload gambar
+                            previewImg.onload = function() {
+                                console.log('✅ Gambar berhasil dimuat di preview');
+                                console.log('📍 Final src:', previewImg.src);
+                            };
+
+                            // Trigger load event jika belum ter-trigger
+                            previewImg.onerror = function() {
+                                console.error('❌ Error memuat gambar di preview');
+                            };
+
+                            console.log('✅ Preview gambar berhasil diupdate');
                         };
+
+                        reader.onerror = function(error) {
+                            console.error('❌ Error membaca file:', error);
+                            hideFileName();
+                            alert('Terjadi kesalahan saat membaca file. Silakan coba lagi.');
+                        };
+
+                        // Baca file sebagai data URL
+                        console.log('📖 Membaca file sebagai data URL...');
                         reader.readAsDataURL(file);
+
+                        // Upload ke server
+                        console.log('☁️ Memulai upload ke server...');
+                        uploadPhoto(file);
+                    });
+
+                    console.log('✅ Event listener untuk file input terpasang (setupPhotoUpload)');
+
+                    // Fungsi untuk menampilkan nama file
+                    function showFileName(fileName) {
+                        const fileNameDisplay = document.getElementById('fileNameDisplay');
+                        const fileNameText = document.getElementById('fileNameText');
+                        if (fileNameDisplay && fileNameText) {
+                            fileNameText.textContent = fileName;
+                            fileNameDisplay.style.display = 'block';
+                        }
                     }
-                });
-            }
 
-            // Click pada foto untuk trigger file input
-            const photoContainer = document.querySelector('.profile-photo-container');
-            if (photoContainer) {
-                photoContainer.addEventListener('click', function() {
-                    fileInput.click();
-                });
-            }
-
-            // Form submission dengan loading state
-            const formEditProfile = document.getElementById('formEditProfile');
-            if (formEditProfile) {
-                formEditProfile.addEventListener('submit', function() {
-                    const btnSave = document.querySelector('.btn-primary');
-                    if (btnSave) {
-                        btnSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-                        btnSave.disabled = true;
+                    // Fungsi untuk menyembunyikan nama file
+                    function hideFileName() {
+                        const fileNameDisplay = document.getElementById('fileNameDisplay');
+                        if (fileNameDisplay) {
+                            fileNameDisplay.style.display = 'none';
+                        }
                     }
-                });
-            }
 
-            // Sidebar navigation
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
+                    // Fungsi untuk upload foto ke server
+                    function uploadPhoto(file) {
+                        console.log('📤 Memulai upload foto:', file.name);
 
-                    // Remove active class from all items
-                    navItems.forEach(nav => nav.classList.remove('active'));
+                        if (!csrfToken) {
+                            console.error('❌ CSRF token tidak ditemukan!');
+                            alert('Terjadi kesalahan. Silakan refresh halaman dan coba lagi.');
+                            return;
+                        }
 
-                    // Add active class to clicked item
-                    this.classList.add('active');
-                });
-            });
+                        // Disable button saat upload
+                        const currentBtn = document.getElementById('btnChangePhoto');
+                        if (currentBtn) {
+                            currentBtn.disabled = true;
+                            currentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupload...';
+                            console.log('🔄 Button disabled, menampilkan loading...');
+                        }
 
-            // Auto-hide alerts after 5 seconds
-            setTimeout(function() {
-                const alerts = document.querySelectorAll('.alert');
-                alerts.forEach(function(alert) {
-                    if (typeof bootstrap !== 'undefined' && bootstrap.Alert) {
-                        const bsAlert = new bootstrap.Alert(alert);
-                        bsAlert.close();
-                    } else {
-                        alert.style.display = 'none';
+                        // Buat FormData
+                        const formData = new FormData();
+                        formData.append('foto_guru', file);
+                        formData.append('_token', csrfToken);
+
+                        console.log('📦 FormData dibuat, mengirim ke server...');
+
+                        // Kirim request ke server
+                        const uploadUrl = '{{ route('guru.update-photo') }}';
+                        console.log('🌐 Mengirim request ke:', uploadUrl);
+
+                        fetch(uploadUrl, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken
+                                }
+                            })
+                            .then(response => {
+                                console.log('📡 Response diterima, status:', response.status);
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                console.log('📦 Data diterima:', data);
+
+                                // Cari preview image (untuk digunakan di semua blok)
+                                let previewImg = document.getElementById('previewFoto');
+                                if (!previewImg) {
+                                    const placeholder = document.querySelector('.profile-photo-placeholder');
+                                    if (placeholder) {
+                                        previewImg = placeholder.querySelector('img');
+                                    }
+                                }
+
+                                if (data.success) {
+                                    console.log('✅ Upload berhasil!');
+
+                                    if (previewImg) {
+                                        const newUrl = data.photo_url + '?t=' + new Date().getTime();
+                                        console.log('🖼️ Mengupdate preview dengan URL dari server:', newUrl);
+
+                                        // Hapus placeholder wrapper jika masih ada
+                                        const placeholder = previewImg.closest('.profile-photo-placeholder');
+                                        if (placeholder && placeholder.parentElement) {
+                                            const imgClone = previewImg.cloneNode(true);
+                                            placeholder.parentElement.insertBefore(imgClone, placeholder);
+                                            placeholder.remove();
+                                            previewImg = imgClone;
+                                            previewImg.id = 'previewFoto';
+                                        }
+
+                                        // Update src dengan URL dari server
+                                        previewImg.src = newUrl;
+                                        previewImg.setAttribute('src', newUrl);
+
+                                        // Pastikan styling benar
+                                        previewImg.style.display = 'block';
+                                        previewImg.style.visibility = 'visible';
+                                        previewImg.style.width = '200px';
+                                        previewImg.style.height = '200px';
+                                        previewImg.style.borderRadius = '50%';
+                                        previewImg.style.objectFit = 'cover';
+                                        previewImg.style.border = '4px solid #e3e6f0';
+
+                                        // Update originalSrc untuk fallback
+                                        previewImg.dataset.originalSrc = data.photo_url;
+
+                                        console.log('✅ Preview diupdate dengan URL server');
+                                        console.log('✅ Preview berhasil diupdate');
+                                    }
+
+                                    // Tampilkan pesan sukses
+                                    showAlert('success', data.message);
+                                    console.log('✅ Upload selesai dengan sukses');
+                                    // Nama file tetap ditampilkan (sudah ditampilkan sebelumnya)
+                                } else {
+                                    console.error('❌ Upload gagal:', data.message);
+                                    // Tampilkan pesan error
+                                    showAlert('danger', data.message);
+                                    // Reset preview ke foto sebelumnya
+                                    if (previewImg) {
+                                        const originalSrc = previewImg.dataset.originalSrc ||
+                                            '{{ $guru->foto_guru ? Storage::url($guru->foto_guru) : asset('images/user.jpg') }}';
+                                        previewImg.src = originalSrc;
+                                    }
+                                    // Sembunyikan nama file jika error
+                                    hideFileName();
+                                }
+                            })
+                            .catch(error => {
+                                console.error('❌ Error saat upload:', error);
+                                console.error('Error details:', {
+                                    message: error.message,
+                                    stack: error.stack
+                                });
+                                showAlert('danger', 'Terjadi kesalahan saat mengupload foto. Silakan coba lagi.');
+                                // Reset preview
+                                const previewImg = document.getElementById('previewFoto');
+                                if (previewImg) {
+                                    const originalSrc = previewImg.dataset.originalSrc ||
+                                        '{{ $guru->foto_guru ? Storage::url($guru->foto_guru) : asset('images/user.jpg') }}';
+                                    previewImg.src = originalSrc;
+                                }
+                                // Sembunyikan nama file jika error
+                                hideFileName();
+                            })
+                            .finally(() => {
+                                console.log('🏁 Upload process selesai, resetting UI...');
+                                // Enable button kembali
+                                const currentBtn = document.getElementById('btnChangePhoto');
+                                if (currentBtn) {
+                                    currentBtn.disabled = false;
+                                    currentBtn.innerHTML = '<i class="fas fa-camera"></i> Ubah Foto';
+                                    console.log('✅ Button di-enable kembali');
+                                }
+                                // Reset file input
+                                const currentFileInput = document.getElementById('foto_guru');
+                                if (currentFileInput) {
+                                    currentFileInput.value = '';
+                                    console.log('🗑️ File input di-reset');
+                                }
+                            });
                     }
-                });
-            }, 5000);
 
-            // Update tanggal real-time
-            function updateDate() {
-                const now = new Date();
-                const options = {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric'
-                };
-                const dateString = now.toLocaleDateString('id-ID', options);
-                const dateElement = document.getElementById('currentDate');
-                if (dateElement) {
-                    dateElement.textContent = dateString;
+                    // Fungsi untuk menampilkan alert
+                    function showAlert(type, message) {
+                        // Hapus alert yang sudah ada
+                        const existingAlert = document.querySelector('.custom-alert');
+                        if (existingAlert) {
+                            existingAlert.remove();
+                        }
+
+                        // Buat alert baru
+                        const alertDiv = document.createElement('div');
+                        alertDiv.className = `alert alert-${type} alert-dismissible fade show custom-alert`;
+                        alertDiv.setAttribute('role', 'alert');
+                        alertDiv.innerHTML = `
+                    <div class="alert-content">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                `;
+
+                        // Sisipkan alert di atas card
+                        const card = document.querySelector('.card');
+                        if (card && card.parentElement) {
+                            card.parentElement.insertBefore(alertDiv, card);
+                        }
+
+                        // Auto-hide setelah 5 detik
+                        setTimeout(() => {
+                            if (alertDiv.parentElement) {
+                                alertDiv.remove();
+                            }
+                        }, 5000);
+                    }
+
+                    // Form submission dengan loading state
+                    const formEditProfile = document.getElementById('formEditProfile');
+                    if (formEditProfile) {
+                        formEditProfile.addEventListener('submit', function(e) {
+                            // Pastikan file input kosong saat submit form (karena foto sudah diupload terpisah)
+                            const currentFileInput = document.getElementById('foto_guru');
+                            if (currentFileInput) {
+                                currentFileInput.value = '';
+                            }
+
+                            const btnSave = document.querySelector('button[type="submit"]');
+                            if (btnSave) {
+                                btnSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                                btnSave.disabled = true;
+                            }
+                        });
+                    }
+
+                    // Sidebar navigation
+                    const navItems = document.querySelectorAll('.nav-item');
+                    navItems.forEach(item => {
+                        item.addEventListener('click', function(e) {
+                            e.preventDefault();
+
+                            // Remove active class from all items
+                            navItems.forEach(nav => nav.classList.remove('active'));
+
+                            // Add active class to clicked item
+                            this.classList.add('active');
+                        });
+                    });
+
+                    // Auto-hide alerts after 5 seconds
+                    setTimeout(function() {
+                        const alerts = document.querySelectorAll('.alert');
+                        alerts.forEach(function(alert) {
+                            if (typeof bootstrap !== 'undefined' && bootstrap.Alert) {
+                                const bsAlert = new bootstrap.Alert(alert);
+                                bsAlert.close();
+                            } else {
+                                alert.style.display = 'none';
+                            }
+                        });
+                    }, 5000);
+
+                    // Update tanggal real-time
+                    function updateDate() {
+                        const now = new Date();
+                        const options = {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric'
+                        };
+                        const dateString = now.toLocaleDateString('id-ID', options);
+                        const dateElement = document.getElementById('currentDate');
+                        if (dateElement) {
+                            dateElement.textContent = dateString;
+                        }
+                    }
+
+                    // Update tanggal setiap menit
+                    updateDate();
+                    setInterval(updateDate, 60000);
+
+                    // Add hover effects to cards
+                    const cards = document.querySelectorAll('.card');
+                    cards.forEach(card => {
+                        card.addEventListener('mouseenter', function() {
+                            this.style.transform = 'translateY(-5px)';
+                        });
+
+                        card.addEventListener('mouseleave', function() {
+                            this.style.transform = 'translateY(0)';
+                        });
+                    });
+
+                    // Profile actions
+                    const btnMessage = document.querySelector('.btn-message');
+                    const btnConnect = document.querySelector('.btn-connect');
+
+                    if (btnMessage) {
+                        btnMessage.addEventListener('click', function() {
+                            alert('Fitur Message akan segera tersedia!');
+                        });
+                    }
+
+                    if (btnConnect) {
+                        btnConnect.addEventListener('click', function() {
+                            alert('Fitur Connect akan segera tersedia!');
+                        });
+                    }
+
+                    // Edit cover button
+                    const editCoverBtn = document.querySelector('.edit-cover-btn');
+                    if (editCoverBtn) {
+                        editCoverBtn.addEventListener('click', function() {
+                            alert('Fitur Edit Cover akan segera tersedia!');
+                        });
+                    }
+
+                    // Setup photo upload
+                    setupPhotoUpload();
+                });
+
+            // Fallback jika DOMContentLoaded sudah terlewat
+            console.log('🔍 Memeriksa status DOM...');
+            if (document.readyState === 'loading') {
+                console.log('⏳ DOM masih loading, menunggu DOMContentLoaded...');
+                // Setup akan dipanggil di DOMContentLoaded
+            } else {
+                console.log('✅ DOM sudah siap, menjalankan setupPhotoUpload langsung...');
+                console.log('⏰ Ready state:', document.readyState);
+                try {
+                    setupPhotoUpload();
+                } catch (error) {
+                    console.error('❌ Error saat setup photo upload:', error);
                 }
             }
 
-            // Update tanggal setiap menit
-            updateDate();
-            setInterval(updateDate, 60000);
-
-            // Add hover effects to cards
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-5px)';
-                });
-
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
+            // Juga coba setup setelah window load (fallback tambahan)
+            window.addEventListener('load', function() {
+                console.log('🌐 Window load event fired');
+                // Cek apakah sudah di-setup
+                const fileInput = document.getElementById('foto_guru');
+                if (fileInput && !fileInput.hasAttribute('data-setup-done')) {
+                    console.log('🔄 Setup belum dilakukan, menjalankan sekarang...');
+                    try {
+                        setupPhotoUpload();
+                        fileInput.setAttribute('data-setup-done', 'true');
+                    } catch (error) {
+                        console.error('❌ Error saat setup photo upload (window load):', error);
+                    }
+                }
             });
-
-            // Profile actions
-            const btnMessage = document.querySelector('.btn-message');
-            const btnConnect = document.querySelector('.btn-connect');
-
-            if (btnMessage) {
-                btnMessage.addEventListener('click', function() {
-                    alert('Fitur Message akan segera tersedia!');
-                });
-            }
-
-            if (btnConnect) {
-                btnConnect.addEventListener('click', function() {
-                    alert('Fitur Connect akan segera tersedia!');
-                });
-            }
-
-            // Edit cover button
-            const editCoverBtn = document.querySelector('.edit-cover-btn');
-            if (editCoverBtn) {
-                editCoverBtn.addEventListener('click', function() {
-                    alert('Fitur Edit Cover akan segera tersedia!');
-                });
-            }
-        });
+        })(); // Tutup IIFE
     </script>
 @endsection

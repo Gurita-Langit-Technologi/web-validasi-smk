@@ -51,4 +51,13 @@ class Guru extends Authenticatable
     {
         return $this->hasOne(UserGuru::class, 'guru_id', 'id_guru');
     }
+
+    // Accessor untuk foto_guru URL
+    public function getFotoGuruUrlAttribute()
+    {
+        if ($this->foto_guru) {
+            return \Illuminate\Support\Facades\Storage::url($this->foto_guru);
+        }
+        return url('images/user.jpg');
+    }
 }

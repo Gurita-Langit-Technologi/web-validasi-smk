@@ -56,11 +56,11 @@ class GuruController extends Controller
     public function dashboard()
     {
         $guru = Auth::guard('guru')->user();
-        
+
         // Get email from UserGuru
         $userGuru = UserGuru::where('guru_id', $guru->id_guru)->first();
         $email = $userGuru->email ?? null;
-        
+
         return view('pages.dashboard.dashboard-guru', [
             'isWaliKelas' => false,
             'guru' => $guru,
@@ -83,7 +83,7 @@ class GuruController extends Controller
 
         // Update nama_guru
         $guru->nama_guru = $request->nama_guru;
-        
+
         // Update no_telepon if column exists
         if (Schema::hasColumn('guru', 'no_telepon')) {
             $guru->no_telepon = $request->no_telepon;
@@ -92,7 +92,7 @@ class GuruController extends Controller
         // Handle foto upload
         if ($request->hasFile('foto_guru')) {
 
-            
+
             // Hapus foto lama jika ada
             if ($guru->foto_guru && Storage::disk('public')->exists($guru->foto_guru)) {
                 Storage::disk('public')->delete($guru->foto_guru);
@@ -108,7 +108,7 @@ class GuruController extends Controller
             //     'exists' => Storage::disk('public')->exists($path),
             //     'url' => Storage::disk('public')->url($path),
             // ]);
-            
+
         }
 
         $guru->save();
@@ -127,5 +127,41 @@ class GuruController extends Controller
         }
 
         return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
+    }
+
+    public function updatePhoto(Request $request)
+    {
+        $request->validate([
+            'foto_guru' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $guru = Auth::guard('guru')->user();
+
+        try {
+            // Hapus foto lama jika ada
+            if ($guru->foto_guru && Storage::disk('public')->exists($guru->foto_guru)) {
+                Storage::disk('public')->delete($guru->foto_guru);
+            }
+
+            // Upload foto baru
+            $file = $request->file('foto_guru');
+            $filename = 'guru_' . $guru->id_guru . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('guru_photos', $filename, 'public');
+
+            // Simpan path ke database
+            $guru->foto_guru = $path;
+            $guru->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Foto profil berhasil diubah!',
+                'photo_url' => Storage::url($path)
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengubah foto profil: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

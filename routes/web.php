@@ -14,6 +14,30 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+// Route untuk serve file dari storage (untuk development dengan php artisan serve)
+// Route ini akan menangani request ke /storage/* dan serve file dari storage/app/public/*
+// Hanya aktif jika symlink tidak bekerja dengan baik
+Route::get('/storage/{path}', function ($path) {
+    $filePath = storage_path('app/public/' . $path);
+
+    // Security: pastikan path tidak keluar dari storage/app/public
+    $realPath = realpath($filePath);
+    $storagePath = realpath(storage_path('app/public'));
+
+    if (!$realPath || strpos($realPath, $storagePath) !== 0) {
+        abort(404);
+    }
+
+    if (file_exists($filePath) && is_file($filePath)) {
+        $mimeType = mime_content_type($filePath) ?: 'application/octet-stream';
+        return response()->file($filePath, [
+            'Content-Type' => $mimeType,
+            'Cache-Control' => 'public, max-age=31536000',
+        ]);
+    }
+    abort(404);
+})->where('path', '.*')->name('storage.serve');
+
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
@@ -45,6 +69,7 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 Route::middleware(['auth:guru'])->prefix('guru')->group(function () {
     Route::get('/dashboard', [GuruController::class, 'dashboard'])->name('guru.dashboard');
     Route::post('/update-profile', [GuruController::class, 'updateProfile'])->name('guru.update-profile');
+    Route::post('/update-photo', [GuruController::class, 'updatePhoto'])->name('guru.update-photo');
     Route::post('/logout', [AuthController::class, 'logoutGuru'])->name('logout.guru');
     Route::get('/form-tugas/{id_mapel}/{id_kelas}', [RekapTugasController::class, 'showDetailTugas'])->name('detail-tugas');
     Route::get('/page-tugas', [RekapTugasController::class, 'index'])->name('page-tugas');

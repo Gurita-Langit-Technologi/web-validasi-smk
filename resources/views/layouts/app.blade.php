@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -74,6 +75,9 @@
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script src="{{ asset('js/datepicker.js') }}"></script>
     <!-- end custom js for this page -->
+
+    <!-- Page specific scripts -->
+    @yield('scripts')
 </body>
 
 </html>

@@ -17,6 +17,8 @@ use Filament\Tables\Actions\ImportAction;
 use Filament\Support\Enums\FontFamily;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class GuruResource extends Resource
@@ -43,20 +45,20 @@ class GuruResource extends Resource
                     ->required()
                     ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->maxLength(80),
-                Forms\Components\FileUpload::make('foto_guru')
-                    ->label('Foto Guru')
-                    ->image()
-                    ->disk('public')
-                    ->directory('guru_photos')
-                    ->visibility('public')
-                    ->imageEditor()
-                    ->imageEditorAspectRatios([
-                        '1:1',
-                    ])
-                    ->maxSize(2048)
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif'])
-                    ->helperText('Format: JPG, PNG, GIF. Maksimal 2MB')
-                    ->columnSpanFull(),
+                // Forms\Components\FileUpload::make('foto_guru')
+                //     ->label('Foto Guru')
+                //     ->image()
+                //     ->disk('public')
+                //     ->directory('guru_photos')
+                //     ->visibility('public')
+                //     ->imageEditor()
+                //     ->imageEditorAspectRatios([
+                //         '1:1',
+                //     ])
+                //     ->maxSize(2048)
+                //     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif'])
+                //     ->helperText('Format: JPG, PNG, GIF. Maksimal 2MB')
+                //     ->columnSpanFull(),
             ]);
     }
 
@@ -68,21 +70,20 @@ class GuruResource extends Resource
                     ->label('ID Guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->color('text1')
-                    ->searchable()
-                    ->sortable(),
-                // ImageColumn::make('avatar')
-                // ->defaultImageUrl('https://picsum.photos/64')
-                //->Height(50)
+                    ->searchable(),
 
-                // ->circular(),
                 ImageColumn::make('foto_guru')
                     ->label('Foto')
-                    ->disk('public')
                     ->height(60)
                     ->width(60)
                     ->circular()
-                    ->defaultImageUrl(url('images/default-avatar.svg'))
-                    ->placeholder('Tidak ada foto'),
+                    ->defaultImageUrl(url('/images/user.jpg'))
+                    ->placeholder('Tidak ada foto')
+                    ->getStateUsing(function () {
+                        // Selalu return null agar default image (user.jpg) ditampilkan
+                        return null;
+                    })
+                    ->extraAttributes(['loading' => 'lazy']),
 
 
 
@@ -107,6 +108,7 @@ class GuruResource extends Resource
                     ->sortable()
                     ->color('text2')
                     ->searchable(),
+
 
             ])
             ->filters([
