@@ -29,7 +29,7 @@
                                         <a href="#" class="noble-ui-logo d-block mb-2">
                                             <img src="{{ asset('images/fic.png') }}" alt="Logo"
                                                 style="height: 50px; margin-right: 5px;">
-                                            SMK PGRI<span> BANYUWANGI</span>
+                                            SMK PGRI 1<span> BANYUWANGI</span>
                                         </a>
 
                                         <h5 class="text-muted font-weight-normal mb-4">
