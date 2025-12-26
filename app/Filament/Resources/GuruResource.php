@@ -45,20 +45,7 @@ class GuruResource extends Resource
                     ->required()
                     ->afterStateUpdated(fn($state, callable $set) => $set('name', strtoupper($state ?? '')))
                     ->maxLength(80),
-                // Forms\Components\FileUpload::make('foto_guru')
-                //     ->label('Foto Guru')
-                //     ->image()
-                //     ->disk('public')
-                //     ->directory('guru_photos')
-                //     ->visibility('public')
-                //     ->imageEditor()
-                //     ->imageEditorAspectRatios([
-                //         '1:1',
-                //     ])
-                //     ->maxSize(2048)
-                //     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif'])
-                //     ->helperText('Format: JPG, PNG, GIF. Maksimal 2MB')
-                //     ->columnSpanFull(),
+
             ]);
     }
 
@@ -72,22 +59,6 @@ class GuruResource extends Resource
                     ->color('text1')
                     ->searchable(),
 
-                ImageColumn::make('foto_guru')
-                    ->label('Foto')
-                    ->height(60)
-                    ->width(60)
-                    ->circular()
-                    ->defaultImageUrl(url('/images/user.jpg'))
-                    ->placeholder('Tidak ada foto')
-                    ->getStateUsing(function () {
-                        // Selalu return null agar default image (user.jpg) ditampilkan
-                        return null;
-                    })
-                    ->extraAttributes(['loading' => 'lazy']),
-
-
-
-
 
                 Tables\Columns\TextColumn::make('kode_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
@@ -95,12 +66,31 @@ class GuruResource extends Resource
                     ->color('text1')
                     ->searchable()
                     ->sortable()
-
                     ->icon('heroicon-o-bookmark-square')
                     ->fontFamily(FontFamily::Mono)
                     ->copyable()
                     ->copyMessage('copied')
                     ->searchable(),
+
+                ImageColumn::make('foto_guru')
+                    ->label('Foto')
+                    ->height(60)
+                    ->width(60)
+                    ->circular()
+                    ->defaultImageUrl(url('/images/user.jpg'))
+                    ->placeholder('Tidak ada foto')
+                    ->getStateUsing(function ($record) {
+                        // Jika ada foto_guru di database, return URL lengkap
+                        if ($record->foto_guru) {
+                            // Path format: 'guru_photos/guru_1_1766683175.png'
+                            // Gunakan Storage::url() untuk mendapatkan URL lengkap
+                            $url = Storage::url($record->foto_guru);
+                            // Pastikan URL lengkap dengan base URL
+                            return url($url);
+                        }
+                        return null;
+                    })
+                    ->extraAttributes(['loading' => 'lazy']),
                 Tables\Columns\TextColumn::make('nama_guru')
                     ->formatStateUsing(fn($state) => strtoupper($state ?? ''))
                     ->label('Nama Guru')
@@ -116,7 +106,7 @@ class GuruResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
