@@ -72,14 +72,14 @@ class GuruController extends Controller
 
     public function updateProfile(Request $request)
     {
+        $guru = Auth::guard('guru')->user();
+
         $request->validate([
             'nama_guru' => 'required|string|max:80',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:user_guru,email,' . $guru->id_guru . ',guru_id',
             'no_telepon' => 'nullable|string|max:20',
             'foto_guru' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        $guru = Auth::guard('guru')->user();
 
         // Update nama_guru
         $guru->nama_guru = $request->nama_guru;
@@ -91,8 +91,6 @@ class GuruController extends Controller
 
         // Handle foto upload
         if ($request->hasFile('foto_guru')) {
-
-
             // Hapus foto lama jika ada
             if ($guru->foto_guru && Storage::disk('public')->exists($guru->foto_guru)) {
                 Storage::disk('public')->delete($guru->foto_guru);
@@ -100,29 +98,25 @@ class GuruController extends Controller
 
             $file = $request->file('foto_guru');
             $filename = 'guru_' . $guru->id_guru . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('guru_photos', $filename, 'public');
+
+            // Simpan ke storage dengan disk 'public'
+            $path = $file->storeAs('guru', $filename, 'public');
             $guru->foto_guru = $path;
-
-            // dd([
-            //     'path' => $path,
-            //     'exists' => Storage::disk('public')->exists($path),
-            //     'url' => Storage::disk('public')->url($path),
-            // ]);
-
         }
 
         $guru->save();
 
-        // Update email di UserGuru
+        // Update atau buat UserGuru
         $userGuru = UserGuru::where('guru_id', $guru->id_guru)->first();
+
         if ($userGuru) {
             $userGuru->email = $request->email;
             $userGuru->save();
         } else {
-            // Jika belum ada, buat baru
             $userGuru = new UserGuru;
             $userGuru->guru_id = $guru->id_guru;
             $userGuru->email = $request->email;
+            // Jika perlu password default atau field lain
             $userGuru->save();
         }
 
@@ -138,15 +132,12 @@ class GuruController extends Controller
         $guru = Auth::guard('guru')->user();
 
         try {
-            // Hapus foto lama jika ada
-            if ($guru->foto_guru && Storage::disk('public')->exists($guru->foto_guru)) {
-                Storage::disk('public')->delete($guru->foto_guru);
-            }
+
 
             // Upload foto baru
             $file = $request->file('foto_guru');
             $filename = 'guru_' . $guru->id_guru . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('guru_photos', $filename, 'public');
+            $path = $file->storeAs('guru', $filename);
 
             // Simpan path ke database
             $guru->foto_guru = $path;

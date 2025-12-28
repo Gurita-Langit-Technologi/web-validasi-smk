@@ -1,5 +1,6 @@
 @php
     use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\Storage;
 
     $guru = Auth::guard('guru')->user();
     $wali = Auth::guard('wali')->user();
@@ -9,7 +10,7 @@
     $nama = $guru ? $guru->nama_guru : $wali->nama_wali ?? 'Pengguna';
     $email = $guru ? $guru->email : $wali->email ?? '-';
 
-    $foto = $user && $user->foto ? asset($user->foto) : asset('images/user.jpg');
+    $foto = $user ? Storage::url($guru->foto_guru) : asset('images/user.jpg');
 @endphp
 
 <nav class="navbar">
