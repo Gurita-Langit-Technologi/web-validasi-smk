@@ -91,11 +91,12 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <input id="tugas-selesai-{{ $rekap->id_rekap_kelas }}" type="number"
+                                            <input id="tugas-selesai-{{ $rekap->id_rekap_kelas }}" type="text"
                                                 class="form-control form-control-sm text-center"
-                                                value="{{ $rekap->jumlah_selesai }}" min="0">
+                                                value="{{ $rekap->jumlah_selesai }}  siswa" min="0" disabled>
                                         </td>
-                                        <td>{{ $rekap->jumlah_tanggungan }}</td>
+                                        <td><input type="text" class="form-control form-control-sm text-center"
+                                                value="{{ $rekap->jumlah_tanggungan }}  siswa" disabled></td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -58,13 +58,39 @@ class RekapTugasController extends Controller
 
             $rekap->total_tugas = $rekap->tugas->unique('nama_tugas')->count();
 
-            $jumlahSelesai = RekapPengumpulan::where('id_rekap_kelas', $rekap->id_rekap_kelas)
-                ->where('status', 'Selesai')
-                ->count();
+            if ($rekap->total_tugas > 0) {
+                // 1. Dapatkan semua id_siswa di kelas ini yang memiliki rekapan
+                $semuaSiswaDiKelas = RekapPengumpulan::where('id_rekap_kelas', $rekap->id_rekap_kelas)
+                    ->distinct()
+                    ->pluck('id_siswa');
 
-            $rekap->jumlah_selesai = min($jumlahSelesai, $rekap->total_tugas);
-            $rekap->jumlah_tanggungan = max(0, $rekap->total_tugas - $rekap->jumlah_selesai);
+                $jumlahSiswaSelesaiSemua = 0;
+                $jumlahSiswaBelumSelesai = 0;
 
+                foreach ($semuaSiswaDiKelas as $idSiswa) {
+
+                    $tugasSelesaiPerSiswa = RekapPengumpulan::where('id_rekap_kelas', $rekap->id_rekap_kelas)
+                        ->where('id_siswa', $idSiswa)
+                        ->where('status', 'Selesai')
+                        ->count();
+
+
+                    if ($tugasSelesaiPerSiswa >= $rekap->total_tugas) {
+
+                        $jumlahSiswaSelesaiSemua++;
+                    } else {
+
+                        $jumlahSiswaBelumSelesai++;
+                    }
+                }
+
+                $rekap->jumlah_selesai = $jumlahSiswaSelesaiSemua;
+
+                $rekap->jumlah_tanggungan = $jumlahSiswaBelumSelesai;
+            } else {
+                $rekap->jumlah_selesai = 0;
+                $rekap->jumlah_tanggungan = 0;
+            }
             $rekap->save();
 
             if ($mengajar->id_guru == $guruIdLogin) {
