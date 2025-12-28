@@ -162,13 +162,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_kelas' => 1,
-                'no_induk' => '890123456789',
-                'nama_siswa' => 'Hadi Pratama',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
                 'id_kelas' => 2,
                 'no_induk' => '901234567890',
                 'nama_siswa' => 'Indah Safitri',
