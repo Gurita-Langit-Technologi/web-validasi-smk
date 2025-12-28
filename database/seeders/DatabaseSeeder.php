@@ -515,29 +515,6 @@ class DatabaseSeeder extends Seeder
             ],
 
             [
-                'id_rekap_kelas' => 5,
-                'id_siswa' => 5,
-                'id_mapel' => 5,
-                'nama_tugas' => 'Tugas Sejarah 1',
-                'tanggal_pengumpulan' => now()->addDays(2)->toDateString(),
-                'nilai' => 0,
-                'status' => 'Belum Selesai',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_rekap_kelas' => 5,
-                'id_siswa' => 5,
-                'id_mapel' => 5,
-                'nama_tugas' => 'Tugas Sejarah 2',
-                'tanggal_pengumpulan' => now()->addDays(7)->toDateString(),
-                'nilai' => 78,
-                'status' => 'Selesai',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-
-            [
                 'id_rekap_kelas' => 1,
                 'id_siswa' => 2,
                 'id_mapel' => 1,
