@@ -80,7 +80,8 @@
                                         @if ($guru->foto_guru)
                                             <img src="{{ Storage::url($guru->foto_guru) }}" alt="Foto Profil"
                                                 class="profile-photo" width="200" height="200" id="previewFoto"
-                                                onerror="this.onerror=null;">
+                                                style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid #e3e6f0;"
+                                                onerror="this.onerror=null; this.src='{{ asset('images/user.jpg') }}'; this.style.borderRadius='50%'; this.style.objectFit='cover'; this.style.border='4px solid #e3e6f0';">
                                         @else
                                             <div id="photoPlaceholder" class="profile-photo-placeholder">
                                                 <img src="{{ asset('images/user.jpg') }}" alt="Foto Profil"
@@ -395,8 +396,14 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
+            /* Ini yang membuat circular */
             object-fit: cover;
+            /* Agar gambar tidak terdistorsi */
             border: 4px solid #e3e6f0;
+            display: block;
+            /* Pastikan display block */
+            margin: 0 auto;
+            /* Center alignment */
         }
 
         .profile-photo-placeholder {
@@ -945,7 +952,7 @@
                         const formData = new FormData();
                         formData.append('foto_guru', file);
                         formData.append('_token', document.querySelector('meta[name="csrf-token"]')
-                        .content);
+                            .content);
 
                         const xhr = new XMLHttpRequest();
 

@@ -32,14 +32,14 @@
             <li class="nav-item dropdown nav-profile">
                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown"
                     role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="{{ $foto }}" alt="profile">
+                    <img src="{{ $foto }}" alt="profile" style="width:40px;height:40px;object-fit:cover;">
                     <span class="ml-2">{{ $nama }}</span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="profileDropdown">
                     <div class="dropdown-header d-flex flex-column align-items-center">
                         <div class="figure mb-3">
                             <img src="{{ $foto }}" alt="profile"
-                                style="width:80px;height:80px;object-fit:cover;">
+                                style="width:50px;height:50px;object-fit:cover;">
                         </div>
                         <div class="info text-center">
                             <p class="name font-weight-bold mb-0">{{ $nama }}</p>
