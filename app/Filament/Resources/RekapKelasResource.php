@@ -72,28 +72,23 @@ class RekapKelasResource extends Resource
                 Tables\Columns\TextColumn::make('mapel.nama_diklat')
                     ->label('Mapel')
                     ->color('text1')
-                    // ->formatStateUsing(
-                    //     fn($state, $record) =>
-                    //     $record->tugas->pluck('nama_diklat')->implode('<br>')
-                    // )
-                    // ->html()
-                    ->sortable(),
 
+                    ->sortable(),
 
 
                 // Jumlah selesai per mapel (per baris RekapKelas)
-                Tables\Columns\TextColumn::make('selesai_count')
-                    ->label('Selesai')
-                    ->badge()
-                    ->color('text2')
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('selesai_count')
+                //     ->label('Selesai')
+                //     ->badge()
+                //     ->color('text2')
+                //     ->sortable(),
 
                 // Jumlah belum per mapel
-                Tables\Columns\TextColumn::make('belum_count')
-                    ->label('Belum')
-                    ->badge()
-                    ->color('danger')
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('belum_count')
+                //     ->label('Belum')
+                //     ->badge()
+                //     ->color('danger')
+                //     ->sortable(),
 
 
 
@@ -106,17 +101,33 @@ class RekapKelasResource extends Resource
                     ->label('Wali Kelas')
                     ->color('text1')
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('total_tugas')
+                    ->label('Total Tugas')
+                    ->badge()
+                    ->color('text1')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jumlah_selesai')
+                    ->label('Jumlah Selesai')
+                    ->badge()
+                    ->color('text2')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jumlah_tanggungan')
+                    ->label('Tanggungan')
+                    ->badge()
+                    ->color('danger')
+                    ->sortable(),
             ])
 
 
             ->filters([])
 
-            // 🔹 Tambahkan Summary Card di Header
+            // Tambahkan Summary Card di Header
             ->header(function () {
-                // gunakan model & penamaan yang benar
-                $total   = \App\Models\RekapPengumpulan::count();
-                $selesai = \App\Models\RekapPengumpulan::where('status', 'selesai')->count();
-                $belum   = $total - $selesai;
+                // Hitung dari field jumlah_selesai dan jumlah_tanggungan di tabel rekap_kelas
+                $total   = \App\Models\RekapKelas::sum('total_tugas');
+                $selesai = \App\Models\RekapKelas::sum('jumlah_selesai');
+                $belum   = \App\Models\RekapKelas::sum('jumlah_tanggungan');
                 $persen  = $total > 0 ? round(($selesai / $total) * 100, 2) : 0;
 
                 return view('filament.tables.headers.rekap-summary', compact('total', 'selesai', 'belum', 'persen'));
