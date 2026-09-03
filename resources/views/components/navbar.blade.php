@@ -4,13 +4,30 @@
 
     $guru = Auth::guard('guru')->user();
     $wali = Auth::guard('wali')->user();
+    $admin = Auth::guard('web')->user();
 
-    $user = $guru ?? $wali;
+    $user = $guru ?? $wali ?? $admin;
 
-    $nama = $guru ? $guru->nama_guru : $wali->nama_wali ?? 'Pengguna';
-    $email = $guru ? $guru->email : $wali->email ?? '-';
+    $nama = 'Pengguna';
+    $email = '-';
+    $foto = asset('images/user.jpg');
 
-    $foto = $user ? Storage::url($guru->foto_guru) : asset('images/user.jpg');
+    if ($guru) {
+        $nama = $guru->nama_guru;
+        $email = $guru->email ?? '-';
+        if (!empty($guru->foto_guru)) {
+            $foto = Storage::url($guru->foto_guru);
+        }
+    } elseif ($wali) {
+        $nama = $wali->nama_wali;
+        $email = $wali->email ?? '-';
+        if (!empty($wali->guru?->foto_guru)) {
+            $foto = Storage::url($wali->guru->foto_guru);
+        }
+    } elseif ($admin) {
+        $nama = $admin->name ?? 'Admin';
+        $email = $admin->email ?? '-';
+    }
 @endphp
 
 <nav class="navbar">
@@ -66,7 +83,7 @@
                                     <span>Switch User</span>
                                 </a>
                             </li>
-                            @if (Auth::guard('guru')->user() || Auth::guard('wali')->user())
+                            @if ($user)
                                 <li class="nav-item">
                                     <a href="#"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"

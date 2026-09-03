@@ -77,7 +77,7 @@
                             <div class="col-md-3 text-center">
                                 <div class="profile-photo-section">
                                     <div id="previewFotoContainer">
-                                        @if ($guru->foto_guru)
+                                        @if (!empty($guru?->foto_guru))
                                             <img src="{{ Storage::url($guru->foto_guru) }}" alt="Foto Profil"
                                                 class="profile-photo" width="200" height="200" id="previewFoto"
                                                 style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid #e3e6f0;"

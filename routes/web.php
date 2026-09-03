@@ -81,8 +81,21 @@ Route::middleware(['auth:guru'])->prefix('guru')->group(function () {
     Route::post('/generate-all-tasks', [RekapTugasController::class, 'generateAllTasks']);
     Route::post('/add-single-task/{id_rekap}', [RekapTugasController::class, 'addSingleTaskPerClass']);
     Route::post('/update-status-tugas', [RekapTugasController::class, 'updateStatusTugas'])->name('update-status-tugas');
-    Route::get('/export-tugas/{id_mapel}', function ($id_mapel) {
-        return Excel::download(new RekapTugasExport($id_mapel), 'rekap_tugas.xlsx');
+    Route::get('/export-tugas/{id_mapel}/{id_kelas?}', function ($id_mapel, $id_kelas = null) {
+        $id_kelas = $id_kelas ?? request('id_kelas');
+        $tahunAjaran = request('tahun_ajaran');
+        $mapel = \App\Models\Mapel::find($id_mapel);
+        $kelas = $id_kelas ? \App\Models\Kelas::find($id_kelas) : null;
+        $namaFile = 'rekap_tugas';
+        if ($mapel) {
+            $namaFile .= '_' . \Illuminate\Support\Str::slug($mapel->nama_diklat);
+        }
+        if ($kelas) {
+            $namaFile .= '_' . \Illuminate\Support\Str::slug($kelas->nama_kelas);
+        }
+        $namaFile .= '.xlsx';
+
+        return Excel::download(new RekapTugasExport($id_mapel, $id_kelas, $tahunAjaran), $namaFile);
     })->name('export-tugas');
 });
 

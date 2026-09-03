@@ -105,13 +105,14 @@
                                 </tbody>
                             </table>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3">Simpan</button>
-                        <button type="button" class="btn btn-secondary mt-3" onclick="tambahTugas()">Tambah 1
-                            Tugas</button>
-                        <a href="{{ route('export-tugas', ['id_mapel' => $mapel->id_mapel]) }}"
-                            class="btn btn-success mt-3">
-                            Export ke Excel
-                        </a>
+                        <div class="mt-3 d-flex align-items-center flex-wrap" style="gap: 8px;">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="button" class="btn btn-secondary" onclick="tambahTugas()">Tambah 1 Tugas</button>
+                            <a href="{{ route('export-tugas', ['id_mapel' => $mapel->id_mapel, 'id_kelas' => $rekapKelas->id_kelas]) }}"
+                                class="btn btn-success btn-icon-text d-inline-flex align-items-center">
+                                <i class="btn-icon-prepend" data-feather="file-text" style="width: 16px; height: 16px; margin-right: 6px;"></i> Export ke Excel
+                            </a>
+                        </div>
                     </form>
                 </div>
             </div>
