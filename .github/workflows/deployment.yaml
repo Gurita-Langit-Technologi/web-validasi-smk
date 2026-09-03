@@ -37,6 +37,6 @@ jobs:
             php artisan optimize:clear
             php artisan migrate:fresh --force --seed
             php artisan up
-            php artisan queue:work
+            php artisan queue:restart
             sudo chown -R www-data:www-data /var/www/html/web_validasi_smk
             echo "Deployment finished!"
