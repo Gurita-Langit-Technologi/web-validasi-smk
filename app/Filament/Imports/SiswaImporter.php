@@ -17,7 +17,8 @@ class SiswaImporter extends Importer
         return [
             ImportColumn::make('id_kelas')
                 ->requiredMapping()
-                ->rules(['required', 'max:50']),
+                ->numeric()
+                ->rules(['required', 'integer', 'exists:kelas,id_kelas']),
             ImportColumn::make('no_induk')
                 ->label('No Induk')
                 ->requiredMapping()

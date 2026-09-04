@@ -11,13 +11,11 @@ class Siswa extends Model
     protected $primaryKey = 'id_siswa';
 
     protected $fillable = [
-        'nisn',
         'nama_siswa',
         'nama_kelas',
         'id_kelas',
         'kompetensi_keahlian',
         'no_induk',
-
     ];
 
     public function tugas()
