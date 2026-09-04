@@ -18,6 +18,33 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
+                    <!-- Alert Messages -->
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-3" role="alert"
+                            style="box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15); border-left: 4px solid #10b981; border-radius: 6px;">
+                            <i class="fas fa-check-circle me-2 mr-2 text-success" style="font-size: 1.25rem;"></i>
+                            <div class="flex-grow-1">
+                                <strong>Berhasil!</strong> {{ session('success') }}
+                            </div>
+                            <button type="button" class="close ms-auto ml-auto" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-3" role="alert"
+                            style="box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15); border-left: 4px solid #ef4444; border-radius: 6px;">
+                            <i class="fas fa-times-circle me-2 mr-2 text-danger" style="font-size: 1.25rem;"></i>
+                            <div class="flex-grow-1">
+                                <strong>Gagal!</strong> {{ session('error') }}
+                            </div>
+                            <button type="button" class="close ms-auto ml-auto" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+
                     <h6 class="card-title">Detail Tugas</h6>
                     <p>Mata Pelajaran: <strong>{{ $mapel->nama_diklat }}</strong></p>
                     <p>Kelas: <strong>{{ $rekapKelas->kelas->nama_kelas }}</strong></p>
@@ -106,8 +133,12 @@
                             </table>
                         </div>
                         <div class="mt-3 d-flex align-items-center flex-wrap" style="gap: 8px;">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                            <button type="button" class="btn btn-secondary" onclick="tambahTugas()">Tambah 1 Tugas</button>
+                            <button type="submit" class="btn btn-primary" id="btn-simpan-ceklis">
+                                <i class="fas fa-save mr-1"></i> Simpan
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="tambahTugas()">
+                                <i class="fas fa-plus mr-1"></i> Tambah 1 Tugas
+                            </button>
                             <a href="{{ route('export-tugas', ['id_mapel' => $mapel->id_mapel, 'id_kelas' => $rekapKelas->id_kelas]) }}"
                                 class="btn btn-success btn-icon-text d-inline-flex align-items-center">
                                 <i class="btn-icon-prepend" data-feather="file-text" style="width: 16px; height: 16px; margin-right: 6px;"></i> Export ke Excel
@@ -119,6 +150,9 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
     <script>
         function tambahTugas() {
             const table = document.getElementById('tabel-tugas');
@@ -128,7 +162,7 @@
             const newHeaderCell = document.createElement('th');
             newHeaderCell.innerHTML = `
                 <input type="hidden" name="id_mapel" value="{{ $mapel->id_mapel }}">
-                <input type="text" class="form-control form-control-sm" name="nama_tugas_baru" placeholder="Nama Tugas Baru" id="nama-tugas-baru">
+                <input type="text" class="form-control form-control-sm" name="nama_tugas_baru" placeholder="Nama Tugas Baru" id="nama-tugas-baru" autofocus>
             `;
             headerRow.insertBefore(newHeaderCell, headerRow.querySelector('th:nth-last-child(2)'));
 
@@ -143,6 +177,10 @@
                 `;
                 row.insertBefore(newCell, row.querySelector('td:nth-last-child(2)'));
             });
+
+            if (typeof showToast === 'function') {
+                showToast('info', 'Kolom tugas baru telah ditambahkan. Silakan isi nama tugas lalu klik Simpan.', 'Info');
+            }
         }
 
         function toggleTanggal(checkbox, siswaId, tugasId) {
@@ -155,5 +193,18 @@
                 tanggalInput.value = "";
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const formTugas = document.getElementById('form-tugas');
+            if (formTugas) {
+                formTugas.addEventListener('submit', function() {
+                    const btnSimpan = document.getElementById('btn-simpan-ceklis');
+                    if (btnSimpan) {
+                        btnSimpan.disabled = true;
+                        btnSimpan.innerHTML = '<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Menyimpan...';
+                    }
+                });
+            }
+        });
     </script>
 @endsection

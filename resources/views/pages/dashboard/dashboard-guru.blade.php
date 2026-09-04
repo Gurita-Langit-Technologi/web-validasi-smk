@@ -825,13 +825,13 @@
                     const maxSize = 2 * 1024 * 1024; // 2MB
 
                     if (!allowedTypes.includes(file.type.toLowerCase())) {
-                        alert('Format file tidak didukung. Gunakan JPG, PNG, atau GIF.');
+                        if (typeof showToast === 'function') { showToast('warning', 'Format file tidak didukung. Gunakan JPG, PNG, atau GIF.', 'Peringatan'); } else { alert('Format file tidak didukung. Gunakan JPG, PNG, atau GIF.'); }
                         this.value = '';
                         return;
                     }
 
                     if (file.size > maxSize) {
-                        alert('Ukuran file terlalu besar. Maksimal 2MB.');
+                        if (typeof showToast === 'function') { showToast('warning', 'Ukuran file terlalu besar. Maksimal 2MB.', 'Peringatan'); } else { alert('Ukuran file terlalu besar. Maksimal 2MB.'); }
                         this.value = '';
                         return;
                     }
@@ -899,7 +899,7 @@
 
                     reader.onerror = function() {
                         console.error('❌ Gagal membaca file untuk preview');
-                        alert('Gagal membaca file. Silakan coba file lain.');
+                        if (typeof showToast === 'function') { showToast('error', 'Gagal membaca file. Silakan coba file lain.', 'Gagal'); } else { alert('Gagal membaca file. Silakan coba file lain.'); }
                     };
 
                     reader.readAsDataURL(file);
@@ -930,7 +930,7 @@
 
                             } catch (error) {
                                 console.error('❌ Gagal mengupload foto:', error);
-                                alert('Gagal mengupload foto. Silakan coba lagi.');
+                                if (typeof showToast === 'function') { showToast('error', 'Gagal mengupload foto. Silakan coba lagi.', 'Gagal'); } else { alert('Gagal mengupload foto. Silakan coba lagi.'); }
                             }
                         } else {
                             console.log('ℹ️ Tidak ada foto baru, langsung submit form');

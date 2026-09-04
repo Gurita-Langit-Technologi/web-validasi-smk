@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-            <li class="breadcrumb-item " aria-current="page">Dashboard</li>
+            <li class="breadcrumb-item" aria-current="page">Dashboard</li>
             <li class="breadcrumb-item active" aria-current="page">Page Tugas</li>
         </ol>
     </nav>
@@ -17,6 +17,35 @@
         <div>
             <h4 class="mb-3 mb-md-0">Halaman Rekap Tugas</h4>
         </div>
+    </div>
+
+    <!-- Alert Container for dynamic and session messages -->
+    <div id="alert-container">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-3" role="alert"
+                style="box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15); border-left: 4px solid #10b981; border-radius: 6px;">
+                <i class="fas fa-check-circle me-2 mr-2 text-success" style="font-size: 1.25rem;"></i>
+                <div class="flex-grow-1">
+                    <strong>Berhasil!</strong> {{ session('success') }}
+                </div>
+                <button type="button" class="close ms-auto ml-auto" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-3" role="alert"
+                style="box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15); border-left: 4px solid #ef4444; border-radius: 6px;">
+                <i class="fas fa-times-circle me-2 mr-2 text-danger" style="font-size: 1.25rem;"></i>
+                <div class="flex-grow-1">
+                    <strong>Gagal!</strong> {{ session('error') }}
+                </div>
+                <button type="button" class="close ms-auto ml-auto" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
     </div>
 
     @foreach ($rekapTugas as $rekap)
@@ -67,10 +96,14 @@
                                 </tbody>
                             </table>
                         </div>
-                        <button class="btn btn-primary mt-2"
-                            onclick="generateTasksPerClass('{{ $rekap->id_rekap_kelas }}')">Simpan</button>
-                        <button class="btn btn-secondary mt-2"
-                            onclick="addSingleTask('{{ $rekap->id_rekap_kelas }}')">Simpan 1 Tugas</button>
+                        <button class="btn btn-primary mt-2" id="btn-save-class-{{ $rekap->id_rekap_kelas }}"
+                            onclick="generateTasksPerClass('{{ $rekap->id_rekap_kelas }}', this)">
+                            <i class="fas fa-save mr-1"></i> Simpan
+                        </button>
+                        <button class="btn btn-secondary mt-2" id="btn-save-single-{{ $rekap->id_rekap_kelas }}"
+                            onclick="addSingleTask('{{ $rekap->id_rekap_kelas }}', this)">
+                            <i class="fas fa-plus mr-1"></i> Simpan 1 Tugas
+                        </button>
                     </div>
                 </div>
             </div>
@@ -95,7 +128,8 @@
                                                 class="form-control form-control-sm text-center"
                                                 value="{{ $rekap->jumlah_selesai }}  siswa" min="0" disabled>
                                         </td>
-                                        <td><input type="text" class="form-control form-control-sm text-center"
+                                        <td><input id="tugas-tanggungan-{{ $rekap->id_rekap_kelas }}" type="text"
+                                                class="form-control form-control-sm text-center"
                                                 value="{{ $rekap->jumlah_tanggungan }}  siswa" disabled></td>
                                     </tr>
                                 </tbody>
@@ -107,10 +141,42 @@
         </div>
     @endforeach
 
-    <button class="btn btn-success mt-3" onclick="generateAllTasks()">generate All Kelas</button>
+    <button class="btn btn-success mt-3" onclick="generateAllTasks(this)">
+        <i class="fas fa-layer-group mr-1"></i> Generate All Kelas
+    </button>
 @endsection
 
+@section('scripts')
 <script>
+    // Fungsi untuk memunculkan Alert Berhasil / Peringatan / Gagal di halaman
+    function showAlert(type, message) {
+        const container = document.getElementById('alert-container');
+        if (!container) return;
+
+        const isSuccess = type === 'success';
+        const isWarning = type === 'warning';
+        const icon = isSuccess ? 'fa-check-circle text-success' : (isWarning ? 'fa-exclamation-triangle text-warning' : 'fa-times-circle text-danger');
+        const borderColor = isSuccess ? '#10b981' : (isWarning ? '#f59e0b' : '#ef4444');
+        const shadowColor = isSuccess ? 'rgba(16, 185, 129, 0.15)' : (isWarning ? 'rgba(245, 158, 11, 0.15)' : 'rgba(239, 68, 68, 0.15)');
+        const alertClass = isSuccess ? 'alert-success' : (isWarning ? 'alert-warning' : 'alert-danger');
+        const titleText = isSuccess ? 'Berhasil!' : (isWarning ? 'Peringatan!' : 'Gagal!');
+
+        container.innerHTML = `
+            <div class="alert ${alertClass} alert-dismissible fade show d-flex align-items-center mb-3" role="alert"
+                style="box-shadow: 0 4px 12px ${shadowColor}; border-left: 4px solid ${borderColor}; border-radius: 6px;">
+                <i class="fas ${icon} me-2 mr-2" style="font-size: 1.25rem;"></i>
+                <div class="flex-grow-1">
+                    <strong>${titleText}</strong> ${message}
+                </div>
+                <button type="button" class="close ms-auto ml-auto" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        `;
+
+        container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
     function generateTaskNames(classId) {
         const totalTasksInput = document.getElementById(`total-tugas-${classId}`);
         const container = document.getElementById(`tugas-names-container-${classId}`);
@@ -148,19 +214,27 @@
         newTaskInput.id = `task-${classId}-${newIndex}`;
         container.appendChild(newTaskInput);
 
-        // generate total tugas input
+        // Update input total tugas
         const totalTasksInput = document.getElementById(`total-tugas-${classId}`);
         totalTasksInput.value = newIndex + 1;
     }
 
-    function addSingleTask(classId) {
+    function addSingleTask(classId, btnElement) {
         const container = document.getElementById(`tugas-names-container-${classId}`);
         const taskInputs = container.getElementsByTagName("input");
         const lastTaskInput = taskInputs[taskInputs.length - 1]; // Ambil input terakhir
 
         if (!lastTaskInput || !lastTaskInput.value.trim()) {
-            alert("Isi nama tugas terlebih dahulu!");
+            showToast('warning', 'Isi nama tugas terlebih dahulu sebelum menyimpan!', 'Peringatan');
+            showAlert('warning', 'Isi nama tugas terlebih dahulu sebelum menyimpan!');
             return;
+        }
+
+        const btn = btnElement || document.getElementById(`btn-save-single-${classId}`);
+        const originalHtml = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Menyimpan...';
         }
 
         fetch(`/guru/add-single-task/${classId}`, {
@@ -175,16 +249,42 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);
-                if (data.success) {
-                    // Tambahkan data-old-name ke input yang baru dibuat
+                if (data.success !== false) {
+                    const message = data.message || 'Tugas baru berhasil ditambahkan!';
+                    showToast('success', message, 'Berhasil!');
+                    showAlert('success', message);
+
+                    // Tandai data-old-name pada input yang baru disimpan
                     lastTaskInput.dataset.oldName = lastTaskInput.value.trim();
+
+                    // Update report jika tersedia
+                    if (data.total_tugas !== undefined) {
+                        const totalTugasInput = document.getElementById(`total-tugas-${classId}`);
+                        if (totalTugasInput) totalTugasInput.value = data.total_tugas;
+                    }
+                    if (data.jumlah_tanggungan !== undefined) {
+                        const tanggunganInput = document.getElementById(`tugas-tanggungan-${classId}`);
+                        if (tanggunganInput) tanggunganInput.value = data.jumlah_tanggungan + ' siswa';
+                    }
+                } else {
+                    showToast('error', data.message || 'Gagal menambahkan tugas.', 'Gagal!');
+                    showAlert('danger', data.message || 'Gagal menambahkan tugas.');
                 }
             })
-            .catch(error => console.error("Error:", error));
+            .catch(error => {
+                console.error("Error:", error);
+                showToast('error', 'Terjadi kesalahan jaringan atau server saat menyimpan tugas.', 'Error');
+                showAlert('danger', 'Terjadi kesalahan pada sistem saat menyimpan tugas.');
+            })
+            .finally(() => {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            });
     }
 
-    function generateTasksPerClass(classId) {
+    function generateTasksPerClass(classId, btnElement) {
         const container = document.getElementById(`tugas-names-container-${classId}`);
         const taskInputs = container.querySelectorAll("input");
 
@@ -193,7 +293,20 @@
             old_name: input.dataset.oldName || null
         }));
 
-        fetch(`/guru/generate-tasks-per-class/${classId}`, { // Pastikan route ini benar
+        if (tasks.length === 0 || tasks.every(t => !t.new_name)) {
+            showToast('warning', 'Belum ada nama tugas yang diisi untuk kelas ini.', 'Peringatan');
+            showAlert('warning', 'Silakan isi minimal satu nama tugas sebelum menyimpan.');
+            return;
+        }
+
+        const btn = btnElement || document.getElementById(`btn-save-class-${classId}`);
+        const originalHtml = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Menyimpan...';
+        }
+
+        fetch(`/guru/generate-tasks-per-class/${classId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -205,20 +318,46 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);
-                if (data.success) {
-                    // Update data-old-name untuk semua input yang berhasil diupdate
+                if (data.success !== false) {
+                    const message = data.message || 'Tugas berhasil diupdate!';
+                    showToast('success', message, 'Berhasil!');
+                    showAlert('success', message);
+
+                    // Update data-old-name untuk semua input yang tersimpan
                     taskInputs.forEach((input, index) => {
-                        if (tasks[index].new_name) {
+                        if (tasks[index] && tasks[index].new_name) {
                             input.dataset.oldName = tasks[index].new_name;
                         }
                     });
+
+                    // Update report jika tersedia
+                    if (data.total_tugas !== undefined) {
+                        const totalTugasInput = document.getElementById(`total-tugas-${classId}`);
+                        if (totalTugasInput) totalTugasInput.value = data.total_tugas;
+                    }
+                    if (data.jumlah_tanggungan !== undefined) {
+                        const tanggunganInput = document.getElementById(`tugas-tanggungan-${classId}`);
+                        if (tanggunganInput) tanggunganInput.value = data.jumlah_tanggungan + ' siswa';
+                    }
+                } else {
+                    showToast('error', data.message || 'Gagal mengupdate tugas.', 'Gagal!');
+                    showAlert('danger', data.message || 'Gagal mengupdate tugas.');
                 }
             })
-            .catch(error => console.error("Error:", error));
+            .catch(error => {
+                console.error("Error:", error);
+                showToast('error', 'Terjadi kesalahan jaringan atau server saat menyimpan tugas.', 'Error');
+                showAlert('danger', 'Terjadi kesalahan pada sistem saat menyimpan tugas.');
+            })
+            .finally(() => {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            });
     }
 
-    function generateAllTasks() {
+    function generateAllTasks(btnElement) {
         const rekapContainers = document.querySelectorAll('[id^="tugas-names-container-"]');
         let allTasks = {};
 
@@ -232,6 +371,13 @@
             }));
         });
 
+        const btn = btnElement;
+        const originalHtml = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> Menyimpan Semua...';
+        }
+
         fetch("/guru/generate-all-tasks", {
                 method: "POST",
                 headers: {
@@ -244,9 +390,12 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);
-                if (data.success) {
-                    // generate data-old-name untuk semua input yang berhasil digenerate
+                if (data.success !== false) {
+                    const message = data.message || 'Semua tugas berhasil disimpan!';
+                    showToast('success', message, 'Berhasil!');
+                    showAlert('success', message);
+
+                    // Update data-old-name untuk semua input
                     rekapContainers.forEach(container => {
                         const classId = container.id.split('-').pop();
                         const taskInputs = container.querySelectorAll("input");
@@ -258,8 +407,22 @@
                             }
                         });
                     });
+                } else {
+                    showToast('error', data.message || 'Gagal mengupdate semua tugas.', 'Gagal!');
+                    showAlert('danger', data.message || 'Gagal mengupdate semua tugas.');
                 }
             })
-            .catch(error => console.error("Error:", error));
+            .catch(error => {
+                console.error("Error:", error);
+                showToast('error', 'Terjadi kesalahan jaringan atau server saat menyimpan semua tugas.', 'Error');
+                showAlert('danger', 'Terjadi kesalahan pada sistem saat menyimpan semua tugas.');
+            })
+            .finally(() => {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            });
     }
 </script>
+@endsection

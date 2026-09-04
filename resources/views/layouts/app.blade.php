@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="{{ asset('vendors/flag-icon-css/css/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
     <!-- Font Awesome v6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{ asset('vendors/sweetalert2/sweetalert2.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('style.css') }}">
@@ -75,6 +77,48 @@
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script src="{{ asset('js/datepicker.js') }}"></script>
     <!-- end custom js for this page -->
+
+    <!-- SweetAlert2 -->
+    <script src="{{ asset('vendors/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script>
+        // Global SweetAlert2 Toast configuration
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+
+        // Helper function for quick Toast notification
+        function showToast(icon, message, title = '') {
+            Toast.fire({
+                icon: icon,
+                title: title || (icon === 'success' ? 'Berhasil' : (icon === 'warning' ? 'Peringatan' : (icon === 'error' ? 'Gagal' : 'Informasi'))),
+                text: message
+            });
+        }
+    </script>
+
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showToast('success', "{{ session('success') }}", 'Berhasil');
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showToast('error', "{{ session('error') }}", 'Gagal');
+            });
+        </script>
+    @endif
 
     <!-- Page specific scripts -->
     @yield('scripts')
