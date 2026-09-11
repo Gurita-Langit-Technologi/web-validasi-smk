@@ -154,16 +154,39 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
-        $guru = Guru::where('reset_token', $request->token)->first();
+        $resetRecord = DB::table('password_reset_tokens')->get()->first(function ($record) use ($request) {
+            return Hash::check($request->token, $record->token);
+        });
 
-        if (!$guru) {
+        if (!$resetRecord) {
             return back()->withErrors(['error' => 'Token tidak valid atau sudah kadaluarsa.']);
         }
 
-        // Update password
-        $guru->password = Hash::make($request->password);
-        $guru->save();
+        if (now()->diffInMinutes($resetRecord->created_at) > 60) {
+            DB::table('password_reset_tokens')->where('email', $resetRecord->email)->delete();
+            return back()->withErrors(['error' => 'Token sudah kadaluarsa, silakan ajukan reset password kembali.']);
+        }
 
-        return redirect()->route('login-form')->with('status', 'Password Anda telah berhasil direset.');
+        $user = UserGuru::where('email', $resetRecord->email)->first();
+
+        if (!$user) {
+            return back()->withErrors(['error' => 'Akun guru tidak ditemukan.']);
+        }
+
+        // Update password di UserGuru
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Jika guru juga terdaftar sebagai wali kelas, sinkronkan passwordnya
+        $wali = WaliKelas::where('id_guru', $user->guru_id)->first();
+        if ($wali) {
+            $wali->password = Hash::make($request->password);
+            $wali->save();
+        }
+
+        // Hapus token yang sudah terpakai
+        DB::table('password_reset_tokens')->where('email', $resetRecord->email)->delete();
+
+        return redirect()->route('login.guru.form')->with('success', 'Password Anda telah berhasil direset. Silakan login.');
     }
 }

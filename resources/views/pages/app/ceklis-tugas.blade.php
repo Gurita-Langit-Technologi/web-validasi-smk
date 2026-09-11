@@ -50,6 +50,9 @@
                     <p>Kelas: <strong>{{ $rekapKelas->kelas->nama_kelas }}</strong></p>
                     <form action="{{ route('update-status-tugas') }}" method="POST" id="form-tugas">
                         @csrf
+                        <input type="hidden" name="id_rekap_kelas" value="{{ $rekapKelas->id_rekap_kelas }}">
+                        <input type="hidden" name="id_mapel" value="{{ $mapel->id_mapel }}">
+
                         <div class="table-responsive">
                             <table class="table" id="tabel-tugas">
                                 <thead class="text-center">
@@ -64,57 +67,40 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($siswa as $student)
-                                        <tr>
+                                        <tr data-siswa-id="{{ $student->id_siswa }}">
                                             <td>{{ $student->nama_siswa }}</td>
-                                            @foreach ($siswaTugas[$student->id_siswa] as $task)
-                                                @php
-                                                    $rekap = \App\Models\RekapPengumpulan::where(
-                                                        'id_tugas',
-                                                        $task->id_tugas,
-                                                    )
-                                                        ->where('id_siswa', $student->id_siswa)
-                                                        ->first();
-
-                                                    // dd($rekap->id_rekap_kelas);
-
-                                                @endphp
+                                            @foreach ($siswaTugas[$student->id_siswa] ?? [] as $rekap)
                                                 <td style="min-width: 300px;">
-                                                    <input type="hidden" name="tugas[{{ $student->id_siswa }}][new]"
-                                                        value="Belum Selesai">
-                                                    <input type="hidden" name="id_siswa[]"
-                                                        value="{{ $student->id_siswa }}">
-                                                    <input type="hidden" name="id_rekap_kelas"
-                                                        value="{{ $rekap->id_rekap_kelas ?? '' }}">
                                                     <input type="hidden"
-                                                        name="tugas[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                        name="tugas[{{ $student->id_siswa }}][{{ $rekap->id_tugas }}]"
                                                         value="Belum Selesai">
                                                     <div
                                                         style="display: flex; justify-content: center; align-items: center;">
                                                         <input type="checkbox"
-                                                            name="tugas[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                            name="tugas[{{ $student->id_siswa }}][{{ $rekap->id_tugas }}]"
                                                             value="Selesai"
                                                             {{ $rekap && $rekap->status == 'Selesai' ? 'checked' : '' }}
-                                                            onchange="toggleTanggal(this, '{{ $student->id_siswa }}', '{{ $task->id_tugas }}')">
+                                                            onchange="toggleTanggal(this, '{{ $student->id_siswa }}', '{{ $rekap->id_tugas }}')">
                                                     </div>
 
                                                     <div class="mt-2 d-flex align-items-center">
                                                         <label class="form-label mb-0 me-2" style="min-width: 30px;">Tgl</label>
                                                         <input type="date" class="form-control ml-2"
-                                                            name="tanggal_pengumpulan[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                            name="tanggal_pengumpulan[{{ $student->id_siswa }}][{{ $rekap->id_tugas }}]"
                                                             value="{{ $rekap->tanggal_pengumpulan ?? '' }}"
-                                                            id="tanggal_{{ $student->id_siswa }}_{{ $task->id_tugas }}"
+                                                            id="tanggal_{{ $student->id_siswa }}_{{ $rekap->id_tugas }}"
                                                             {{ $rekap && $rekap->status == 'Selesai' ? '' : 'disabled' }}>
                                                     </div>
                                                     <div class="mt-2 d-flex align-items-start">
                                                         <label class="form-label mb-0 me-2" style="min-width: 30px;">Ket.</label>
-                                                        <textarea class="form-control ml-2" name="keterangan[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
+                                                        <textarea class="form-control ml-2" name="keterangan[{{ $student->id_siswa }}][{{ $rekap->id_tugas }}]"
                                                             placeholder="Keterangan">{{ $rekap->keterangan ?? '' }}</textarea>
                                                     </div>
                                                     <div class="mt-2 d-flex align-items-center">
                                                         <label class="form-label mb-0 me-2" style="min-width: 30px;">Nilai</label>
                                                         <input type="number" class="form-control ml-2"
-                                                            name="nilai[{{ $student->id_siswa }}][{{ $task->id_tugas }}]"
-                                                            value="{{ $rekap->nilai ?? '' }}" placeholder="Nilai"
+                                                            name="nilai[{{ $student->id_siswa }}][{{ $rekap->id_tugas }}]"
+                                                            value="{{ $rekap->nilai ?? 0 }}" placeholder="Nilai"
                                                             min="0" max="100">
                                                     </div>
                                                 </td>
@@ -159,20 +145,41 @@
             const headerRow = table.querySelector('thead tr');
             const bodyRows = table.querySelectorAll('tbody tr');
 
+            if (document.getElementById('nama-tugas-baru')) {
+                document.getElementById('nama-tugas-baru').focus();
+                if (typeof showToast === 'function') {
+                    showToast('warning', 'Kolom tugas baru sudah ada. Silakan isi nama tugas dan klik Simpan.', 'Peringatan');
+                }
+                return;
+            }
+
             const newHeaderCell = document.createElement('th');
+            newHeaderCell.style.minWidth = '300px';
             newHeaderCell.innerHTML = `
-                <input type="hidden" name="id_mapel" value="{{ $mapel->id_mapel }}">
-                <input type="text" class="form-control form-control-sm" name="nama_tugas_baru" placeholder="Nama Tugas Baru" id="nama-tugas-baru" autofocus>
+                <input type="text" class="form-control form-control-sm" name="nama_tugas_baru" placeholder="Nama Tugas Baru" id="nama-tugas-baru" autofocus required>
             `;
             headerRow.insertBefore(newHeaderCell, headerRow.querySelector('th:nth-last-child(2)'));
 
             bodyRows.forEach(row => {
+                const studentId = row.getAttribute('data-siswa-id');
                 const newCell = document.createElement('td');
+                newCell.style.minWidth = '300px';
                 newCell.innerHTML = `
-                    <input type="checkbox" name="tugas[${row.querySelector('td').textContent.trim()}][new]" value="Belum Selesai">
-                    <div class="mt-2">
-                        <input type="date" class="form-control" name="tanggal_pengumpulan[${row.querySelector('td').textContent.trim()}][new]">
-                        <textarea class="form-control mt-2" name="keterangan[${row.querySelector('td').textContent.trim()}][new]" placeholder="Keterangan"></textarea>
+                    <input type="hidden" name="tugas[${studentId}][new]" value="Belum Selesai">
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <input type="checkbox" name="tugas[${studentId}][new]" value="Selesai" onchange="toggleTanggalNew(this, '${studentId}')">
+                    </div>
+                    <div class="mt-2 d-flex align-items-center">
+                        <label class="form-label mb-0 me-2" style="min-width: 30px;">Tgl</label>
+                        <input type="date" class="form-control ml-2" name="tanggal_pengumpulan[${studentId}][new]" id="tanggal_${studentId}_new" disabled>
+                    </div>
+                    <div class="mt-2 d-flex align-items-start">
+                        <label class="form-label mb-0 me-2" style="min-width: 30px;">Ket.</label>
+                        <textarea class="form-control ml-2" name="keterangan[${studentId}][new]" placeholder="Keterangan"></textarea>
+                    </div>
+                    <div class="mt-2 d-flex align-items-center">
+                        <label class="form-label mb-0 me-2" style="min-width: 30px;">Nilai</label>
+                        <input type="number" class="form-control ml-2" name="nilai[${studentId}][new]" placeholder="Nilai" min="0" max="100">
                     </div>
                 `;
                 row.insertBefore(newCell, row.querySelector('td:nth-last-child(2)'));
@@ -183,11 +190,31 @@
             }
         }
 
+        function toggleTanggalNew(checkbox, siswaId) {
+            let tanggalInput = document.getElementById(`tanggal_${siswaId}_new`);
+            if (!tanggalInput) return;
+            if (checkbox.checked) {
+                tanggalInput.removeAttribute('disabled');
+                if (!tanggalInput.value) {
+                    const today = new Date().toISOString().split('T')[0];
+                    tanggalInput.value = today;
+                }
+            } else {
+                tanggalInput.setAttribute('disabled', 'true');
+                tanggalInput.value = "";
+            }
+        }
+
         function toggleTanggal(checkbox, siswaId, tugasId) {
             let tanggalInput = document.getElementById(`tanggal_${siswaId}_${tugasId}`);
+            if (!tanggalInput) return;
 
             if (checkbox.checked) {
                 tanggalInput.removeAttribute('disabled');
+                if (!tanggalInput.value) {
+                    const today = new Date().toISOString().split('T')[0];
+                    tanggalInput.value = today;
+                }
             } else {
                 tanggalInput.setAttribute('disabled', 'true');
                 tanggalInput.value = "";

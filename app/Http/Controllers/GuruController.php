@@ -38,11 +38,13 @@ class GuruController extends Controller
             return back()->withErrors(['kode guru' => 'kode guru tidak ditemukan']);
         }
 
-        $user_guru = new UserGuru;
-        $user_guru->guru_id = $guru->id_guru;
-        $user_guru->email = $request->email;
-        $user_guru->password = Hash::make($request->password);
-        $user_guru->save();
+        $user_guru = UserGuru::updateOrCreate(
+            ['guru_id' => $guru->id_guru],
+            [
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]
+        );
 
         $user_wali = WaliKelas::where('id_guru', $guru->id_guru)->first();
         if ($user_wali) {
@@ -66,8 +68,6 @@ class GuruController extends Controller
             'guru' => $guru,
             'email' => $email
         ]);
-
-        return redirect()->route('login.guru.form');
     }
 
     public function updateProfile(Request $request)
@@ -134,10 +134,15 @@ class GuruController extends Controller
         try {
 
 
-            // Upload foto baru
+            // Hapus foto lama jika ada di disk public
+            if ($guru->foto_guru && Storage::disk('public')->exists($guru->foto_guru)) {
+                Storage::disk('public')->delete($guru->foto_guru);
+            }
+
+            // Upload foto baru ke disk public
             $file = $request->file('foto_guru');
             $filename = 'guru_' . $guru->id_guru . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('guru', $filename);
+            $path = $file->storeAs('guru', $filename, 'public');
 
             // Simpan path ke database
             $guru->foto_guru = $path;

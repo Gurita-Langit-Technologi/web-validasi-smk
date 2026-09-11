@@ -21,6 +21,8 @@
     <link rel="shortcut icon" href="{{ asset('images/fic.png') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    @yield('styles')
+    @stack('styles')
 </head>
 
 <body>

@@ -32,12 +32,8 @@ class Kelas extends Model
         return $this->hasMany(Siswa::class, 'id_kelas');
     }
 
-    public function kompetensiKeahlian()
-    {
-        return $this->belongsTo(Kelas::class);
-    }
     public function waliKelas()
     {
-        return $this->belongsTo(WaliKelas::class, 'id_kelas', 'id_kelas');
+        return $this->hasOne(WaliKelas::class, 'id_kelas', 'id_kelas');
     }
 }

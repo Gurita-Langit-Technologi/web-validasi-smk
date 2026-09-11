@@ -83,16 +83,22 @@ class WaliController extends Controller
             });
 
 
+        $allPengumpulan = RekapPengumpulan::whereHas('rekapKelas', function ($q) use ($perwalian) {
+            $q->where('id_kelas', $perwalian->id_kelas);
+        })->get();
+
+        $pengumpulanGrouped = $allPengumpulan->groupBy('id_siswa');
+
         foreach ($siswaList as $siswa) {
             $tugasData[$siswa->id_siswa] = [
                 'nama' => $siswa->nama_siswa,
                 'tugas' => []
             ];
 
+            $siswaRecords = $pengumpulanGrouped->get($siswa->id_siswa, collect())->keyBy('nama_tugas');
+
             foreach ($tugasList as $tugas) {
-                $status = RekapPengumpulan::where('id_siswa', $siswa->id_siswa)
-                    ->where('nama_tugas', $tugas)
-                    ->value('status') ?? 'Belum Selesai';
+                $status = optional($siswaRecords->get($tugas))->status ?? 'Belum Selesai';
 
                 $tugasData[$siswa->id_siswa]['tugas'][$tugas] = [
                     'status' => $status
@@ -100,27 +106,24 @@ class WaliController extends Controller
             }
         }
 
+        $rekapKelasList = RekapKelas::where('id_kelas', $perwalian->id_kelas)->get()->keyBy('id_mapel');
+        $allPengumpulanByMapelAndSiswa = $allPengumpulan->groupBy(function ($item) {
+            return $item->id_mapel . '_' . $item->id_siswa;
+        });
+
         $mapelProgress = [];
         foreach ($mapelList as $mapel) {
+            $total = $rekapKelasList->get($mapel->id_mapel)->total_tugas ?? 0;
             $mapelProgress[$mapel->id_mapel] = [
                 'nama_diklat' => $mapel->nama_diklat,
                 'siswa' => []
             ];
 
             foreach ($siswaList as $siswa) {
-                $completed = RekapPengumpulan::whereHas('rekapKelas', function ($q) use ($mapel, $perwalian) {
-                    $q->where('id_mapel', $mapel->id_mapel)
-                        ->where('id_kelas', $perwalian->id_kelas);
-                })
-                    ->where('id_siswa', $siswa->id_siswa)
-                    ->where('status', 'Selesai')
-                    ->count();
+                $records = $allPengumpulanByMapelAndSiswa->get($mapel->id_mapel . '_' . $siswa->id_siswa, collect());
+                $completed = $records->where('status', 'Selesai')->count();
 
-                $total = RekapKelas::where('id_mapel', $mapel->id_mapel)
-                    ->where('id_kelas', $perwalian->id_kelas)
-                    ->value('total_tugas');
-
-                $mapelProgress[$mapel->id_mapel]['siswa'][$siswa->id_siswa] = ($total > 0) && ($completed == $total);
+                $mapelProgress[$mapel->id_mapel]['siswa'][$siswa->id_siswa] = ($total > 0) && ($completed >= $total);
             }
         }
 
@@ -134,7 +137,5 @@ class WaliController extends Controller
             'siswaList' => $siswaList,
             'mapelList' => $mapelList
         ]);
-
-        return redirect()->route('login.wali.form');
     }
 }
