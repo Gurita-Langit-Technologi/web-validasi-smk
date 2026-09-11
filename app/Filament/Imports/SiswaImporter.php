@@ -15,25 +15,37 @@ class SiswaImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('id_kelas')
+            ImportColumn::make('kelas')
+                ->relationship(name: 'kelas', resolveUsing: ['nama_kelas', 'kode_kelas', 'id_kelas'])
+                ->label('Kelas / ID Kelas')
+                ->guess(['id_kelas', 'kelas', 'nama_kelas', 'kode_kelas'])
                 ->requiredMapping()
-                ->numeric()
-                ->rules(['required', 'integer', 'exists:kelas,id_kelas']),
+                ->rules(['required']),
             ImportColumn::make('no_induk')
                 ->label('No Induk')
+                ->guess(['no_induk', 'nis', 'nisn', 'nomor_induk'])
                 ->requiredMapping()
-                ->rules(['required', 'max:12']),
+                ->rules(['required']),
             ImportColumn::make('nama_siswa')
+                ->label('Nama Siswa')
+                ->guess(['nama_siswa', 'nama', 'nama_lengkap'])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-
         ];
     }
 
     public function resolveRecord(): ?Siswa
     {
+        $noInduk = $this->data['no_induk'] ?? '';
+
+        // Tangani jika Excel mengekspor angka sebagai scientific notation (misal: 1,09E+08 atau 1.09E+08)
+        if (stripos($noInduk, 'e') !== false) {
+            $cleanNo = str_replace(',', '.', $noInduk);
+            $noInduk = number_format((float) $cleanNo, 0, '', '');
+        }
+
         return Siswa::firstOrNew([
-            'no_induk' => $this->data['no_induk'],
+            'no_induk' => $noInduk,
         ]);
     }
     public function getJobBatchName(): ?string

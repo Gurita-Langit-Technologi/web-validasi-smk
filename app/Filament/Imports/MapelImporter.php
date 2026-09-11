@@ -15,19 +15,22 @@ class MapelImporter extends Importer
     {
         return [
             ImportColumn::make('kode_mapel')
-                ->requiredMapping()
-                ->rules(['required', 'max:20']),
-            ImportColumn::make('nama_diklat')
-                ->requiredMapping()
-                ->label('Nama Diklat')
-                ->rules(['required', 'max:80']),
-            ImportColumn::make('id_mapel')
-                ->requiredMapping()
-                ->rules(['required', 'max:20']),
-            ImportColumn::make('id_guru')
+                ->label('Kode Mapel')
+                ->guess(['kode_mapel', 'kode', 'kode_diklat'])
                 ->requiredMapping()
                 ->rules(['required', 'max:20']),
 
+            ImportColumn::make('nama_diklat')
+                ->label('Nama Mata Pelajaran / Diklat')
+                ->guess(['nama_diklat', 'nama_mapel', 'mapel', 'nama', 'mata_pelajaran'])
+                ->requiredMapping()
+                ->rules(['required', 'max:80']),
+
+            ImportColumn::make('guru')
+                ->relationship(name: 'guru', resolveUsing: ['nama_guru', 'kode_guru', 'id_guru'])
+                ->label('Guru Pengampu')
+                ->guess(['guru', 'nama_guru', 'kode_guru', 'id_guru', 'nip'])
+                ->rules(['nullable']),
         ];
     }
 

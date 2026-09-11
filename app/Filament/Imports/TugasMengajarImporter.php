@@ -16,17 +16,26 @@ class TugasMengajarImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('id_guru')
+            ImportColumn::make('guru')
+                ->relationship(name: 'guru', resolveUsing: ['nama_guru', 'kode_guru', 'id_guru'])
+                ->label('Guru')
+                ->guess(['guru', 'nama_guru', 'kode_guru', 'id_guru', 'nip'])
                 ->requiredMapping()
-                ->rules(['required', 'max:30']),
+                ->rules(['required']),
 
-            ImportColumn::make('id_kelas')
+            ImportColumn::make('kelas')
+                ->relationship(name: 'kelas', resolveUsing: ['nama_kelas', 'kode_kelas', 'id_kelas'])
+                ->label('Kelas')
+                ->guess(['kelas', 'nama_kelas', 'kode_kelas', 'id_kelas'])
                 ->requiredMapping()
-                ->rules(['required', 'max:30']),
+                ->rules(['required']),
 
-            ImportColumn::make('id_mapel')
+            ImportColumn::make('mapel')
+                ->relationship(name: 'mapel', resolveUsing: ['nama_diklat', 'kode_mapel', 'id_mapel'])
+                ->label('Mata Pelajaran')
+                ->guess(['mapel', 'nama_diklat', 'nama_mapel', 'kode_mapel', 'id_mapel', 'mata_pelajaran'])
                 ->requiredMapping()
-                ->rules(['required', 'max:30']),
+                ->rules(['required']),
         ];
     }
     public function resolveRecord(): ?TugasMengajar

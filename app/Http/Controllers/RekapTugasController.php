@@ -17,25 +17,23 @@ class RekapTugasController extends Controller
 
     public function index()
     {
-        $tugasMengajar = TugasMengajar::with([
-            'kelas',
-            'mapel',
-            'guru'
-        ])->get();
-
-        $rekapTugas = collect();
         $guruIdLogin = Auth::guard('guru')->user()->id_guru;
 
+        // Hanya ambil tugas mengajar milik guru yang sedang login
+        $tugasMengajar = TugasMengajar::where('id_guru', $guruIdLogin)
+            ->with([
+                'kelas',
+                'mapel',
+                'guru'
+            ])->get();
 
+        $rekapTugas = collect();
         $waliKelasMap = WaliKelas::with('kelas')->get()->keyBy('id_kelas');
 
         foreach ($tugasMengajar as $mengajar) {
             $waliKelas = $waliKelasMap->get($mengajar->id_kelas);
-            // tambahan
-            // Jika tidak ada wali kelas untuk id_kelas ini, lewati iterasi ini
-            // atau kirim pesan error
             if (!$waliKelas) {
-                continue; // Melewati kelas yang tidak memiliki wali kelas
+                continue;
             }
 
             $rekap = RekapKelas::firstOrCreate(
@@ -45,7 +43,6 @@ class RekapTugasController extends Controller
                     'id_guru' => $mengajar->id_guru,
                 ],
                 [
-                    //'id_wali_kelas' => $waliKelas ? $waliKelas->id_wali_kelas : null, // katanya gemini disini masalahnya
                     'id_wali_kelas' => $waliKelas->id_wali_kelas,
                     'total_tugas' => 0,
                     'jumlah_selesai' => 0,
@@ -53,49 +50,45 @@ class RekapTugasController extends Controller
                 ]
             );
 
-
             $rekap->load(['kelas', 'mapel', 'guru', 'tugas', 'waliKelas']);
+            $totalTugas = $rekap->tugas->unique('nama_tugas')->count();
 
-            $rekap->total_tugas = $rekap->tugas->unique('nama_tugas')->count();
+            if ($totalTugas > 0) {
+                $siswaDiKelas = Siswa::where('id_kelas', $mengajar->id_kelas)->pluck('id_siswa');
 
-            if ($rekap->total_tugas > 0) {
-                // 1. Dapatkan semua id_siswa di kelas ini yang memiliki rekapan
-                $semuaSiswaDiKelas = RekapPengumpulan::where('id_rekap_kelas', $rekap->id_rekap_kelas)
-                    ->distinct()
-                    ->pluck('id_siswa');
+                // Hitung tugas selesai per siswa dalam 1 query teragregasi (jauh lebih cepat daripada loop query)
+                $selesaiCounts = RekapPengumpulan::where('id_rekap_kelas', $rekap->id_rekap_kelas)
+                    ->where('status', 'Selesai')
+                    ->select('id_siswa', DB::raw('count(*) as total_selesai'))
+                    ->groupBy('id_siswa')
+                    ->pluck('total_selesai', 'id_siswa');
 
                 $jumlahSiswaSelesaiSemua = 0;
                 $jumlahSiswaBelumSelesai = 0;
 
-                foreach ($semuaSiswaDiKelas as $idSiswa) {
-
-                    $tugasSelesaiPerSiswa = RekapPengumpulan::where('id_rekap_kelas', $rekap->id_rekap_kelas)
-                        ->where('id_siswa', $idSiswa)
-                        ->where('status', 'Selesai')
-                        ->count();
-
-
-                    if ($tugasSelesaiPerSiswa >= $rekap->total_tugas) {
-
+                foreach ($siswaDiKelas as $idSiswa) {
+                    $tugasSelesai = $selesaiCounts->get($idSiswa, 0);
+                    if ($tugasSelesai >= $totalTugas) {
                         $jumlahSiswaSelesaiSemua++;
                     } else {
-
                         $jumlahSiswaBelumSelesai++;
                     }
                 }
 
+                $rekap->total_tugas = $totalTugas;
                 $rekap->jumlah_selesai = $jumlahSiswaSelesaiSemua;
-
                 $rekap->jumlah_tanggungan = $jumlahSiswaBelumSelesai;
             } else {
+                $rekap->total_tugas = 0;
                 $rekap->jumlah_selesai = 0;
                 $rekap->jumlah_tanggungan = 0;
             }
-            $rekap->save();
 
-            if ($mengajar->id_guru == $guruIdLogin) {
-                $rekapTugas->push($rekap);
+            if ($rekap->isDirty()) {
+                $rekap->save();
             }
+
+            $rekapTugas->push($rekap);
         }
 
         return view('pages.app.page-tugas', compact('rekapTugas'));

@@ -15,28 +15,62 @@ class PerwalianKelasImporter extends Importer
     public static function getColumns(): array
     {
         return [
-
-            ImportColumn::make('nama_guru') //ini harus disesuaikan dengan kolom d csv, wes itu kunci kesalahan setengah hari ini selain harus menggunakan relation
+            ImportColumn::make('guru')
                 ->relationship(
-                    name: 'guru', // relasi di model TugasMengajar
-                    resolveUsing: ['nama_guru', 'kode_guru'] // cari guru berdasarkan nama atau kode
-                ),
+                    name: 'guru',
+                    resolveUsing: ['nama_guru', 'kode_guru', 'id_guru']
+                )
+                ->label('Guru')
+                ->guess(['nama_guru', 'guru', 'kode_guru', 'id_guru', 'nip'])
+                ->requiredMapping()
+                ->rules(['required']),
 
-            ImportColumn::make('nama_kelas') //ini harus disesuaikan dengan kolom d csv, wes itu kunci kesalahan setengah hari ini selain harus menggunakan relation
+            ImportColumn::make('kelas')
                 ->relationship(
                     name: 'kelas',
-                    resolveUsing: ['kode_kelas', 'nama_kelas'] // cari berdasarkan nama atau kode
+                    resolveUsing: ['nama_kelas', 'kode_kelas', 'id_kelas']
                 )
-
-
+                ->label('Kelas')
+                ->guess(['nama_kelas', 'kelas', 'kode_kelas', 'id_kelas'])
+                ->requiredMapping()
+                ->rules(['required']),
         ];
     }
 
     public function resolveRecord(): ?PerwalianKelas
     {
+        $guruInput = $this->data['guru'] ?? $this->data['nama_guru'] ?? null;
+        if ($guruInput) {
+            $guru = \App\Models\Guru::where('nama_guru', $guruInput)
+                ->orWhere('kode_guru', $guruInput)
+                ->orWhere('id_guru', $guruInput)
+                ->first();
 
+            if ($guru) {
+                return PerwalianKelas::firstOrNew(['id_guru' => $guru->id_guru]);
+            }
+        }
 
         return new PerwalianKelas();
+    }
+
+    public function beforeSave(): void
+    {
+        if (! $this->record->id_wali_kelas && $this->record->id_guru) {
+            $wali = \App\Models\WaliKelas::where('id_guru', $this->record->id_guru)->first();
+            if (! $wali) {
+                $guru = \App\Models\Guru::find($this->record->id_guru);
+                $wali = \App\Models\WaliKelas::create([
+                    'id_guru' => $this->record->id_guru,
+                    'id_kelas' => $this->record->id_kelas,
+                    'kode_wali' => $guru?->kode_guru ?? 'WALI',
+                    'nama_wali' => $guru?->nama_guru ?? 'Wali Kelas',
+                    'role' => 'wali kelas',
+                    'password' => \Illuminate\Support\Facades\Hash::make('12345678'),
+                ]);
+            }
+            $this->record->id_wali_kelas = $wali->id_wali_kelas;
+        }
     }
 
     public function getJobBatchName(): ?string

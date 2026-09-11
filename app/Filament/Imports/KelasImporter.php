@@ -15,16 +15,26 @@ class KelasImporter extends Importer
     {
         return [
             ImportColumn::make('kode_kelas')
+                ->label('Kode Kelas')
+                ->guess(['kode_kelas', 'kode'])
                 ->requiredMapping()
                 ->rules(['required', 'max:30']),
+
             ImportColumn::make('nama_kelas')
+                ->label('Nama Kelas')
+                ->guess(['nama_kelas', 'nama', 'kelas'])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
+
             ImportColumn::make('tingkat_kelas')
+                ->label('Tingkat Kelas')
+                ->guess(['tingkat_kelas', 'tingkat', 'kelas_tingkat'])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
 
             ImportColumn::make('kompetensi_keahlian')
+                ->label('Kompetensi Keahlian')
+                ->guess(['kompetensi_keahlian', 'jurusan', 'keahlian'])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
         ];
@@ -32,12 +42,9 @@ class KelasImporter extends Importer
 
     public function resolveRecord(): ?Kelas
     {
-        // return Kelas::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
-        return new Kelas();
+        return Kelas::firstOrNew([
+            'kode_kelas' => $this->data['kode_kelas'],
+        ]);
     }
 
     public static function getCompletedNotificationBody(Import $import): string

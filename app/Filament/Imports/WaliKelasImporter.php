@@ -14,41 +14,65 @@ class WaliKelasImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('id_guru')
+            ImportColumn::make('guru')
+                ->relationship(name: 'guru', resolveUsing: ['nama_guru', 'kode_guru', 'id_guru'])
+                ->label('Guru')
+                ->guess(['guru', 'nama_guru', 'kode_guru', 'id_guru', 'nip'])
                 ->requiredMapping()
-                ->numeric()
-                ->rules(['required', 'integer']),
+                ->rules(['required']),
 
-            ImportColumn::make('id_kelas')
+            ImportColumn::make('kelas')
+                ->relationship(name: 'kelas', resolveUsing: ['nama_kelas', 'kode_kelas', 'id_kelas'])
+                ->label('Kelas')
+                ->guess(['kelas', 'nama_kelas', 'kode_kelas', 'id_kelas'])
                 ->requiredMapping()
-                ->numeric()
-                ->rules(['required', 'integer']),
+                ->rules(['required']),
 
             ImportColumn::make('kode_wali')
-                ->requiredMapping()
-                ->rules(['required', 'max:20']),
+                ->label('Kode Wali')
+                ->guess(['kode_wali', 'kode'])
+                ->rules(['nullable', 'max:20']),
 
             ImportColumn::make('nama_wali')
-                ->requiredMapping()
-                ->rules(['required', 'max:80']),
+                ->label('Nama Wali')
+                ->guess(['nama_wali', 'nama'])
+                ->rules(['nullable', 'max:80']),
 
             ImportColumn::make('role')
-                ->requiredMapping()
-                ->rules(['required', 'max:30']),
+                ->label('Role')
+                ->guess(['role', 'peran'])
+                ->rules(['nullable', 'max:30']),
 
             ImportColumn::make('password')
-                ->requiredMapping()
-                ->rules(['required', 'max:30']),
+                ->label('Password')
+                ->guess(['password'])
+                ->rules(['nullable', 'max:100']),
         ];
+    }
+
+    public function beforeSave(): void
+    {
+        if (blank($this->record->kode_wali)) {
+            $this->record->kode_wali = $this->record->guru?->kode_guru ?? 'WALI';
+        }
+
+        if (blank($this->record->nama_wali)) {
+            $this->record->nama_wali = $this->record->guru?->nama_guru ?? 'Wali Kelas';
+        }
+
+        if (blank($this->record->role)) {
+            $this->record->role = 'wali kelas';
+        }
+
+        if (blank($this->record->password)) {
+            $this->record->password = \Illuminate\Support\Facades\Hash::make('12345678');
+        } elseif (! str_starts_with((string) $this->record->password, '$2y$')) {
+            $this->record->password = \Illuminate\Support\Facades\Hash::make($this->record->password);
+        }
     }
 
     public function resolveRecord(): ?WaliKelas
     {
-        // return WaliKelas::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
         return new WaliKelas();
     }
 
